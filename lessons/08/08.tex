@@ -322,4 +322,213 @@ Note that since:
 \end{equation}
 an absolutely summable sequence has always a finite energy. However, a finite-energy sequence is not necessarily absolutely summable.
 
+\begin{example}{Absolute summability}{}
+    The sequence:
+    \begin{equation}
+        x[n]
+        =
+        \begin{cases}
+            \frac{1}{n} &   n \ge 1 \\
+            0   &   n \le 0
+        \end{cases}
+        \label{eq:L08_S35_1}
+    \end{equation}
+    has finite energy equal to:
+    \begin{equation}
+        E_{x}
+        =
+        \sum_{n=1}^{\infty} \qty(\frac{1}{n})^2
+        =
+        \frac{\pi^2}{6}
+        \label{eq:L08_S35_2}
+    \end{equation}
+    but \( x[n] \) is not absolutely summable.
+\end{example}
+
+In order to represent a finite energy sequence \( x[n] \) that is not absolutely summable by a DTFT \( X(e^{j\omega}) \), it is necessary to consider a mean-square convergence of \( X(e^{j\omega}) \):
+\begin{equation}
+    \lim_{k \to \infty}
+    \int_{-\pi}^{\pi} \abs{X(e^{j\omega}) - X_{k}(e^{j\omega})}^{2} \d{\omega}
+    =
+    0
+    \label{eq:L08_S36_1}
+\end{equation}
+The total energy of the error \( X(e^{j\omega}) - X_{k}(e^{j\omega}) \) must approach zero at each value of \( \omega \) as \( k \) goes to \( \infty \). In such a case, the absolute value of the error \( \abs{X(e^{j\omega}) - X_{k}(e^{j\omega})} \) may not go to zero as \( k \) goes to \( \infty \) and the DTFT is no longer bounded.
+
+\begin{example}{Mean-square convergence}{}
+    Consider the DTFT:
+    \begin{equation}
+        H_{LP}(e^{j\omega})
+        =
+        \begin{cases}
+            1   &   0 \le \abs{\omega} \le \omega_{c}   \\
+            0   &   \omega < \abs{\omega} \le \pi
+        \end{cases}
+        \label{eq:L08_S38_1}
+    \end{equation}
+    showed in the plot below.
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{\figpath{08}/08_images/S38_1.png}
+    \end{center}
+
+    The inverse DTFT of \( H_{LP}(e^{j\omega}) \) is given by:
+    \begin{equation}
+        h_{LP}[n]
+        =
+        \frac{1}{2\pi} \int_{-\omega_{c}}^{\omega_{c}} e^{j\omega n} \d{\omega}
+        =
+        \frac{1}{2\pi} \qty(\frac{e^{j\omega_{c}n}}{jn} - \frac{e^{-j\omega_{c}n}}{jn})
+        =
+        \frac{\sin\qty(\omega_{c}n)}{\pi n}
+        \label{eq:L08_S39_1}
+    \end{equation}
+    for \( -\infty < n < \infty \)- The energy of \( h_{LP}[n] \) is given by \( \frac{\omega_{c}}{\pi} \). \( h_{LP}[n] \) is a finite-energy sequence, but it is not absolutely summable. In fact, the result:
+    \begin{equation}
+        \sum_{n=-k}^{n=k} h_{LP}[n] e^{-j\omega n}
+        =
+        \sum_{n=-k}^{n=k} \frac{\sin\qty(\omega_{c}n)}{\pi n} e^{-j\omega n}
+        \label{eq:L08_S40_1}
+    \end{equation}
+    does not uniformly converge to \( H_{LP}(e^{j\omega}) \) for all values of \( \omega \), but converges to \( H_{LP}(e^{j\omega}) \) in the mean-square sense.
+
+    The mean-square convergence property of the sequence \( h_{LP}[n] \) can be further illustrated by examining the plot of the function:
+    \begin{equation}
+        H_{LP,k}(e^{j\omega})
+        =
+        \sum_{n=-k}^{k} \frac{\sin\qty(\omega_{c}n)}{\pi n} e^{-j\omega n}
+        \label{eq:L08_S41_1}
+    \end{equation}
+    for various values of \( k \), as showed below.
+
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{\figpath{08}/08_images/S42_1.png}
+    \end{center}
+
+    As can be seen from these plots, independently of the value of \( k \) there are ripples in the plot of \( H_{LP,k}(e^{j\omega}) \) around both sides of the point \( \omega = \omega_{c} \). The number of ripples increases as \( k \) increases with the height of the largest ripple remaining the same for all values of \( k \).
+    As \( k \) goes to \( \infty \), the condition:
+    \begin{equation}
+        \lim_{k \to \infty} \int_{-\pi}^{\pi} \abs{H_{LP}(e^{j\omega}) - H_{LP,k}(e^{j\omega})}^2 \d{\omega}
+        =
+        0
+        \label{eq:L08_S44_1}
+    \end{equation}
+    holds indicating the convergence of \(  H_{LP,k}(e^{j\omega}) \) to \(  H_{LP}(e^{j\omega}) \).
+
+    The oscillatory behaviour of \(  H_{LP,k}(e^{j\omega}) \) approximating \(  H_{LP}(e^{j\omega}) \) in the mean-square sense at a point of discontinuity is known as the Gibbs phenomenon
+\end{example}
+
+The DTFT can also be defined for a certain class of sequences which are neither absolutely summable nor square summable. Examples of such sequences are the unit step sequence \( \mu[n] \), the sinusoidal sequence \( \cos\qty(\omega_{0}n + \varphi) \) and the exponential sequence \( A \alpha^{n} \).
+For this type of sequences, a DTFT representation is possible using the Dirac delta function \( \delta(\omega) \).
+
+A  Dirac delta function \( \delta(\omega) \) is a function of \( \omega \) with infinite height, zero width, and unit area. It  is the limiting form of a unit area pulse function \( p_{\Delta} \) as \( \Delta \) goes to zero satisfying:
+\begin{equation}
+    \lim_{\Delta \to 0}
+    \int_{-\infty}^{\infty} p_{\Delta}(\omega) \d{\omega}
+    =
+    \int_{-\infty}^{\infty} \delta(\omega) \d{\omega}
+    \label{eq:L08_S46_1}
+\end{equation}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{\figpath{08}/08_images/S46_1.png}
+    \caption{\label{fig:L08_S46_1} Plot and area of \( p_{\Delta}(\omega) \) function.}
+\end{figure}
+
+\begin{example}{Dirac \( \delta \) application}
+    Consider the complex exponential sequence:
+    \begin{equation}
+        x[n]
+        =
+        e^{j\omega_{0}n}
+        \label{eq:L08_S47_1}
+    \end{equation}
+    Its DTFT is given by:
+    \begin{equation}
+        X(e^{j\omega})
+        =
+        \sum_{k=-\infty}^{\infty} 2\pi \delta(\omega - \omega_{0} + 2k\pi)
+        \label{eq:L08_S47_2}
+    \end{equation}
+    where \( \delta(\omega) \) is an impulse function of \( \omega \) and \( -\pi \le \omega_{0} \le \pi \). The function in Eq. \ref{eq:L08_S47_2} is periodic in \( \omega \) with a period \( 2\pi \) and it is called periodic impulse train.
+    In order to verify that \( X(e^{j\omega}) \) given above is indeed the DTFT of \( x[n] = e^{j\omega_{0}n} \) we compute the inverse DTFT of \( X(e^{j\omega}) \):
+    \begin{align}
+        x[n]
+        &=
+            \frac{1}{2\pi} \int_{-\pi}^{\pi} \sum_{k=-\infty}^{\infty} 2\pi \delta(\omega - \omega_{0} + 2\pi k) e^{j\omega n} \d{\omega}   \nonumber   \\
+        &=
+            \int_{-\pi}^{\pi} \delta(\omega - \omega_{0}) e^{j\omega n} \d{\omega}  \nonumber   \\
+        &=
+            e^{j\omega_{0}n}
+    \end{align}
+    where we have used the sampling property of the impulse function \( \delta(\omega) \).
+\end{example}
+
+Last but not least, we list in Table \ref{tab:L08_S50_1} a set of commonly used DTFT pairs.
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{cc}
+        \toprule
+        \textbf{Sequence}   &   \textbf{DTFT}   \\
+        \midrule
+        \( \displaystyle \delta[n] \) &   \( \displaystyle 1 \) \\
+        \( \displaystyle 1 \)   &   \( \displaystyle \sum_{k=-\infty}^{\infty} 2\pi \delta(\omega + 2\pi k) \)  \\
+        \( \displaystyle e^{j\omega_{0}n} \)    &   \( \displaystyle \sum_{k=-\infty}^{\infty} 2\pi \delta(\omega - \omega_{0} + 2\pi k) \) \\
+        \( \displaystyle \mu[n] \)  &   \( \displaystyle \frac{1}{1 - e^{-j\omega}} + \sum_{k=-\infty}^{\infty} \pi \delta(\omega + 2\pi k) \)  \\
+        \( \displaystyle \alpha^{n}\mu[n] \ \ (\abs{\alpha} < 1 ) \)    &   \( \displaystyle \frac{1}{1 - \alpha e^{-j \omega}} \)  \\
+        \bottomrule
+    \end{tabular}
+    \caption{\label{tab:L08_S50_1} Commonly used DTFT pairs.}
+\end{table}
+
+
+
+\subsection{DTFT properties}
+There are a number of important properties of the DTFT that are useful in signal processing applications. These are listed here in Figures \ref{fig:L08_S52_1}, \ref{fig:L08_S53_1}, \ref{fig:L08_S54_1} without proof, since it is quite straigthforward to derive them. We illustrate the applications of some of the DTFT properties.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{\figpath{08}/08_images/S52_1.png}
+    \caption{\label{fig:L08_S52_1} DTFT symmetry relations for a complex sequence \( x[n] \).}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{\figpath{08}/08_images/S53_1.png}
+    \caption{\label{fig:L08_S53_1} DTFT symmetry realtions for a real sequence \( x[n] \).}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{\figpath{08}/08_images/S54_1.png}
+    \caption{\label{fig:L08_S54_1} DTFT general properties.}
+\end{figure}
+
+%\pgfplotsset{
+%    standard/.style={%Axis format configuration
+%        axis x line=middle,
+%        axis y line=middle,
+%        enlarge x limits=0.15,
+%        enlarge y limits=0.15,
+%        every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+%        every axis y label/.style={at={(current axis.above origin)},anchor=north east},
+%        every axis plot post/.style={mark options={fill=white}}
+%        }
+%    }
+%
+%    \begin{figure}%Sampled sine squence
+%        \begin{tikzpicture}
+%            \begin{axis}[%
+%                standard,
+%                domain = 0:30,
+%                samples = 31,
+%                xlabel={$n$},
+%                ylabel={$x[n]$}]
+%                \addplot+[ycomb,red,thick] {x*exp(-x/10) + gauss(rand,0.1)};%sin(2*180*x/13)};
+%            \end{axis}
+%        \end{tikzpicture}
+%    \end{figure}
+
 \end{document}
