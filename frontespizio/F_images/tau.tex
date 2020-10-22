@@ -1,0 +1,123 @@
+\documentclass{article}
+\usepackage{amsmath} % for \text
+\usepackage{tikz}
+\tikzset{>=latex} % for LaTeX arrow head
+%\definecolor{mylightred}{RGB}{255,200,200}
+%\definecolor{mylightblue}{RGB}{172,188,63}
+%\definecolor{mylightgreen}{RGB}{150,220,150}
+
+% split figures into pages
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{1pt}%
+
+% vertical custom shading
+%https://tex.stackexchange.com/questions/191735/is-it-possible-to-define-the-position-of-top-bottom-and-middle-color-in-fill
+\makeatletter
+\tikzset{vertical custom shading/.code={%
+  \pgfmathsetmacro\tikz@vcs@middle{#1}
+  \pgfmathsetmacro\tikz@vcs@bottom{\tikz@vcs@middle/2}
+  \pgfmathsetmacro\tikz@vcs@top{(100-\tikz@vcs@middle)/2+\tikz@vcs@middle}
+  \pgfdeclareverticalshading[tikz@axis@top,tikz@axis@middle,tikz@axis@bottom]{newaxis}{100bp}{%
+    color(0bp)=(tikz@axis@bottom);
+    color(\tikz@vcs@bottom bp)=(tikz@axis@bottom);
+    color(\tikz@vcs@middle bp)=(tikz@axis@middle);
+    color(\tikz@vcs@top bp)=(tikz@axis@top);
+    color(100bp)=(tikz@axis@top)}
+    \pgfkeysalso{/tikz/shading=newaxis}
+  }
+}
+\makeatother
+
+\begin{document}
+
+
+
+% arrow style
+\usetikzlibrary{decorations.markings}
+\tikzset{->-/.style={decoration={markings,
+                               mark=at position .7 with {\arrow{>}}},
+                               postaction={decorate}}}
+
+% photon
+\usetikzlibrary{decorations.pathmorphing}
+\tikzset{photon/.style={decorate, decoration={snake,segment length=5,amplitude=1.1}}}
+
+% cone style
+\usetikzlibrary{shadows.blur}
+\tikzset{mycone/.pic={
+       \shadedraw[top color=white, bottom color=black!50,shading angle=50,vertical custom shading=10]
+                    (-0.4,0.99) -- (0,0) -- (0.4,0.99);
+       \shadedraw[top color=white, bottom color=black!20,shading angle=90]
+                    (0,1) ellipse (0.4 and 0.12);}};
+
+
+
+% TAU DECAY MODES
+\begin{tikzpicture}[scale=0.9]
+
+  \large
+%  % arrow style
+%  \usetikzlibrary{decorations.markings}
+%  \tikzset{->-/.style={decoration={markings,
+%                                   mark=at position .7 with {\arrow{>}}},
+%                                   postaction={decorate}}}
+
+  % photon
+  \usetikzlibrary{decorations.pathmorphing}
+  \tikzset{photon/.style={decorate, decoration={snake,segment length=5,amplitude=1.1}}}
+
+  % cone style
+  \usetikzlibrary{shadows.blur}
+  \tikzset{mycone/.pic={
+           \shadedraw[top color=white, bottom color=black!50,shading angle=50,vertical custom shading=10]
+                        (-0.4,0.99) -- (0,0) -- (0.4,0.99);
+           \shadedraw[top color=white, bottom color=black!20,shading angle=90]
+                        (0,1) ellipse (0.4 and 0.12);}};
+
+  \def\R{10}             % inner radius
+  \def\hca{16}           % half central angle
+  \def\hcl{\R*sin(\hca)} % half chord length c = 2Rsin(theta/2)
+  \def\tracker{3}        % tracker
+  \def\ECAL{4.8}         % ECAL
+  \def\HCAL{7.2}         % HCAL
+  \def\hclmax{(\R+\HCAL)*sin(\hca)} % mac
+
+  % detectors
+  \foreach \r in {\tracker,\ECAL,\HCAL}{
+    \draw[thick] (0,\r) arc (90:90-\hca:\R+\r)
+                 (0,\r) arc (90:90+\hca:\R+\r);
+  }
+  \node[left=0,above left] at ({1.1*\hclmax},{0.10*\tracker}) {tracker};
+  \node[left=0,above left] at ({1.1*\hclmax},\tracker) {ECAL};
+  \node[left=0,above left] at ({1.1*\hclmax},\ECAL) {HCAL};
+
+  % DM 1
+  \begin{scope}[shift={(0,0)}, rotate=0]
+    \node[below] at (0,0) {$\tau^\pm$};
+    \node[right=8pt,below=18] at (0,0) {$\tau^\pm\to\rho^\pm\nu_\tau\to\pi^\pm\pi^0\nu_\tau$};
+    \draw[->-,thick]                   % tau
+      (0,0) -- (0,0.7) coordinate (tau);
+    \draw[->-,dotted,thick,rotate=-45] % neutrinos
+      (tau) -- +(0,1.5) node[above right] {$\nu_\tau$};
+    \draw[->-,       thick,rotate= 15] % rho
+      (tau) -- +(0,0.7) coordinate (rho) node[midway,left] {$\rho^\pm$};
+    \draw[->-,       thick,rotate= 24] % pion
+      (rho) -- +(0,3.4) node[left=15,above=38] {$\pi^\pm$}
+      pic[rotate=22,scale=1.2] {mycone};
+    \draw[->-,densely dashed,thick,rotate=-18] % pion0
+      (rho) -- +(0,0.7) coordinate (pion0) node[midway,right] {$\pi^0$};
+    \draw[photon, rotate= 10] % photon 1
+      (pion0) -- +(0,0.9) node[left=8,above=32] {$\gamma$}
+      pic[rotate=11.5,xscale=0.8] {mycone};
+    \draw[photon,rotate=-30] % photon 2
+      (pion0) -- +(0,1.0) node[right=15,above=30] {$\gamma$}
+      pic[rotate=-24,xscale=0.8] {mycone};
+  \end{scope}
+
+\end{tikzpicture}
+
+
+
+
+\end{document}

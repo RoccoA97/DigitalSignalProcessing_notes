@@ -1,0 +1,1095 @@
+# Your snippets
+#
+# Atom snippets allow you to enter a simple prefix in the editor and hit tab to
+# expand the prefix into a larger code block with templated values.
+#
+# You can create a new snippet in this file by typing "snip" and then hitting
+# tab.
+#
+# An example CoffeeScript snippet to expand log to console.log:
+#
+# '.source.coffee':
+#   'Console log':
+#	 'prefix': 'log'
+#	 'body': 'console.log $1'
+#
+# Each scope (e.g. '.source.coffee' above) can only be declared once.
+#
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it in the
+# Atom Flight Manual:
+# http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
+
+'.text.tex.latex':
+
+	'Subfile init':
+		'prefix': 'subfile'
+		'body': '''
+		\\\\providecommand{\\\\main}{../../main}
+		\\\\providecommand{\\\\figpath}[1]{\\\\main/../lessons/\#1}
+		\\\\documentclass[${1:../main/main.tex}]{subfiles}
+
+
+
+		\\\\begin{document}
+		$2
+		\\\\end{document}
+		'''
+
+	'Date':
+		'prefix': 'date'
+		'body': '''
+		\\\\newdate{date}{$1}{$2}{2019}
+		'''
+
+	'Subfile Lecture':
+		'prefix': 'subfile lecture'
+		'body': '''
+		\\\\documentclass[../main/main.tex]{subfiles}
+
+		\\\\newdate{date}{$1}{$2}{2019}
+
+		\\\\begin{document}
+
+		\\\\marginpar{ \\\\textbf{Lecture $3} \\\\\\\\\\  \\\\displaydate{date}. \\\\\\\\\\ Compiled:  \\\\today.}
+		$4
+		\\\\end{document}
+		'''
+
+	'SVG figure':
+		'prefix': 'svgfig'
+		'body': '''
+		\\\\begin{figure}[!h]
+			\\\\centering
+			\\\\incfig{figures/$1}
+			\\\\caption{$2}
+			\\\\label{fig:$1}
+		\\\\end{figure}
+		'''
+
+	'Regular citation':
+		'prefix': 'cite'
+		'body': '\\\\cite{$2}'
+
+	'Cursive':
+		'prefix': 'em'
+		'body': '\\\\emph{$1} $2'
+
+	'Python Code':
+		'prefix': 'code'
+		'body': '''
+		\\\\begin{figure}[!h]
+			\\\\begin{lstlisting}[language=Python]
+			$1
+			\\\\end{lstlisting}
+			\\\\caption{\\\\label{}}
+		\\\\end{figure}
+		'''
+
+	'Theorem':
+		'prefix': 'theorem'
+		'body': '''
+		\\\\begin{theorem}[]
+			$1
+		\\\\end{theorem}
+		'''
+
+	'Corollary':
+		'prefix': 'corollary'
+		'body': '''
+		\\\\begin{corollary}[]
+			$1
+		\\\\end{corollary}
+		'''
+
+	'Lemma':
+		'prefix': 'lemma'
+		'body': '''
+		\\\\begin{lemma}[]
+			$1
+		\\\\end{lemma}
+		'''
+
+	'Definition':
+		'prefix': 'definition'
+		'body': '''
+		\\\\begin{definition}
+			$1
+		\\\\end{definition}
+		'''
+
+	'Exercise':
+		'prefix': 'exercise'
+		'body': '''
+		\\\\begin{exercise}
+			$1
+		\\\\end{exercise}
+		'''
+
+	'Remark':
+		'prefix': 'remark'
+		'body': '''
+		\\\\begin{remark}
+			$1
+		\\\\end{remark}
+		'''
+
+	'Proof':
+		'prefix': 'proof'
+		'body': '''
+		\\\\begin{proof}
+			$1
+		\\\\end{proof}
+		'''
+
+	'Label':
+		'prefix': 'label'
+		'body': '\\\\label{$1} $2'
+
+	'Boldface':
+		'prefix': 'bold'
+		'body': '\\\\textbf{$1} $2'
+
+	'Weight':
+		'prefix': 'weight'
+		'body': '\\\\( \\\\mathbf{w}$1 \\\\) $2'
+
+	'Margin text':
+		'prefix': 'margin'
+		'body': '\\\\marginpar{$1} $2'
+
+	'Subequations numbered with letters':
+		'prefix': 'subequations'
+		'body': '''
+		\\\\begin{subequations}
+			\\\\begin{align}
+				${1:$2 &= $3 }
+			\\\\end{align}
+			\\\\label{}
+		\\\\end{subequations}
+		'''
+		'description': ''
+
+	'Equations numbered with the same number':
+		'prefix': 'equations'
+		'body': '''
+		\\\\begin{equation}
+			\\\\begin{gathered}
+				$1
+			\\\\end{gathered}
+			\\\\label{eq:$3}
+		\\\\end{equation}
+		'''
+		'description': ''
+
+	'Equations with cases':
+		'prefix': 'cases eq'
+		'body': '''
+		\\\\begin{equation}
+			$1
+			\\\\begin{cases}
+				$2 \\\\\\\\\\
+				$3
+			\\\\end{cases}
+			\\\\label{eq:}
+		\\\\end{equation}
+		'''
+		'description': ''
+
+	'Numbered equation':
+		'prefix': 'equation'
+		'body': '''
+		\\\\begin{equation}
+			$1
+			\\\\label{eq:}
+		\\\\end{equation}
+		'''
+
+	'Unumbered equation':
+		'prefix': 'equation not numbered'
+		'body': '''
+		\\\\begin{equation*}
+			$1
+		\\\\end{equation*}
+		'''
+
+	'Reference':
+		'prefix': 'ref'
+		'body': '\\\\ref{$1} $2'
+
+
+	'Chemical formula':
+		'prefix': 'ce'
+		'body': '\\\\ce{$1} $2'
+		'description': 'Needs the package mhchem'
+
+	'Subfigure':
+		'prefix': 'subfigure'
+		'body': '''
+		\\\\begin{subfigure}
+			\\\\centering
+			\\\\includegraphics[width=1\\\\textwidth]{\\\\figpath{$1}/$1_images/$2}
+			\\\\caption{\\\\label{fig:$3} Description.}
+		\\\\end{subfigure}%
+		'''
+		'description': 'Needs the package subcaption'
+
+	'TwoFigure Subcaption':
+		'prefix': 'twofiguresub'
+		'body': '''
+		\\\\begin{figure}[!h]
+			\\\\begin{minipage}[c]{0.5\\\\linewidth}
+				\\\\subfloat[][Description]{ \\\\includegraphics[width=0.8\\\\textwidth]{\\\\figpath{$1}/$1_images/$2}
+				\\\\label{fig:$3} }
+			\\\\end{minipage}
+			\\\\begin{minipage}[]{0.5\\\\linewidth}
+				\\\\centering
+				\\\\subfloat[][Description]{\\\\includegraphics[width=0.8\\\\textwidth]{\\\\figpath{$4}/$4_images/$5}
+				\\\\label{fig:$6} }
+			\\\\end{minipage}
+			\\\\caption{\\\\label{fig:} Description}
+		\\\\end{figure}
+		'''
+		'description': ''
+
+	'Figure':
+		'prefix': 'figure'
+		'body': '''
+		\\\\begin{figure}[!h]
+			\\\\centering
+			\\\\includegraphics[width=1\\\\textwidth]{\\\\figpath{$1}/$1_images/$2}
+			\\\\caption{\\\\label{fig:} Description.}
+		\\\\end{figure}
+		'''
+		'description': ''
+
+	'TwoFigure':
+		'prefix': 'twofigure'
+		'body': '''
+		\\\\begin{figure}[!h]
+			\\\\begin{minipage}[c]{0.5\\\\linewidth}
+				\\\\centering
+				\\\\includegraphics[width=1\\\\textwidth]{\\\\figpath{$1}/$1_images/$2}
+			\\\\end{minipage}
+			\\\\begin{minipage}[]{0.5\\\\linewidth}
+				\\\\centering
+				\\\\includegraphics[width=1\\\\textwidth]{\\\\figpath{$3}/$3_images/$4}
+			\\\\end{minipage}
+			\\\\caption{\\\\label{fig:$5} Description.}
+		\\\\end{figure}
+		'''
+		'description': ''
+
+	'Tikzpicture':
+		'prefix': 'tikzpicture'
+		'body': '''
+		\\\\begin{figure}[!h]
+			\\\\centering
+			\\\\begin{tikzpicture}[scale=1, transform shape]
+				$1
+			\\\\end{tikzpicture}
+			\\\\caption{\\\\label{fig:$3} Description.}
+		\\\\end{figure}
+		'''
+		'description': ''
+
+	'TwoFigure Tikz':
+		'prefix': 'twofiguretikz'
+		'body': '''
+		\\\\begin{figure}[!h]
+			\\\\begin{minipage}[c]{0.5\\\\linewidth}
+				\\\\centering
+				\\\\begin{tikzpicture}[scale=1, transform shape]
+					$1
+				\\\\end{tikzpicture}
+			\\\\end{minipage}
+			\\\\begin{minipage}[]{0.5\\\\linewidth}
+				\\\\centering
+				\\\\begin{tikzpicture}[scale=1, transform shape]
+					$2
+				\\\\end{tikzpicture}
+			\\\\end{minipage}
+			\\\\caption{\\\\label{fig:$3} Description.}
+		\\\\end{figure}
+		'''
+		'description': ''
+
+	'Figure and text':
+		'prefix': 'figuretext'
+		'body': '''
+		\\\\begin{minipage}[c]{0.5\\\\linewidth}
+			$1
+		\\\\end{minipage}
+		\\\\begin{minipage}[]{0.5\\\\linewidth}
+			\\\\centering
+			\\\\includegraphics[width=1\\\\textwidth]{\\\\figpath{$2}/$2_images/$3}
+			\\\\captionof{figure}{\\\\label{} Description.}
+		\\\\end{minipage}
+		'''
+		'description': ''
+
+	'SIunitx Value':
+		'prefix': 'siunitx'
+		'body': '\\\\SI{$1}{$2} $3'
+
+	'SIunitx number':
+		'prefix': 'number'
+		'body': '\\\\num{$1} $2'
+
+	'Reference to equation':
+		'prefix': 'eqref'
+		'body': '\\\\eqref{${1:eq:$2}}'
+
+	'Reference to paragraph name':
+		'prefix': 'nameref'
+		'body': '\\\\nameref{${1:par:$2}}'
+
+	'Reference to paragraph name and page':
+		'prefix': 'Nameref'
+		'body': '\\\\Nameref{${1:par:$2}}'
+
+	'Inline math':
+		'prefix': 'inline'
+		'body': '\\\\( $1 \\\\)$2'
+
+	'Display math':
+		'prefix': 'display'
+		'body': '''
+		\\\\[
+			$1
+		\\\\]
+
+		$2
+		'''
+
+	'Schroedinger':
+		'prefix': 'schroedinger'
+		'body': 'Schr$\\\\ddot{o}$dinger'
+
+	'Color text':
+		'prefix': 'color text'
+		'body': '\\\\hlfancy{${1:color}}{$2} $3'
+
+	'Text color':
+		'prefix': 'text color'
+		'body': '\\\\textcolor{${1:color}}{$2} $3'
+
+	'Color box equation':
+		'prefix': 'color box eq'
+		'body': '''
+		\\\\begin{empheq}{equation}
+			$1
+		\\\\end{empheq}
+		'''
+		'description': ''
+
+	'Box blue':
+		'prefix': 'box blue'
+		'body': '''
+		\\\\begin{bluebox}
+			$1
+		\\\\end{bluebox}
+		'''
+		'description': ''
+
+	'Box green':
+		'prefix': 'box green'
+		'body': '''
+		\\\\begin{greenbox}
+			$1
+		\\\\end{greenbox}
+		'''
+		'description': ''
+
+	'Box yellow':
+		'prefix': 'box yellow'
+		'body': '''
+		\\\\begin{yellowbox}
+			$1
+		\\\\end{yellowbox}
+		'''
+		'description': ''
+
+	'Box red':
+		'prefix': 'box red'
+		'body': '''
+		\\\\begin{redbox}
+			$1
+		\\\\end{redbox}
+		'''
+		'description': ''
+
+	'Box orange':
+		'prefix': 'box orange'
+		'body': '''
+		\\\\begin{orangebox}
+			$1
+		\\\\end{orangebox}
+		'''
+		'description': ''
+
+	'Itemize':
+		'prefix': 'itemize'
+		'body': '''
+		\\\\begin{itemize}
+			\\\\item $1
+		\\\\end{itemize}
+		'''
+		'description': ''
+
+	'Enumerate':
+		'prefix': 'enumerate'
+		'body': '''
+		\\\\begin{enumerate}
+			\\\\item $1
+		\\\\end{enumerate}
+		'''
+		'description': ''
+
+# LATEX - MATH
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+'.meta.function.environment.math.latex, .markup.other.math.inline.latex, .string.other.math.latex, .meta.environment.math.equation.latex, .meta.environment.math.align.latex':
+
+	'Order':
+		'prefix': 'order'
+		'body': '\\\\order{$1} $2'
+
+	'Commutator':
+		'prefix': 'commutator'
+		'body': '\\\\comm{$1}{$2} $3'
+
+	'Anticommutator':
+		'prefix': 'anticommutator'
+		'body': '\\\\acomm{$1}{$2} $3'
+
+	'Dot product':
+		'prefix': 'dot product'
+		'body': '\\\\vdot $1'
+
+	'Cross product':
+		'prefix': 'cross product'
+		'body': '\\\\cross $1'
+
+	'Scalar product':
+		'prefix': 'scalar product'
+		'body': '\\\\left\\\\langle $1,$2 \\\\right\\\\rangle $3'
+
+	'Mathbf':
+		'prefix': 'mbf'
+		'body': '\\\\mathbf{$1} $2'
+
+	'Gradient':
+		'prefix': 'gradient'
+		'body': '\\\\grad $1'
+
+	'Divergence':
+		'prefix': 'divergence'
+		'body': '\\\\div{$1} $2'
+
+	'Curl':
+		'prefix': 'curl'
+		'body': '\\\\curl{$1} $2'
+
+	'Laplacian':
+		'prefix': 'laplacian'
+		'body': '\\\\laplacian{$1} $2'
+
+	'Logarithmic derivative':
+		'prefix': 'logderivative'
+		'body': '\\\\frac{$1 ^{\\\\prime}}{$1} $2'
+
+	'Command overset':
+		'prefix': 'overset'
+		'body': '\\\\overset{$1}{${2:=}} $3'
+
+	'Command overline':
+		'prefix': 'overline'
+		'body': '\\\\overline{$1} $2'
+
+	'Command underset':
+		'prefix': 'underset'
+		'body': '\\\\underset{$1}{${2:=}} $3'
+
+	'Command Overbrace':
+		'prefix': 'overbrace'
+		'body': '\\\\overbrace{$1}^{$2} $3'
+
+	'Command Underbrace':
+		'prefix': 'underbrace'
+		'body': '\\\\underbrace{$1}_{$2} $3'
+
+	'Fraction':
+		'prefix': 'frac'
+		'body': '\\\\frac{$1}{$2} $3'
+
+	'Differential command':
+		'prefix': 'd'
+		'body': '\\\\dd[]{$1} $2'
+
+	'Command partial derivative':
+		'prefix': 'partial'
+		'body': '\\\\partial{$1} $2'
+
+	'Command covariant derivative':
+		'prefix': 'nabla'
+		'body': '\\\\nabla $1'
+
+	'Command exp':
+		'prefix': 'exp'
+		'body': 'e^{$1} $2'
+
+	'Math Text':
+		'prefix': 'text'
+		'body': '\\\\text{$1}$2'
+
+	'Integral':
+		'prefix': 'int'
+		'body': '\\\\int_{$1}^{$2} \\\\d{$3} '
+
+	'Summation':
+		'prefix': 'sum'
+		'body': '\\\\sum_{$1}^{$2} $3 '
+
+	'Product':
+		'prefix': 'prod'
+		'body': '\\\\prod_{$1}^{$2} $3 '
+
+	'Substack':
+		'prefix': 'substack'
+		'body': '\\\\substack{$1 \\\\\\\\ $2} $3'
+
+	'Cancellation':
+		'prefix': 'cancel'
+		'body': '\\\\cancel{$1} $2'
+
+	'right arrow':
+		'prefix': 'rarrow'
+		'body': '\\\\rightarrow $1'
+
+	'Right arrow':
+		'prefix': 'Rarrow'
+		'body': '\\\\Rightarrow $1'
+
+	'left arrow':
+		'prefix': 'larrow'
+		'body': '\\\\leftarrow $1'
+
+	'Left arrow':
+		'prefix': 'Larrow'
+		'body': '\\\\Leftarrow $1'
+
+	'left Right arrow':
+		'prefix': 'lrarrow'
+		'body': '\\\\leftrightarrow $1'
+
+	'Left Right arrow':
+		'prefix': 'Lrarrow'
+		'body': '\\\\Leftrightarrow $1'
+
+	'down arrow':
+		'prefix': 'darrow'
+		'body': '\\\\downarrow $1'
+
+	'Down arrow':
+		'prefix': 'Darrow'
+		'body': '\\\\Downarrow $1'
+
+	'uparrow':
+		'prefix': 'uarrow'
+		'body': '\\\\uparrow $1'
+
+	'Up arrow':
+		'prefix': 'Uarrow'
+		'body': '\\\\Uparrow $1'
+
+	'New line':
+		'prefix': 'newline'
+		'body': '''
+		\\\\\\\\ $1
+		'''
+
+	'Vector':
+		'prefix': 'vec'
+		'body': '\\\\va{$1} $2'
+
+	'Vector unit':
+		'prefix': 'vec unit'
+		'body': '\\\\vu{$1} $2'
+
+
+	'Vertical vector':
+		'prefix': 'vector'
+		'body': '''
+		\\\\begin{pmatrix}
+			$1 \\\\\\\\
+			$2
+		\\\\end{pmatrix}
+		'''
+
+	'Equivalent':
+		'prefix': 'equiv'
+		'body': '\\\\equiv $1'
+
+	'Command approx':
+		'prefix': 'approx'
+		'body': '\\\\approx $1'
+
+	'Similar equivalent':
+		'prefix': 'simeq'
+		'body': '\\\\simeq $1'
+
+	'Similar':
+		'prefix': 'sim'
+		'body': '\\\\sim $1'
+
+	'Command proportional':
+		'prefix': 'proportional'
+		'body': '\\\\propto $1'
+
+	'Greater greater':
+		'prefix': 'greatergreater'
+		'body': '\\\\gg $1'
+
+	'Greater equal':
+		'prefix': 'greaterequal'
+		'body': '\\\\ge $1'
+
+	'Lower lower':
+		'prefix': 'lowerlower'
+		'body': '\\\\ll $1'
+
+	'Lower equal':
+		'prefix': 'lowerequal'
+		'body': '\\\\le $1'
+
+	'Overline':
+		'prefix': 'bar'
+		'body': '\\\\bar{$1} $2'
+
+	'Hat':
+		'prefix': 'hat'
+		'body': '\\\\hat{$1} $2'
+
+	'Tilde':
+		'prefix': 'tilde'
+		'body': '\\\\widetilde{$1} $2'
+
+	'Zero matrix':
+		'prefix': 'zero matrix'
+		'body': '\\\\smqty(\\\\zmat{${1:n}}) $2'
+
+	'Identity matrix':
+		'prefix': 'identity matrix'
+		'body': '\\\\smqty(\\\\imat{${1:n}}) $2'
+
+	'Pauli matrix':
+		'prefix': 'pauli matrix'
+		'body': '\\\\smqty(\\\\pmat{${1:n}}) $2'
+
+	'Matrix index':
+		'prefix': 'matrix index'
+		'body': '\\\\smqty(\\\\xmat*{a}{${1:n}}{${2:m}}) $3'
+
+	'2x2 matrix':
+		'prefix': 'twomatrix'
+		'body': """
+		\\\\begin{pmatrix}
+			$1   & $2 \\\\\\\\
+			$3   & $4
+		\\\\end{pmatrix}
+		$5
+		"""
+
+	'3x3 matrix':
+		'prefix': 'threematrix'
+		'body': """
+		\\\\begin{pmatrix}
+			$1   & $2  & $3 \\\\\\\\
+			$4   & $5  & $6 \\\\\\\\
+			$7   & $8  & $9
+		\\\\end{pmatrix}
+		$10
+		"""
+
+	'4x4 matrix':
+		'prefix': 'fourmatrix'
+		'body': """
+		\\\\begin{pmatrix}
+			$1   & $2  & $3  & $4 \\\\\\\\
+			$5   & $6  & $7  & $8 \\\\\\\\
+			$9   & $10  & $11  & $12 \\\\\\\\
+			$13   & $14  & $15  & $16
+		\\\\end{pmatrix}
+		$17
+		"""
+
+	'Greek Letter alpha':
+		'prefix': 'alpha'
+		'body': '\\\\alpha $1'
+
+	'Greek Letter beta':
+		'prefix': 'beta'
+		'body': '\\\\beta $1'
+
+	'Greek Letter gamma':
+		'prefix': 'gamma'
+		'body': '\\\\gamma $1 '
+
+	'Greek Letter Gamma':
+		'prefix': 'Gamma'
+		'body': '\\\\Gamma $1'
+
+	'Greek Letter delta':
+		'prefix': 'delta'
+		'body': '\\\\delta $1'
+
+	'Greek Letter Delta':
+		'prefix': 'Delta'
+		'body': '\\\\Delta $1'
+
+	'Greek Letter epsilon':
+		'prefix': 'epsilon'
+		'body': '\\\\varepsilon $1'
+
+	'Greek Letter zeta':
+		'prefix': 'zeta'
+		'body': '\\\\zeta $1'
+
+	'Greek Letter eta':
+		'prefix': 'eta'
+		'body': '\\\\eta $1'
+
+	'Greek Letter theta':
+		'prefix': 'theta'
+		'body': '\\\\theta $1'
+
+	'Greek Letter Theta':
+		'prefix': 'Theta'
+		'body': '\\\\Theta $1'
+
+	'Greek Letter iota':
+		'prefix': 'iota'
+		'body': '\\\\iota $1'
+
+	'Greek Letter kappa':
+		'prefix': 'kappa'
+		'body': '\\\\kappa $1'
+
+	'Greek Letter lambda':
+		'prefix': 'lambda'
+		'body': '\\\\lambda $1'
+
+	'Greek Letter Lambda':
+		'prefix': 'Lambda'
+		'body': '\\\\Lambda $1'
+
+	'Greek Letter mu':
+		'prefix': 'mu'
+		'body': '\\\\mu $1'
+
+	'Greek Letter nu':
+		'prefix': 'nu'
+		'body': '\\\\nu $1'
+
+	'Greek Letter xi':
+		'prefix': 'xi'
+		'body': '\\\\xi $1'
+
+	'Greek Letter Xi':
+		'prefix': 'Xi'
+		'body': '\\\\Xi $1'
+
+	'Greek Letter pi':
+		'prefix': 'pi'
+		'body': '\\\\pi $1'
+
+	'Greek Letter Pi':
+		'prefix': 'Pi'
+		'body': '\\\\Pi $1'
+
+	'Greek Letter rho':
+		'prefix': 'rho'
+		'body': '\\\\rho $1'
+
+	'Greek Letter sigma':
+		'prefix': 'sigma'
+		'body': '\\\\sigma $1'
+
+	'Greek Letter Sigma':
+		'prefix': 'Sigma'
+		'body': '\\\\Sigma $1'
+
+	'Greek Letter tau':
+		'prefix': 'tau'
+		'body': '\\\\tau $1'
+
+	'Greek Letter phi':
+		'prefix': 'phi'
+		'body': '\\\\varphi $1'
+
+	'Greek Letter Phi':
+		'prefix': 'Phi'
+		'body': '\\\\Phi $1'
+
+	'Greek Letter ugly phi':
+		'prefix': 'phiugly'
+		'body': '\\\\phi $1'
+
+	'Greek Letter chi':
+		'prefix': 'chi'
+		'body': '\\\\chi $1'
+
+	'Greek Letter psi':
+		'prefix':  'psi'
+		'body': '\\\\psi $1'
+
+	'Greek Letter Psi':
+		'prefix':   'Psi'
+		'body': '\\\\Psi $1'
+
+	'Greek Letter omega':
+		'prefix': 'omega'
+		'body': '\\\\omega $1'
+
+	'Greek Letter Omega':
+		'prefix': 'Omega'
+		'body': '\\\\Omega $1'
+
+	'Modulus':
+		'prefix': 'modulus'
+		'body': '\\\\abs{$1} $2'
+
+	'Modulus vector':
+		'prefix': 'modulus vec'
+		'body': '\\\\absvec{$1} $2'
+
+	'Norma':
+		'prefix': 'norm'
+		'body': '\\\\norm{$1} $2'
+
+	'Norma vector':
+		'prefix': 'norm vec'
+		'body': '\\\\normvec{$1} $2'
+
+	'Evaluated':
+		'prefix': 'evaluated'
+		'body': '\\\\eval{$1}_$2^$3'
+
+	'Wavefunction psi':
+		'prefix': 'wavefunction'
+		'body': '\\\\ket{${1:\\\\psi}} $2'
+
+	'Command infinity':
+		'prefix': 'infinity'
+		'body': '\\\\infty $1'
+
+	'Function':
+		'prefix': 'function'
+		'body': '$1(${2}) $3'
+################################
+
+	'Command cdot':
+		'prefix': 'cdot'
+		'body': '\\\\cdot $1'
+
+	'Command dot':
+		'prefix': 'dot'
+		'body': '\\\\dot{$1} $2'
+
+	'Dots':
+		'prefix': 'dots'
+		'body': '\\\\dots $1'
+
+	'Command bra':
+		'prefix': 'bra'
+		'body': '\\\\bra{$1} $2'
+
+	'Command ket':
+		'prefix': 'ket'
+		'body': '\\\\ket{$1} $2'
+
+	'Command braket':
+		'prefix': 'braket'
+		'body': '\\\\braket{$1}{$2} $3'
+
+	'Command ketbra':
+		'prefix': 'ketbra'
+		'body': '\\\\ketbra{$1}{$2} $3'
+
+	'Matrix element':
+		'prefix': 'matrix element'
+		'body': '\\\\matrixel{${1:n}}{$2}{${3:m}} $4'
+
+	'Expectation value':
+		'prefix': 'expectation value'
+		'body': '\\\\expval{$1}{${2:\\\\psi}} $3'
+
+	'Command hbar':
+		'prefix': 'hbar'
+		'body': '\\\\hbar $1'
+
+	'Command dag':
+		'prefix': 'dag'
+		'body': '^\\\\dag $1'
+
+	'Command forall':
+		'prefix': 'forall'
+		'body': '\\\\forall $1'
+
+	'Command exists':
+		'prefix': 'exists'
+		'body': '\\\\exists $1'
+
+	'Command iff':
+		'prefix': 'iff'
+		'body': '\\\\iff $1'
+
+	'Command average':
+		'prefix': 'average'
+		'body': '\\\\expval{$1} $2'
+
+	'Derivative':
+		'prefix': 'derivative'
+		'body': '\\\\dv{$1}{$2} $3'
+
+	'Delta derivative':
+		'prefix': 'delta derivative'
+		'body': '\\\\frac{\\\\Delta $1}{\\\\Delta $2}'
+
+	'Partial derivative':
+		'prefix': 'partial derivative'
+		'body': '\\\\pdv{$1}{$2} $3'
+
+	'n Derivative':
+		'prefix': 'n derivative'
+		'body': '\\\\dv[${1:n}]{$2}{$3} $4'
+
+	'n Partial derivative':
+		'prefix': 'n partial derivative'
+		'body': '\\\\pdv[${1:n}]{$2}{$3} $4'
+
+	'Partial derivative multi variable':
+		'prefix': 'm partial derivative'
+		'body': '\\\\pdv{$1}{$2}{$3} $4'
+
+	'Functional derivative':
+		'prefix': 'functional derivative'
+		'body': '\\\\fdv{$1}{$2} $3'
+
+	'Inverse':
+		'prefix': 'inverse'
+		'body': '^{-1} $1'
+
+	'Momentum energy':
+		'prefix': 'momentum energy'
+		'body': '\\\\frac{p^2_$1}{2 $2}'
+
+####################################
+
+	'Small tensor product':
+		'prefix': 'tensor'
+		'body': '\\\\otimes $1'
+
+	'Command sqrt':
+		'prefix': 'sqrt'
+		'body': '\\\\sqrt{$1} $2'
+
+
+	'Command Probability':
+		'prefix': 'probability'
+		'body': '\\\\mathbb{P}($1) $2'
+
+	'Command Mathbb':
+		'prefix': 'mathbb'
+		'body': '\\\\mathbb{$1}'
+
+	'Identity':
+		'prefix': 'identity'
+		'body': '\\\\mathbbm{1}'
+
+	'Command sin':
+		'prefix': 'sin'
+		'body': '\\\\sin($1) $2'
+
+	'Command cos':
+		'prefix': 'cos'
+		'body': '\\\\cos($1) $2'
+
+	'Command tan':
+		'prefix': 'tan'
+		'body': '\\\\tan($1) $2'
+
+	'Command log':
+		'prefix': 'log'
+		'body': '\\\\log_${1:base}{$3} $4'
+
+	'Natural logarithm':
+		'prefix': 'natural log'
+		'body': '\\\\ln{$1} $2'
+
+	'Determinant':
+		'prefix': 'determinant'
+		'body': '\\\\det($1) $2'
+
+	'trace':
+		'prefix': 'trace'
+		'body': '\\\\tr($1) $2'
+
+	'Trace':
+		'prefix': 'Trace'
+		'body': '\\\\Tr($1) $2'
+
+	'Re':
+		'prefix': 're'
+		'body': '\\\\Re($1) $2'
+
+	'Im':
+		'prefix': 'im'
+		'body': '\\\\Im($1) $2'
+
+	'Inline Phase':
+		'prefix': 'phase'
+		'body': '\\\\exp(${1:2 \\\\pi} i $2) $3'
+
+	'Subscript index':
+		'prefix': 'un'
+		'body': '$1_{$2} $3'
+
+	'Apex index':
+		'prefix': 'up'
+		'body': '$1^{$2} $3'
+
+	'Color math':
+		'prefix': 'color math'
+		'body': '\\\\mathcolorbox{${1:color}}{$2}'
+
+	'qty t':
+		'prefix': 'qty t'
+		'body': '\\\\qty($1) $2'
+
+	'qty q':
+		'prefix': 'qty q'
+		'body': '\\\\qty[$1] $2'
+
+	'qty g':
+		'prefix': 'qty g'
+		'body': '\\\\qty{$1} $2'
+
+####################################
+	'g _mu _nu':
+		'prefix': 'gmunu__'
+		'body': 'g_{\\\\mu \\\\nu} $1'
+
+	'g ^mu ^nu':
+		'prefix': 'gmunu^^'
+		'body': 'g^{\\\\mu \\\\nu} $1'
+
+	'g ^mu _nu':
+		'prefix': 'gmunu^_'
+		'body': 'g^{\\\\mu}_{\\\\ \\\\nu} $1'
+
+	'Lambda ^ _':
+		'prefix': 'Lambda^_'
+		'body': '\\\\Lambda^{$1}_{\\\\ $2} $3'

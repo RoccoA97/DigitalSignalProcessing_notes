@@ -1,0 +1,325 @@
+\providecommand{\main}{../../main}
+\providecommand{\figpath}[1]{\main/../lessons/#1}
+\documentclass[../../main/main.tex]{subfiles}
+
+\newdate{date}{22}{10}{2020}
+
+
+\begin{document}
+
+\marginpar{ \textbf{Lecture 8.} \\  \displaydate{date}.}
+
+\section{Continuous-time Fourier transform}
+Let us start with the definition of this very important tool
+
+\begin{definition}{Fourier transform of a continuous-time signal}
+    The CTFT of a continuous-time signal \( x_{a}(t) \) is given by:
+    \begin{equation}
+        X_{a}(j\Omega)
+        =
+        \int_{-\infty}^{\infty} x_{a}(t) e^{-j\Omega t} \d{t}
+        \label{eq:L08_S03_1}
+    \end{equation}
+    often referred to as the Fourier spectrum or simply the spectrum of the continuous-time signal.
+\end{definition}
+
+\begin{definition}{Inverse Fourier transform of a continuous-time signal}
+    The inverse CTFT of a Fourier transform \( X_{a}(j\Omega) \) is given by:
+    \begin{equation}
+        x_{a}(t)
+        =
+        \frac{1}{2\pi} \int_{-\infty}^{\infty} X_{a}(j\Omega) e^{+j\Omega t} \d{\Omega}
+        \label{eq:L08_S04_1}
+    \end{equation}
+    often referred to as the Fourier integral.
+\end{definition}
+
+A CTFT pair will be denoted as:
+\begin{equation}
+    x_{a}(t)
+    \longleftrightarrow
+    X_{a}(j\Omega)
+    \label{eq:L08_S04_2}
+\end{equation}
+Note that \( \Omega \) is real and denotes the continuous-time angular frequency variable in radians. In general, the CTFT is a complex function of \( \Omega \) in the range \( -\infty < \Omega < \infty \). It can be expressed in the polar form as:
+\begin{equation}
+    X_{a}(j\Omega)
+    =
+    \abs{X_{a}(j\Omega)} e^{j\theta_{a}(\Omega)}
+    \label{eq:L08_S05_1}
+\end{equation}
+where \( \theta_{a}(\Omega) = \arg{X_{a}(j\Omega)} \). The quantity \( \abs{X_{a}(j\Omega)} \) is called the magnitude spectrum and the quantity \( \theta_{a}(\Omega) \) is called the phase spectrum. Both spectra are real function of \( \Omega \) and in general the CTFT \( X_{a}(j\Omega) \) exists if \( x_{a}(t) \) satisfies the Dirichlet conditions:
+\begin{itemize}
+    \item the signal \( x_a(t) \) has a finite number if discontinuities and a finite number of maxima and minima in any finite interval;
+    \item the signal is absolutely integrable, i.e.:
+    \begin{equation}
+        \int_{-\infty}^{\infty} \abs{x_{a}(t)} \d{t}
+        <
+        \infty
+        \label{eq:L08_S07_1}
+    \end{equation}
+\end{itemize}
+If the Dirichlet conditions are satisfied, then:
+\begin{equation}
+    \frac{1}{2\pi} \int_{-\infty}^{\infty} X_{a}(j\Omega) e^{+j\Omega t} \d{\Omega}
+    \label{eq:L08_S08_1}
+\end{equation}
+converges to \( x_{a}(t) \) except at values of \( t \) where \( x_{a}(t) \) has discontinuities. Moreover, it can be showed that if \( x_{a}(t) \) is absolutely integrable, then proving the existence of the CTFT reduces to proving:
+\begin{equation}
+    \abs{X_{a}(t\Omega)}
+    <
+    \infty
+    \label{eq:L08_S08_2}
+\end{equation}
+
+
+
+\subsection{Energy density spectrum}
+The total energy \( E_{x} \) of a finite energy continuous-time complex signal \( x_{a}(t) \) is given by:
+\begin{align}
+    E_{x}
+    &=
+        \int_{-\infty}^{\infty} \abs{x_{a}(t)}^2 \d{t}  \nonumber   \\
+    &=
+        \int_{-\infty}^{\infty} x_{a}(t) x^*_{a}(t) \d{t}   \nonumber   \\
+    &=
+        \int_{-\infty}^{\infty} x_{a}(t) \qty[\frac{1}{2\pi} \int_{-\infty}^{\infty} X_{a}^{*}(j\Omega) e^{-j\Omega t} \d{\Omega}] \d{t}
+\end{align}
+Interchanging the order of the integration we get:
+\begin{align}
+    E_{x}
+    &=
+        \frac{1}{2\pi} \int_{-\infty}^{\infty} X_{a}^{*}(j\Omega) \qty[\int_{-\infty}^{\infty} x_{a}(t) e^{-j\Omega t} \d{t}] \d{\Omega}    \nonumber   \\
+    &=
+        \frac{1}{2\pi} \int_{-\infty}^{\infty} X_{a}^{*}(j\Omega) X_{a}(j\Omega) \d{\Omega} \nonumber   \\
+    &=
+        \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{X_{a}(j\Omega)}^2 \d{\Omega}
+\end{align}
+Hence:
+\begin{equation}
+    \int_{-\infty}^{\infty} \abs{x(t)}^2 \d{t}
+    =
+    \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{X_{a}(j\Omega)}^2 \d{\Omega}
+    \label{eq:L08_S11_1}
+\end{equation}
+The above relation is more commonly known as the Parseval's relation for finite-energy continuous-time signals. The quantity \( \abs{X_{a}(j\Omega)}^2 \) is called the energy density spectrum of \( x_{a}(t) \) and it is usually denoted as:
+\begin{equation}
+    S_{xx}(\Omega)
+    =
+    \abs{X_{a}(j\Omega)}?2
+    \label{eq:L08_S12_1}
+\end{equation}
+The energy over a specified range of frequencies \( \Omega_a \le \Omega \le \Omega_{b} \) can be computed using:
+\begin{equation}
+    E_{x,r}
+    =
+    \frac{1}{2\pi} \int_{\Omega_a}^{\Omega_b} S_{xx}(\Omega) \d{\Omega}
+    \label{eq:L08_S12_2}
+\end{equation}
+
+
+
+\subsection{Band-limited continuous-time signals}
+A full-band, finite-energy, continuous-time signal has a spectrum occupying the whole frequency range \( -\infty \le \Omega \le \infty \). A band-limited continuous-time signal has a spectrum that is
+limited to a portion of the frequency range \( -\infty \le \Omega \le \infty \). An ideal band-limited signal has a spectrum that is zero outside a finite frequency range \( \Omega_{a} \le \abs{\Omega} \le \Omega_{b} \) can be computed using:
+\begin{equation}
+    X_{a}(j\Omega)
+    =
+    \begin{cases}
+        0   &   0 \le \abs{\Omega} < \Omega_{a} \\
+        0   &   \Omega_{b} < \abs{\Omega} < \infty
+    \end{cases}
+    \label{eq:L08_S14_1}
+\end{equation}
+However, an ideal band-limited signal cannot be generated in practice.
+
+Band-limited signals are classified according to the frequency range where most of the signal's is concentrated:
+\begin{itemize}
+    \item a lowpass, continuous-time signal has a spectrum occupying the frequency range \( 0 < \abs{\Omega} \le \Omega_{p} < \infty \), where \( \Omega_{p} \) is called the bandwidth of the signal;
+    \item a highpass, continuous-time signal has a spectrum occupying the frequency range \( 0 < \Omega_{p} \le \abs{\Omega} < \infty \), where the bandwidth of the signal is from \( \Omega_{p} \) to \( \infty \);
+    \item a bandpass, continuous-time signal has a spectrum occupying the frequency range \( 0 < \Omega_{L} \le \abs{\Omega} \le \Omega_{H} < \infty \), where \( \Omega_{H} - \Omega_{L} \) is the bandwidth.
+\end{itemize}
+
+
+
+\subsection{Discrete-time fourier transform}
+Let us introduce the definition of this concept.
+
+\begin{definition}{Discrete-time Fourier transform}{}
+    The discrete-time Fourier transform (DTFT) \( X(e^{j\omega}) \) of a sequence \( x[n] \) is given by:
+    \begin{equation}
+        X(e^{j\omega})
+        =
+        \sum_{n=-\infty}^{\infty} x[n] e^{-j\omega n}
+        \label{eq:L08_S17_1}
+    \end{equation}
+    where in general \( X(e^{j\omega}) \) is a complex function of the real variable \( \omega \) and can be written as:
+    \begin{equation}
+        X(e^{j\omega})
+        =
+        X_{\mathrm{re}}(e^{j\omega}) + j X_{\mathrm{im}}(e^{j\omega})
+        \label{eq:L08_S17_2}
+    \end{equation}
+\end{definition}
+
+\( X_{\mathrm{re}}(e^{j\omega}) \) and \( X_{\mathrm{im}}(e^{j\omega}) \) are  respectively, the real and imaginary parts of \( X(e^{j\omega}) \), and are real functions of \( \omega \). \( X(e^{j\omega}) \) can alternately be expressed as:
+\begin{equation}
+    X(e^{j\omega})
+    =
+    \abs{X(e^{j\omega})} e^{j\theta(\omega)}
+    \label{eq:L08_S18_1}
+\end{equation}
+where \( \theta(\omega) = \arg{X(e^{j\omega})} \). \( \abs{X(e^{j\omega})} \) and \( \arg{X(e^{j\omega})} \) are called respectively magnitude function and phase function. Both quantities are again real functions of \( \omega \). In many applications, the DTFT is called the Fourier spectrum. Likewise, \( \abs{X(e^{j\omega})} \) and \( \theta(\omega) \) are called respectively the magnitude and phase spectra.
+
+For a real sequence \( x[n] \), \( \abs{X(e^{j\omega})} \) and \( X_{\mathrm{re}}(e^{j\omega}) \) are even functions of \( \omega \), whereas, \( \theta(\omega) \) and \( X_{\mathrm{im}}(e^{j\omega}) \) are odd functions of \( \omega \).
+Note also that \( X(e^{j\omega}) = \abs{X(e^{j\omega})} e^{j\theta(\omega + 2\pi k)} = \abs{X(e^{j\omega})} e^{j\theta(\omega)} \) for any integer \( k \). The phase function \( \theta(\omega) \) cannot be uniquely specified for any DTFT.
+Unless otherwise stated, we shall assume that the phase function \( \theta(\omega) \) is restricted to the range of values \( -\pi \le \theta(\omega) < \pi \), called the principal value.
+
+\begin{example}{DTFT of the unit sample sequence}{}
+    The DTFT of the unit sample sequence \( \delta[n] \) is given by:
+    \begin{equation}
+        \Delta(e^{j\omega})
+        =
+        \sum_{n=-\infty}^{\infty} \delta[n] e^{-j\omega n}
+        =
+        \delta[0]
+        =
+        1
+        \label{eq:L08_S22_1}
+    \end{equation}
+\end{example}
+
+\begin{example}{DTFT of a causal sequence}{}
+    Consider the causal sequence:
+    \begin{equation}
+        x[n]
+        =
+        \alpha^{n} \mu[n],
+        \qquad
+        \abs{\alpha} < 1
+        \label{eq:L08_S22_2}
+    \end{equation}
+    Its DTFT is given by:
+    \begin{align}
+        X(e^{j\omega})
+        &=
+            \sum_{n=-\infty}^{\infty} \alpha^{n} \mu[n] e^{-j\omega n}  \nonumber   \\
+        &=
+            \sum_{n=0}^{\infty} \alpha^{n} e^{-j\omega n}  \nonumber   \\
+        &=
+            \sum_{n=0}^{\infty} \qty(\alpha e^{-j\omega})^{n}  \nonumber   \\
+        &=
+            \frac{1}{1 - \alpha e^{-j\omega}}
+    \end{align}
+    as \( \abs{\alpha e^{-j\omega}} = \abs{\alpha} < 1 \). If we take for example \( \alpha = 0.5 \), we get the plot below for the magnitude and phase of the DTFT.
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{\figpath{08}/08_images/S24_1.png}
+    \end{center}
+\end{example}
+
+The DTFT \( X(e^{j\omega}) \) of a sequence \( x[n] \) is a continuous function of \( \omega \). It is also a periodic function of \( \omega \) with a period \( 2\pi \):
+\begin{equation}
+    X\qty(e^{j(\omega + 2\pi k)})
+    =
+    \sum_{n=-\infty}^{\infty} x[n] e^{-j\omega n} e^{-j 2\pi kn}
+    =
+    \sum_{n=-\infty}^{\infty} x[n] e^{-j\omega n}
+    =
+    X(e^{j\omega})
+    \label{eq:L08_S25_1}
+\end{equation}
+Therefore:
+\begin{equation}
+    X(e^{j\omega})
+    =
+    \sum_{n=-\infty}^{\infty} x[n] e^{-j\omega n}
+    \label{eq:L08_S26_1}
+\end{equation}
+represents the Fourier series representation of the periodic function. As a result, the Fourier coefficients \( x[n] \) can be computed from \( X(e^{j\omega}) \) using the Fourier integral:
+\begin{equation}
+    x[n]
+    =
+    \frac{1}{2\pi} \int_{-\pi}^{\pi} X(e^{j\omega}) e^{j\omega n} \d{\omega}
+    \label{eq:L08_S26_2}
+\end{equation}
+\begin{proof}
+    Consider:
+    \begin{equation}
+        x[n]
+        =
+        \frac{1}{2\pi} \int_{-\pi}^{\pi} \qty(\sum_{\ell=-\infty}^{\infty} x[\ell] e^{-j\omega \ell}) e^{j\omega n} \d{\omega}
+        \label{eq:L08_S27_2}
+    \end{equation}
+    The order of integration and summation can be interchanged if the summation inside the brackets converges uniformly, i.e. \( X(e^{j\omega}) \) exists. Then:
+    \begin{align}
+        \frac{1}{2\pi} \int_{-\pi}^{\pi} \qty(\sum_{\ell=-\infty}^{\infty} x[\ell] e^{-j\omega \ell}) e^{j\omega n} \d{\omega}
+        &=
+            \sum_{\ell=-\infty}^{\infty} x[\ell] \qty(\frac{1}{2\pi} \int_{-\pi}^{\pi} e^{j\omega (n-\ell)} \d{\omega}) \nonumber   \\
+        &=
+            \sum_{\ell=-\infty}^{\infty} x[\ell] \frac{\sin\qty(\pi(n-\ell))}{\pi (n-\ell)} \nonumber   \\
+        &=
+            \sum_{\ell=-\infty}^{\infty} x[\ell] \delta[n-\ell] \nonumber   \\
+        &=
+            x[n]
+    \end{align}
+    For the convergence condition, an infinite series of the form:
+    \begin{equation}
+        X(e^{j\omega})
+        =
+        \sum_{n=-\infty}^{\infty} x[n] e^{-j\omega n}
+        \label{eq:L08_S30_1}
+    \end{equation}
+    may or may not converg. Therefore, let us consider:
+    \begin{equation}
+        X_{k}(e^{j\omega})
+        =
+        \sum_{n=-k}^{k} x[n] e^{-j\omega n}
+        \label{eq:L08_S30_2}
+    \end{equation}
+    Then for uniform convergence of \( X_{k}(e^{j\omega}) \):
+    \begin{equation}
+        \lim_{k \to \infty} X_{k}(e^{j\omega})
+        =
+        X(e^{j\omega})
+        \label{eq:L08_S31_1}
+    \end{equation}
+    Now, if \( x[n] \) is an absolutely summable sequence, i.e., if \( \sum_{n=-\infty}^{\infty} \abs{x[n]} < \infty \), then:
+    \begin{equation}
+        \abs{X(e^{j\omega})}
+        =
+        \abs{\sum_{n=-k}^{k} x[n] e^{-j\omega n}}
+        \le
+        \sum_{n=-k}^{k} \abs{x[n]}
+        <
+        \infty
+        \label{eq:L08_S32_1}
+    \end{equation}
+    for all values of \( \omega \). Thus, the absolute summability of \( x[n] \) is a sufficient condition for the existence of the DTFT \( X(e^{j\omega}) \).
+\end{proof}
+
+\begin{example}{Absolute summability condition}
+    The sequence \( x[n] = \alpha^{n} \mu[n] \) for \( \abs{\alpha} < 1 \) is  absolutely summable as:
+    \begin{equation}
+        \sum_{n=-k}^{k} \abs{\alpha^{n}} \mu[n]
+        =
+        \sum_{n=0}^{\infty} \abs{\alpha^{n}}
+        =
+        \frac{1}{1 - \abs{\alpha}}
+        <
+        \infty
+        \label{eq:L08_S33_1}
+    \end{equation}
+    and its DTFT \( X(e^{j\omega}) \) therefore converges to \( \frac{1}{1 - \alpha e^{j\omega}} \) uniformly.
+\end{example}
+
+Note that since:
+\begin{equation}
+    \sum_{n=-\infty}^{\infty} \abs{x[n]}^2
+    \le
+    \qty(\sum_{n=-\infty}^{\infty} \abs{x[n]})^2
+    \label{eq:L08_S33_1}
+\end{equation}
+an absolutely summable sequence has always a finite energy. However, a finite-energy sequence is not necessarily absolutely summable.
+
+\end{document}
