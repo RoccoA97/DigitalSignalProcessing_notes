@@ -1,0 +1,497 @@
+\providecommand{\main}{../../main}
+\providecommand{\figpath}[1]{\main/../lessons/#1}
+\documentclass[../../main/main.tex]{subfiles}
+
+\newdate{date}{27}{10}{2020}
+
+
+\begin{document}
+
+\marginpar{ \textbf{Lecture 9.} \\  \displaydate{date}.}
+
+\begin{example}{DTFT properties}{}
+    We determine the DTFT \( Y(e^{j\omega}) \) of:
+    \begin{equation}
+        y[n]
+        =
+        (n+1) \alpha^{n} \mu[n],
+        \qquad
+        \abs{\alpha} < 1
+        \label{eq:L09_S03_1}
+    \end{equation}
+    Let \( x[n] = \alpha^{n} \mu[n] \), with \( \alpha < 1 \). We can therefore write:
+    \begin{equation}
+        y[n]
+        =
+        nx[n] + x[n]
+        \label{eq:L09_S03_2}
+    \end{equation}
+    The DTFT of \( x[n] \) is given by:
+    \begin{equation}
+        X(e^{j\omega})
+        =
+        \frac{1}{1 - \alpha e^{-j\omega}}
+        \label{eq:L09_S03_3}
+    \end{equation}
+    Using the differentiation property of the DTFT, we observe that the DTFT of \( nx[n] \) is given by:
+    \begin{equation}
+        j \dv{X(e^{j\omega})}{\omega}
+        =
+        j
+        \dv{}{\omega} \qty(\frac{1}{1 - \alpha e^{-j\omega}})
+        =
+        \frac{\alpha e^{-j\omega}}{(1 - \alpha e^{-j\omega})^2}
+        \label{eq:L09_S04_1}
+    \end{equation}
+    Next, using thhe linearity property of the DTFT, we arrive at:
+    \begin{equation}
+        Y(e^{j\omega})
+        =
+        \frac{\alpha e^{-j\omega}}{(1 - \alpha e^{-j\omega})^2} + \frac{1}{1 - \alpha e^{-j\omega}}
+        =
+        \frac{1}{(1 - \alpha e^{-j\omega})^2}
+        \label{eq:L09_S04_2}
+    \end{equation}
+\end{example}
+
+\begin{example}{DTFT properties}{}
+    We determine the DTFT \( V(e^{j\omega}) \) of the sequence \( v[n] \), defined by:
+    \begin{equation}
+        d_{0}v[n] + d_{1}v[n-1]
+        =
+        p_{0}\delta[n] + p_{1}\delta[n-1]
+        \label{eq:L09_S05_1}
+    \end{equation}
+    The DTFT of \( \delta[n] \) is \( 1 \). Using the time-shifting property of the DTFT, we observe that the DTFT of \( \delta[n-1] \) is \( e^{-j\omega} \) and the DTFT of \( v[n-1] \) is \( e^{-j\omega} V(e^{j\omega}) \). Using the linearity property we then obtain the frequency-domain representation of \( d_{0}v[n] + d_{1}v[n-1] \) as:
+    \begin{equation}
+        d_{0}V(e^{j\omega}) + d_{1}e^{-j\omega}V(e^{j\omega})
+        =
+        p_{0} + p_{1}e^{-j\omega}
+        \label{eq:L09_S06_2}
+    \end{equation}
+    Solving the above equation we get:
+    \begin{equation}
+        V(e^{j\omega})
+        =
+        \frac{p_{0} + p_{1}e^{-j\omega}}{d_{0} + d_{1}e^{-j\omega}}
+        \label{eq:L09_S06_3}
+    \end{equation}
+\end{example}
+
+
+
+\subsection{Energy density spectrum}
+The total energy of a finite-energy sequence \( g[n] \) is given by:
+\begin{equation}
+    E_{g}
+    =
+    \sum_{n=-\infty}^{\infty} \abs{g[n]}^2
+    \label{eq:L09_S07_1}
+\end{equation}
+From Parseval's relation we observe that:
+\begin{equation}
+    E_{g}
+    =
+    \sum_{n=-\infty}^{\infty} \abs{g[n]}^2
+    =
+    \frac{1}{2\pi} \int_{-\pi}^{\pi} \abs{G(e^{j\omega})}^2 \d{\omega}
+    \label{eq:L09_S07_2}
+\end{equation}
+The quantity:
+\begin{equation}
+    S_{gg}(\omega)
+    =
+    \abs{G(e^{j\omega})}^2
+    \label{eq:L09_S08_1}
+\end{equation}
+is called the energy density spectrum. The area under this curve in the range \( -\pi \le \omega \le \pi \) divided by \( 2\pi \) is the energy of the sequence.
+
+
+
+\subsection{Band-limited discrete-time signals}
+Since the spectrum of a discrete-time signal is a periodic function of \( \omega \) with a period \( 2\pi \), a full-band signal has a spectrum occupying the frequency range \( -\pi \le \omega \le \pi \). A band-limited discrete-time signal has a spectrum that is limited to a portion of the frequency range \( -\pi \le \omega \le \pi \).
+
+An ideal band-limited signal has a spectrum that is zero outside a frequency range \( 0 < \omega_{a} \le \abs{\omega} \le \omega_{b} < \pi \), that is:
+\begin{equation}
+    X(e^{j\omega})
+    =
+    \begin{cases}
+        0   &   0 \le \abs{\omega} < \omega_{a} \\
+        0   &   \omega_{b} < \abs{\omega} < \pi
+    \end{cases}
+    \label{eq:L09_S10_1}
+\end{equation}
+However, an ideal band-limited discrete-time signal cannot be generated in practice.
+
+A classification of a band-limited discrete-time signal is based on the frequency range where most of the signal energy is concentrated. A lowpass discrete-time real signal has a spectrum occupying the frequency range \( 0 < \abs{\omega} \le \omega_{p} < \pi \) and has a bandwidth of \( \omega_{p} \).
+
+A highpass discrete-time real signal has a spectrum occupying the frequency range \( 0 < \omega_{p} \le \abs{\omega} < \pi \) and has a bandwidth of \( \pi - \omega_{p} \).
+
+A bandpass discrete-time real signal has a spectrum occupying the frequency range \( 0 < \omega_{L} \le \abs{\omega} \le \omega_{H} < \pi \) and has a bandwidth of \( \omega_{H} - \omega_{L} \).
+
+\begin{example}{Band-limited discrete-time signals}{}
+    Consider the sequence:
+    \begin{equation}
+        x[n]
+        =
+        (0.5)^{n} \mu[n]
+        \label{eq:L09_S13_1}
+    \end{equation}
+    The DTFT is:
+    \begin{equation}
+        X(e^{j\omega})
+        =
+        \frac{1}{1 - 0.5e^{-j\omega}}
+        \label{eq:L09_S13_2}
+    \end{equation}
+    and the magnitude spectrum is showed below.
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{\figpath{09}/09_images/S13_1.pdf}
+    \end{center}
+
+    It can be showed that 80\% of the energy of this lowpass signal is contained in the frequency range \( 0 \le \abs{\omega} \le 0.5081\pi \). Hence, we can define the 80\% bandwidth to be \( 0.5081\pi \) radians.
+\end{example}
+
+Returning to the energy density spectrum, we consider some other examples introducing also the concept of band-limited signals.
+
+\begin{example}{Energy density spectrum}{}
+    We compute the energy of the sequence:
+    \begin{equation}
+        h_{LP}[n]
+        =
+        \frac{\sin\qty(\omega_{c}n)}{\pi n},
+        \qquad -\infty < n < \infty
+        \label{eq:L09_S15_1}
+    \end{equation}
+    Here:
+    \begin{equation}
+        \sum_{n=-\infty}^{\infty} \abs{h_{LP}[n]}^2
+        =
+        \frac{1}{2\pi} \int_{-\pi}^{\pi} \abs{H_{LP}(e^{j\omega})}^2 \d{\omega}
+        \label{eq:L09_S15_2}
+    \end{equation}
+    where:
+    \begin{equation}
+        H_{LP}(e^{j\omega})
+        =
+        \begin{cases}
+            1   &   0 \le \abs{\omega} \le \omega_{c}   \\
+            0   &   \omega_{c} < \abs{\omega} \le \pi
+        \end{cases}
+        \label{eq:L09_S15_3}
+    \end{equation}
+    Therefore:
+    \begin{equation}
+        \sum_{n=-\infty}^{\infty} \abs{h_{LP}[n]}^2
+        =
+        \frac{1}{2\pi} \int_{-\omega_{c}}^{\omega_{c}} \d{\omega}
+        =
+        \frac{\omega_{c}}{\pi}
+        <
+        \infty
+        \label{eq:L09_S16_1}
+    \end{equation}
+    Hence, \( h_{LP}[n] \) is a finite-energy lowpass sequence.
+\end{example}
+
+
+
+
+
+\section{Linear convolution using DTFT}
+An important property of the DTFT is given by the convolution theorem. It states that if \( y[n] = x[n] * h[n] \), then the DTFT \( Y(e^{j\omega}) \) of \( y[n] \) is given by:
+\begin{equation}
+    Y(e^{j\omega})
+    =
+    X(e^{j\omega}) H(e^{j\omega})
+    \label{eq:L09_S17_1}
+\end{equation}
+An implication of this result is that the linear convolution \( y[n] \) of the sequences \( x[n] \) and \( h[n] \) can be performed as follows:
+\begin{itemize}
+    \item compute the DTFTs \( X(e^{j\omega}) \) and \( H(e^{j\omega}) \) of the sequences \( x[n] \) and \( h[n] \), respectively;
+    \item form the DTFT \( Y(e^{j\omega}) = X(e^{j\omega}) H(e^{j\omega}) \);
+    \item compute the IDFT \( y[n] \) of \( Y(e^{j\omega}) \).
+\end{itemize}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{09}/09_images/S18_1.pdf}
+    \caption{\label{fig:L09_S18_1} Scheme of the computation of linear convolution \( y[n] \) of the sequences \( x[n] \) and \( h[n] \).}
+\end{figure}
+
+Note that in numerical computation, when the computed phase function is outside the range \( [-\pi, \pi] \), the phase is computed modulo \( 2\pi \), to bring the computed value to this range. Thus, the phase functions of some sequences exhibit discontinuities of \( 2\pi \) radians in the plot. For example, there is a discontinuity of \( 2\pi \) at \( \omega = 0.72 \) in the phase response below:
+\begin{equation}
+    X(e^{j\omega})
+    =
+    \frac{0.008 - 0.033e^{-j\omega} + 0.05e^{-2j\omega} - 0.033e^{-3j\omega} + 0.008e^{-4j\omega}}{1 + 2.37e^{-j\omega} + 2.7e^{-2j\omega} + 1.6e^{-3j\omega} + 0.41e^{-4j\omega}}
+    \label{eq:L09_S20_1}
+\end{equation}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{09}/09_images/S20_1.pdf}
+    \caption{\label{fig:L09_S20_1} Discontinuity in the phase response of Eq. \ref{eq:L09_S20_1}.}
+\end{figure}
+
+In such cases, often an alternate type of phase function that is continuous function of \( \omega \) is derived from the original phase function by removing the discontinuities of \( 2\pi \). Process of discontinuity removal is called unwrapping the phase and the unwrapped phase function will be denoted as \( \theta_{c}(\omega) \).
+
+For example, the unwrapped phase function of the DTFT in Eq. \ref{eq:L09_S20_1} is showed in Figure \ref{fig:L09_S22_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{09}/09_images/S22_1.pdf}
+    \caption{\label{fig:L09_S22_1} Unwrapped phase function of Eq. \ref{eq:L09_S20_1}.}
+\end{figure}
+
+The conditions under which the phase function will be a continuous function of \( \omega \) is next derived. Now consider:
+\begin{equation}
+    \ln{X(e^{j\omega})}
+    =
+    \ln{\abs{X(e^{j\omega})}} + j\theta(\omega)
+    \label{eq:L09_S23_1}
+\end{equation}
+where:
+\begin{equation}
+    \theta(\omega)
+    =
+    \arg\qty{X(e^{j\omega})}
+    \label{eq:L09_S23_2}
+\end{equation}
+From \( \ln{X(e^{j\omega})} \) we can also compute \( \dv{\ln{X(e^{j\omega})}}{\omega} \):
+\begin{equation}
+    \dv{\ln{X(e^{j\omega})}}{\omega}
+    =
+    \dv{\ln{\abs{X(e^{j\omega})}}}{\omega} + j \dv{\theta(\omega)}{\omega}
+    \label{eq:L09_S25_1}
+\end{equation}
+Thus, \( \dv{\theta(\omega)}{\omega} \) is given by the imaginary part of:
+\begin{equation}
+    \frac{1}{X(e^{j\omega})}
+    \qty[
+    \dv{X_{\mathrm{re}}(e^{j\omega})}{\omega} + j \dv{X_{\mathrm{im}}(e^{j\omega})}{\omega}
+    ]
+    \label{eq:L09_S26_1}
+\end{equation}
+Hence:
+\begin{equation}
+    \dv{\theta(\omega)}{\omega}
+    =
+    \frac{1}{\abs{X(e^{j\omega})}^2}
+    \qty[
+    X_{\mathrm{re}}(e^{j\omega}) \dv{X_{\mathrm{im}}(e^{j\omega})}{\omega}
+    - X_{\mathrm{im}}(e^{j\omega}) \dv{X_{\mathrm{re}}(e^{j\omega})}{\omega}
+    ]
+    \label{eq:L09_S26_2}
+\end{equation}
+The phase function can thus be defined unequivocally by its derivative:
+\begin{equation}
+    \theta(\omega)
+    =
+    \int_{0}^{\omega} \qty[\dv{\theta(\eta)}{\eta}] \d{\eta}
+    \label{eq:L09_S27_1}
+\end{equation}
+with the constraint \( \theta(0) = 0 \).
+
+The phase function defined by Eq. \ref{eq:L09_S27_1} is called the unwrapped phase function of \( X(e^{j\omega}) \) and it is a continuous function of \( \omega \). Therefore, \( \ln{X(e^{j\omega})} \) exists.
+Moreover, the phase function will be an odd function of \( \omega \) if:
+\begin{equation}
+    \frac{1}{\pi} \int_{0}^{2\pi} \qty[\dv{\theta(\eta)}{\eta}] \d{\eta}
+    =
+    0
+    \label{eq:L09_S29_1}
+\end{equation}
+If the above constraint is not satisfied, then the computed phase function will exhibit absolute jumps greater than \( \pi \).
+
+
+
+
+
+\section{The frequency response}
+Most discrete-time signals encountered in practice can be represented as a linear combination of a very large, maybe infinite, number of sinusoidal discrete-time signals of different angular frequencies. Thus, knowing the response of the LTI system to a single sinusoidal signal, we can determine its response to more complicated signals by making use of the superposition property.
+
+An important property of an LTI system is that for certain types of input signals, called eigen functions, the output signal is the input signal multiplied by a complex constant. We consider here one such eigen function as the input.
+
+Consider the LTI discrete-time system with an impulse response \( \qty{h[n]} \). Its input-output relationship in the time-domain is given by the convolution sum:
+\begin{equation}
+    y[n]
+    =
+    \sum_{k=-\infty}^{\infty} h[k] x[n-k]
+    \label{eq:L09_S32_1}
+\end{equation}
+If the input is of the form:
+\begin{equation}
+    x[n]
+    =
+    e^{j\omega n},
+    \qquad
+    -\infty < n < \infty
+    \label{eq:L09_S33_1}
+\end{equation}
+then it follows that the output is given by:
+\begin{equation}
+    y[n]
+    =
+    \sum_{k=-\infty}^{\infty} h[k] x[n-k]
+    =
+    \qty( \sum_{k=-\infty}^{\infty} h[k]e^{-j\omega k} ) e^{j\omega n}
+    \label{eq:L09_S33_2}
+\end{equation}
+Now, let:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    \sum_{k=-\infty}^{\infty} h[k]e^{-j\omega k}
+    \label{eq:L09_S33_3}
+\end{equation}
+Then we can write:
+\begin{equation}
+    y[n]
+    =
+    H(e^{j\omega}) e^{j\omega n}
+    \label{eq:L09_S34_1}
+\end{equation}
+Thus for a complex exponential input signal \( e^{j\omega n} \), the output of an LTI discrete-time system is also a complex exponential signal of the same frequency multiplied by a complex constant \( H(e^{j\omega}) \). Thusm \( e^{j\omega n} \) is an eigen function of the system.
+
+The quantity \( H(e^{j\omega}) \) is called the frequency response of the LTI discrete-time system. \( H(e^{j\omega}) \) provides a frequency-domain description of the system and is precisely the DTFT of the impulse response \( \qty{h[n]} \) of the system.
+\( H(e^{j\omega}) \), in general, is a complex function of \( \omega \) with a period \( 2\pi \). It can be expressed in terms of its real and imaginary parts:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    H_{\mathrm{re}}(e^{j\omega}) + j H_{\mathrm{im}}(e^{j\omega})
+    \label{eq:L09_S36_1}
+\end{equation}
+or, in terms of its magnitude and phase:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    \abs{H(e^{j\omega})} e^{j\theta(\omega)}
+    \label{eq:L09_S36_2}
+\end{equation}
+where:
+\begin{equation}
+    \theta(\omega)
+    =
+    \arg\qty{H(e^{j\omega})}
+    \label{eq:L09_S36_3}
+\end{equation}
+
+The function \( \abs{H(e^{j\omega})} \) is called the magnitude response and the function \( \theta(\omega) \) is called the phase response of the LTI discrete-time system. Design specifications for the LTI discrete-time system, in many applications, are given in terms of the magnitude response or the phase response or both.
+
+In some cases, the magnitude function is specified in decibels as:
+\begin{equation}
+    g(\omega)
+    =
+    20 \log_{10} \abs{H(e^{j\omega})} \si{dB}
+    \label{eq:L09_S38_1}
+\end{equation}
+where \( G(\omega) \) is called the gain function. The negative of the gain function \( A(\omega) = - G(\omega) \) is called the attenuation or loss function.
+
+Note that magnitude and phase functions are real functions of \( \omega \), whereas the frequency response is a complex function of \( \omega \). If the impulse response \( h[n] \) is real then it follows that the magnitude function is an even function of \( \omega \):
+\begin{equation}
+    \abs{H(e^{j\omega})}
+    =
+    \abs{H(e^{-j\omega})}
+    \label{eq:L09_S39_1}
+\end{equation}
+and the phase function is an odd function od \( \omega \):
+\begin{equation}
+    \theta(\omega)
+    =
+    - \theta(-\omega)
+    \label{eq:L09_S39_2}
+\end{equation}
+Likewise, for a real impulse response \( h[n] \), \( H_{\mathrm{re}(e^{j\omega})} \) is even and \( H_{\mathrm{im}(e^{j\omega})} \) is odd.
+
+\begin{example}{M-point moving average filter}{}
+    Consider the \( M \)-point moving average filter with an impulse response given by:
+    \begin{equation}
+        h[n]
+        =
+        \begin{cases}
+            \frac{1}{M} &   0 \le n \le M-1 \\
+            0   &   \text{otherwise}
+        \end{cases}
+        \label{eq:L09_S40_1}
+    \end{equation}
+    Its frequency response is then given by:
+    \begin{equation}
+        H(e^{j\omega})
+        =
+        \frac{1}{M} \sum_{n=0}^{M-1} e^{-j\omega n}
+        \label{eq:L09_S40_2}
+    \end{equation}
+    Performing all the calculations:
+    \begin{align}
+        H(e^{j\omega})
+        &=
+            \frac{1}{M} \qty(\sum_{n=0}^{\infty} e^{-j\omega n}  -  \sum_{n=M}^{\infty} e^{-j\omega n})    \nonumber   \\
+        &=
+            \frac{1}{M} \qty(\sum_{n=0}^{\infty} e^{-j\omega n}) \qty(1 - e^{-jM\omega}) \nonumber   \\
+        &=
+            \frac{1}{M} \frac{1 - e^{-jM\omega}}{1 - e^{-j\omega}}  \nonumber   \\
+        &=
+            \frac{1}{M} \frac{\sin\qty(\frac{M\omega}{2})}{\sin\qty(\frac{\omega}{2})} e^{-j \frac{(M-1)\omega}{2}}
+    \end{align}
+    Thus, the magnitude response of the \( M \)-point moving average filter is given by:
+    \begin{equation}
+        \abs{H(e^{j\omega})}
+        =
+        \abs{\frac{1}{M} \frac{\sin\qty(\frac{M\omega}{2})}{\sin\qty(\frac{\omega}{2})}}
+        \label{eq:L09_S42_1}
+    \end{equation}
+    and the phase response is given by
+    \begin{equation}
+        \theta(\omega)
+        =
+        - \frac{(M-1)\omega}{2} + \pi  \sum_{k=1}^{\floor{\frac{M}{2}}} \mu\qty[\omega - \frac{2\pi k}{M}]
+        \label{eq:L09_S42_2}
+    \end{equation}
+\end{example}
+
+Note that the frequency response also determines the steady-state response of an LTI discrete-time system to a sinusoidal input.
+
+\begin{example}{Steady-state response}{}
+    We determine the steady-state output \( y[n] \) of a real coefficient LTI discrete-time system with a frequency response \( H(e^{j\omega}) \) for an input:
+    \begin{equation}
+        x[n]
+        =
+        A \cos\qty(\omega_{0}n + \varphi),
+        \qquad
+        -\infty < n < \infty
+        \label{eq:L09_S43_1}
+    \end{equation}
+    We can express the input \( x[n] \) as:
+    \begin{equation}
+        x[n]
+        =
+        g[n] + g^*[n]
+        \label{eq:L09_S44_1}
+    \end{equation}
+    where:
+    \begin{equation}
+        g[n]
+        =
+        \frac{1}{2} A e^{j \varphi} e^{j \omega_{0}n}
+        \label{eq:L09_S44_2}
+    \end{equation}
+    Now the output of the system for an input \( e^{j \omega_{0}n} \) is simply \( H(e^{j\omega_{0}}) e^{j\omega_{0}n} \).
+
+    Because of linearity, the response \( v[n] \) to an input \( g[n] \) is given by:
+    \begin{equation}
+        v[n]
+        =
+        \frac{1}{2} A e^{j \varphi} H(e^{j \omega_{0}}) e^{j\omega_{0}n}
+        \label{eq:L09_S45_1}
+    \end{equation}
+    Likewise, the output \( v^*[n] \) to the input \( g^*[n] \) is:
+    \begin{equation}
+        v^*[n]
+        =
+        \frac{1}{2} A e^{-j \varphi} H(e^{-j \omega_{0}}) e^{-j\omega_{0}n}
+        \label{eq:L09_S45_2}
+    \end{equation}
+    Combining the last two equations we get:
+\end{example}
+
+\end{document}
