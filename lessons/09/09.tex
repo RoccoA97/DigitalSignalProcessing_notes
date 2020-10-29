@@ -492,6 +492,237 @@ Note that the frequency response also determines the steady-state response of an
         \label{eq:L09_S45_2}
     \end{equation}
     Combining the last two equations we get:
+    \begin{align}
+        y[n]
+        &=
+            v[n] + v^{*}[n] \nonumber   \\
+        &=
+            \frac{1}{2} A e^{j \varphi} H(e^{j \omega_{0}}) e^{j\omega_{0}n} + \frac{1}{2} A e^{-j \varphi} H(e^{-j \omega_{0}}) e^{-j\omega_{0}n}  \nonumber   \\
+        &=
+            \frac{1}{2} A \abs{H(e^{j \omega_{0}})} \qty{e^{j \theta(\omega_{0})} e^{j \varphi} e^{j \omega_{0}n} + e^{-j \theta(\omega_{0})} e^{-j \varphi} e^{-j \omega_{0}n}}    \nonumber   \\
+        &=
+            A \abs{H(e^{j \omega_{0}})} \cos\qty(\omega_{0}n + \theta(\omega_{0}) + \varphi)
+    \end{align}
+    Thus, the output \( y[n] \) has the same sinusoidal waveform as the input with two differences:
+    \begin{itemize}
+        \item the amplitude is multiplied by \( \abs{H(e^{j \omega_{0}})} \), the value of the magnitude function at \( \omega = \omega_{0} \);
+        \item the output has a phase lag relative to the input by an amount \( \theta(\omega_{0}) \), the value of the phase function at \( \omega = \omega_{0} \).
+    \end{itemize}
+\end{example}
+
+The expression for the steady-state response developed earlier assumes that the system is initially relaxed before the application of the input \( x[n] \). In practice, excitation \( x[n] \) to a discrete-time system is usually a right-sided sequence applied at some sample index \( n = n_{0} \). Now, we develop the expression for the output for such an input.
+
+Without any loss of generality, assume \( x[n] = 0 \) for \( n < 0 \). From the input-output relation in Eq. \ref{eq:L09_S32_1}, we observe that for an input:
+\begin{equation}
+    x[n]
+    =
+    e^{j \omega n} \mu[n]
+    \label{eq:L09_S49_2}
+\end{equation}
+the output is given by:
+\begin{equation}
+    y[n]
+    =
+    \qty(\sum_{k=-\infty}^{\infty} h[k] e^{j \omega (n-k)}) \mu[n]
+    =
+    \qty(\sum_{k=-\infty}^{\infty} h[k] e^{-j \omega k}) e^{j \omega n} \mu[n]
+    \label{eq:L09_S49_3}
+\end{equation}
+The output for \( n < 0 \) is \( y[n] = 0 \), while for \( n \ge 0 \) it is given by:
+\begin{align}
+    y[n]
+    &=
+        \qty(\sum_{k=0}^{\infty} h[k] e^{-j \omega k}) e^{j \omega n} - \qty(\sum_{k=n+1}^{\infty} h[k] e^{-j \omega k}) e^{j \omega n} \nonumber   \\
+    &=
+        H(e^{j \omega}) e^{j \omega n} - \qty(\sum_{k=n+1}^{\infty} h[k] e^{-j \omega k}) e^{j \omega n}
+\end{align}
+The first term on the RHS is the same as that obtained when the input is applied at \( n = 0 \) to an initially relaxed system and it is the steady-state response:
+\begin{equation}
+    y_{\mathrm{sr}}[n]
+    =
+    H(e^{j \omega}) e^{j \omega n}
+    \label{eq:L09_S51_2}
+\end{equation}
+The second term on the RHS is called the transient response:
+\begin{equation}
+    y_{\mathrm{tr}}[n]
+    =
+    - \qty(\sum_{k=n+1}^{\infty} h[k] e^{-j \omega k}) e^{j \omega n}
+    \label{eq:L09_S52_1}
+\end{equation}
+To determine the effect of the above term on the total output response, we observe:
+\begin{equation}
+    \abs{y_{\mathrm{tr}}[n]}
+    =
+    \abs{\sum_{k=n+1}^{\infty} h[k] e^{-j \omega (k-n)}}
+    \le
+    \sum_{k=n+1}^{\infty} \abs{h[k]}
+    \le
+    \sum_{k=0}^{\infty} \abs{h[k]}
+    \label{eq:L09_S52_2}
+\end{equation}
+
+For a causal, stable LTI IIR discrete-time system, \( h[n] \) is absolutely summable. As a result, the transient response \( y_{\mathrm{tr}}[n] \) is a bounded sequence. Moreover, as \( n \to \infty \):
+\begin{equation}
+    \sum_{k=n+1}^{\infty} \abs{h[k]}
+    \to
+    0
+    \label{eq:L09_S53_1}
+\end{equation}
+and hence, the transient response decays to zero as \( n \) gets very large.
+
+For a causal FIR LTI discrete-time system with an impulse response \( h[n] \) of length \( N+1 \), \( h[n] = 0 \) for \( n > N \). Hence, \( y_{\mathrm{tr}}[n] = 0 \) for \( n > N-1 \). Here the output reaches the steady-state value \( y_{\mathrm{sr}}[n] = H(e^{j \omega}) e^{j \omega n} \) at \( n = N \).
+
+
+
+
+
+\section{The concept of filtering}
+One application of an LTI discrete-time system is to pass certain frequency components in an input sequence without any distortion (if possible) and to block other frequency components. Such systems are called digital filters and one of the main subjects of discussion in this course.
+
+The key to the filtering process is the Fourier transform
+\begin{equation}
+    x[n]
+    =
+    \frac{1}{2\pi} \int_{-\pi}^{\pi} H(e^{j \omega}) e^{j \omega n} \d{\omega}
+    \label{eq:L09_S56_1}
+\end{equation}
+It expresses an arbitrary input as a linear weighted sum of an infinite number of exponential sequences, or equivalently, as a linear weighted sum of sinusoidal sequences.
+Thus, by appropriately choosing the values of the magnitude function \( \abs{H(e^{j \omega})} \) of the LTI digital filter at frequencies corresponding to the frequencies of the sinusoidal components of the input, some of these components can be selectively heavily attenuated or filtered with respect to the others.
+
+To understand the mechanism behind the design of frequency-selective filters, consider a real-coefficient LTI discrete-time system characterized by a magnitude function:
+\begin{equation}
+    \abs{H(e^{j \omega})}
+    \approx
+    \begin{cases}
+        1   &   \abs{\omega} \le \omega_{c} \\
+        0   &   \omega_{c} < \abs{\omega} \le \pi
+    \end{cases}
+    \label{eq:L09_S58_1}
+\end{equation}
+We apply to the system an input:
+\begin{equation}
+    x[n]
+    =
+    A \cos\qty(\omega_{1}n) + B \cos\qty(\omega_{2}n),
+    \qquad
+    0 < \omega_{1} < \omega_{c} < \omega_{2} < \pi
+    \label{eq:L09_S59_1}
+\end{equation}
+Because of linearity, the output of this system is of the form:
+\begin{equation}
+    y[n]
+    =
+    A \abs{H(e^{j \omega_{1}})} \cos\qty(\omega_{1}n + \theta(\omega_{1})) +
+    B \abs{H(e^{j \omega_{2}})} \cos\qty(\omega_{2}n + \theta(\omega_{2}))
+    \label{eq:L09_S59_2}
+\end{equation}
+As \( \abs{H(e^{j \omega_{1}})} \approx 1 \) and \( \abs{H(e^{j \omega_{2}})} \approx 0 \), the output reduces to:
+\begin{equation}
+    y[n]
+    \approx
+    A \abs{H(e^{j \omega_{1}})} \cos\qty(\omega_{1}n + \theta(\omega_{1}))
+    \label{eq:L09_S60_2}
+\end{equation}
+Thus, the system acts like a lowpass filter.
+
+Now we consider an example of design of a very simple digital filter.
+
+\begin{example}{Design of a simple digital filter}{}
+    The input consists of a sum of two sinusoidal sequences of angular frequencies \( 0.1 \ \si{rad/sample} \) and \( 0.4 \ \si{rad/sample} \). We need to design a highpass filter that will pass the high-frequency component of the input but block the low-frequency component.
+
+    For simplicity, assume the filter to be an FIR filter of length 3 with an impulse response:
+    \begin{align}
+        h[0] &= h[2] = \alpha \\
+        h[1] &= \beta
+    \end{align}
+    The convolution sum description of this filter is then given by:
+    \begin{align}
+        y[n]
+        &=
+            h[0]x[n]  h[1]x[n-1] + h[2]x[n-2]   \nonumber   \\
+        &=
+            \alpha x[n] + \beta x[n-1] + \alpha x[n-2]
+    \end{align}
+    \( y[n] \) and \( x[n] \) are, respectively, the output and the input sequences.
+
+    The desiign objective is to choose suitable values of \( \alpha \) and \( \beta \) so that the output is a sinusoidal sequence with a frequency of \( 0.4 \ \si{rad/sample} \).
+
+    Now, the frequency response of the FIR filter is given by:
+    \begin{align}
+        H(e^{j \omega})
+        &=
+            h[0] + h[1]e^{-j \omega} + h[2]e^{-j 2 \omega}  \nonumber   \\
+        &=
+            \alpha (1 + e^{-j 2 \omega}) + \beta e^{-j \omega}  \nonumber   \\
+        &=
+            2 \alpha \qty(\frac{e^{j \omega} + e^{-j \omega}}{2})e^{-j \omega} + \beta e^{-j \omega}    \nonumber   \\
+        &=
+            (2 \alpha \cos\omega + \beta) e^{-j \omega}
+    \end{align}
+    The magnitude and phase functions are:
+    \begin{align}
+        \abs{H(e^{j \omega })} &= 2\alpha \cos\omega + \beta \\
+        \theta(\omega)  &=  - \omega
+    \end{align}
+    In order to block the low-frequency component, the magnitude function at \( \omega = 0.1 \) should be equal to zero. Likewise, to pass the high-frequency component, the magnitude function at \( \omega = 0.4 \) should be equal to one. Thus, the two conditions that must be satisfied are:
+    \begin{align}
+        \abs{H(e^{j 0.1})} &= 2\alpha \cos\qty(0.1) + \beta = 0 \\
+        \abs{H(e^{j 0.4})} &= 2\alpha \cos\qty(0.4) + \beta = 1
+    \end{align}
+    Solving the above two equations we get:
+    \begin{align}
+        \alpha &= -6.76195  \\
+        \beta  &= 13.456335 \\
+    \end{align}
+    Thus the output-input relation of the FIR filter is given by:
+    \begin{equation}
+        y[n]
+        =
+        -6.76195 \qty(x[n] + x[n-2]) + 13.456335 x[n-1]
+        \label{eq:L09_S66_1}
+    \end{equation}
+    where the input is:
+    \begin{equation}
+        x[n]
+        =
+        \qty{\cos\qty(0.1n) + \cos\qty(0.4n)} \mu[n]
+        \label{eq:L09_S66_2}
+    \end{equation}
+
+    A plot of the signals of interests is showed below.
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{\figpath{09}/09_images/S67_1.pdf}
+    \end{center}
+
+    The first seven samples of the output are showed below as well.
+
+    \begin{center}
+        \begin{tabular}{ccccc}
+            \toprule
+            \( n \) &   \( \cos\qty(0.1n) \)    &   \( \cos\qty(0.4n) \)    &   \( x[n] \)  &   \( y[n] \)  \\
+            \midrule
+            \( 0 \)   &  \( 1.0       \)  & \(  1.0       \)  &  \( 2.0       \)  & \( -13.52390   \)   \\
+            \( 1 \)   &  \( 0.9950041 \)  & \(  0.9210609 \)  &  \( 1.9160652 \)  & \(  13.956333  \)   \\
+            \( 2 \)   &  \( 0.9800665 \)  & \(  0.6967067 \)  &  \( 1.6767733 \)  & \(   0.9210616 \)   \\
+            \( 3 \)   &  \( 0.9553364 \)  & \(  0.3623577 \)  &  \( 1.3176942 \)  & \(   0.6967064 \)   \\
+            \( 4 \)   &  \( 0.9210609 \)  & \( -0.0291995 \)  &  \( 0.8918614 \)  & \(   0.3623572 \)   \\
+            \( 5 \)   &  \( 0.8775825 \)  & \( -0.4161468 \)  &  \( 0.4614357 \)  & \( - 0.0292002 \)   \\
+            \( 6 \)   &  \( 0.8253356 \)  & \( -0.7373937 \)  &  \( 0.0879419 \)  & \( - 0.4161467 \)   \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+
+    From this table, it can be seen that, neglecting the least significant digit:
+    \begin{equation}
+        y[n]
+        =
+        \cos\qty(0.4(n-1)),
+        \qquad
+        n \ge 2
+        \label{eq:L09_S69_1}
+    \end{equation}
+    Computation of the present value of the output requires the knowledge of the present and two previous input samples. Hence, the first two output samples, \( y[0] \) and \( y[1] \), are the result of assumed zero input sample values at \( n=-1 \) and \( n=-2 \). Therefore, first two output samples constitute the transient part of the output. Since the impulse response is of length 3, the steady-state is reached at \( n = N = 2 \). Note also that the output is delayed version of the high-frequency component \( \cos\qty(0.4n) \) of the input, and the delay is one sample period.
 \end{example}
 
 \end{document}
