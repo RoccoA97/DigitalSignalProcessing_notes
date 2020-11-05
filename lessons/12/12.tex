@@ -1,0 +1,482 @@
+\providecommand{\main}{../../main}
+\providecommand{\figpath}[1]{\main/../lessons/#1}
+\documentclass[../../main/main.tex]{subfiles}
+
+
+
+\begin{document}
+
+\newdate{date}{05}{11}{2020}
+\marginpar{ \textbf{Lecture 12.} \\  \displaydate{date}.}
+
+\section{Discrete Fourier Transform}
+We have discussed the DTFT for a discrete-time function given by:
+\begin{equation}
+    X(e^{j\omega})
+    =
+    \sum_{n=-\infty}^{\infty} x[n]e^{-j\omega n}
+    \label{eq:L12_S03_1}
+\end{equation}
+and the IDTFT:
+\begin{equation}
+    x[n]
+    =
+    \frac{1}{2\pi} \int_{-\pi}^{\pi} X(e^{j\omega}) e^{j\omega n} \d{\omega}
+    \label{eq:L12_S03_2}
+\end{equation}
+The pair and their properties and applications have some limitations. The input signal is usually aperiodic and may be finite in length.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{12}/12_images/S04_1.pdf}
+    \caption{\label{fig:L12_S04_1} In order from top to bottom, a finite-length signal, its magnitude spectrum, its phase spectrum.}
+\end{figure}
+
+Moreover, we often do not have an infinite amount of data which is required by DTFT. For example in a computer we cannot calculate uncountable infinite (continuum) of frequencies as required by DTFT. Thus, we use DTF to look at finite segment of data. We only observe the data through a window:
+\begin{align}
+    x_{0}[n] &= x[n]w_{R}[n]    \\
+    w_{R}[n] &=
+    \begin{cases}
+        1   &   n=0,1,\dots,N-1 \\
+        0   &   \text{otherwise}
+    \end{cases}
+\end{align}
+In this case, the \( x_{0}[n] \) is just a sampled data between \( n=0 \), \( n=N-1 \) (so, \( N \) points).
+
+The solution to our problems is given by the Discrete Fourier Transform (DFT).
+
+\begin{definition}{Discrete Fourier Transform (DFT)}{}
+    The simplest relation between a length-\( N \) sequence \( x[n] \), defined for \( 0 \le n \le N-1 \), and its DTFT \( X(e^{j\omega}) \) is obtained by uniformly sampling on the \( \omega \)-axis between \( 0 \le \omega \le 2\pi \) at \( \omega_{k} = \frac{2\pi k}{N} \), for \( 0 \le k \le N-1 \). From the definition of the DTFT we thus have:
+    \begin{equation}
+        X[k]
+        =
+        \qty[X(e^{j\omega})]_{\omega=\frac{2\pi k}{N}}
+        =
+        \sum_{n=0}^{N-1} x[n]e^{-j 2\pi k \frac{n}{N}}
+        \label{eq:L12_S06_1}
+    \end{equation}
+    Note that \( X[k] \) is also a length-\( N \) sequence in the frequency domain and it is called the Discrete Fourier Transform (DFT) of the sequence \( x[n] \). Using the notation \( W_{N} = e^{-j \frac{2\pi}{N}} \), the DFT is usually expressed as:
+    \begin{equation}
+        X[k]
+        =
+        \sum_{n=0}^{N-1} x[n] W_{N}^{kn},
+        \qquad
+        0 \le k \le N-1
+        \label{eq:L12_S07_1}
+    \end{equation}
+\end{definition}
+
+\begin{definition}{Inverse Discrete Fourier Transform (IDFT)}{}
+    The Inverse Discrete Fourier Transform (IDFT) is given by:
+    \begin{equation}
+        x[n]
+        =
+        \frac{1}{N} \sum_{k=0}^{N-1} X[k] W_{N}^{-kn},
+        \qquad
+        0 \le n \le N-1
+        \label{eq:L12_S08_1}
+    \end{equation}
+\end{definition}
+To verify the above expression we multiply both sides of the above equation by \( W_{N}^{\ell n} \) and sum the result from \( n=0 \) to \( n=N-1 \), resulting in:
+\begin{align}
+    \sum_{n=0}^{N-1} x[n] W_{N}^{\ell n}
+    &=
+        \sum_{n=0}^{N-1} \qty(\frac{1}{N} \sum_{k=0}^{N-1} X[k] W_{N}^{-kn}) W_{N}^{\ell n} \nonumber   \\
+    &=
+        \frac{1}{N} \sum_{n=0}^{N-1} \sum_{k=0}^{N-1} X[k] W_{N}^{-(k-\ell)n}   \nonumber   \\
+    &=
+        \frac{1}{N} \sum_{k=0}^{N-1} \sum_{n=0}^{N-1} X[k] W_{N}^{-(k-\ell)n}
+\end{align}
+Making use of the identity:
+\begin{equation}
+    \sum_{n=0}^{N-1} W_{N}^{-(k-\ell)n}
+    =
+    \begin{cases}
+        N   &   k-\ell = rN, \ n \in \mathbb{Z} \\
+        0   &   \text{otherwise}
+    \end{cases}
+    \label{eq:L12_S10_1}
+\end{equation}
+we observe that the right-hand-side of the last equation is equal to \( X[\ell] \). Hence:
+\begin{equation}
+    \sum_{n=0}^{N-1} x[n] W_{N}^{\ell n}
+    =
+    X[\ell]
+    \label{eq:L12_S10_2}
+\end{equation}
+
+\begin{example}{Discrete Fourier Transform}{}
+    Consider the length-\( N \) sequence:
+    \begin{equation}
+        x[n]
+        =
+        \begin{cases}
+            1   &   n=0 \\
+            0   &   1 \le n \le N-1
+        \end{cases}
+        \label{eq:L12_S11_1}
+    \end{equation}
+    Its \( N \)-point DFT is given by:
+    \begin{equation}
+        X[k]
+        =
+        \sum_{n=0}^{N-1} x[n] W_{N}^{kn}
+        =
+        x[0] W_{N}^{0}
+        =
+        1
+        \label{eq:L12_S11_2}
+    \end{equation}
+    with \( 0 \le k \le N-1 \).
+\end{example}
+
+\begin{example}{Discrete Fourier Transform}{}
+    Consider the length-\( N \) sequence:
+    \begin{equation}
+        y[n]
+        =
+        \begin{cases}
+            1   &   n=m \\
+            0   &   0 \le n \le m-1, \ m+1 \le n \le N-1
+        \end{cases}
+        \label{eq:L12_S12_1}
+    \end{equation}
+    Its \( N \)-point DFT is given by:
+    \begin{equation}
+        Y[k]
+        =
+        \sum_{n=0}^{N-1} y[n] W_{N}^{kn}
+        =
+        y[m] W_{N}^{km}
+        =
+        W_{N}^{km}
+        \label{eq:L12_S12_2}
+    \end{equation}
+    with \( 0 \le k \le N-1 \).
+\end{example}
+
+\begin{example}{Discrete Fourier Transform}{}
+    Consider the length-\( N \) sequence defined for \( 0 \le n \le N-1 \):
+    \begin{equation}
+        g[n]
+        =
+        \cos\qty(\frac{2\pi rn}{N}),
+        \qquad
+        0 \le r \le N-1
+        \label{eq:L12_S13_1}
+    \end{equation}
+    Using trigonometic identities, we can rewrite:
+    \begin{equation}
+        g[n]
+        =
+        \frac{1}{2} \qty(e^{j2\pi r \frac{n}{M}} + e^{-j2\pi r \frac{n}{N}})
+        =
+        \frac{1}{2} \qty(W_{N}^{-rn} + W_{N}^{rn})
+        \label{eq:L12_S13_2}
+    \end{equation}
+    The \( N \)-point DFT of \( g[n] \) is thus given by:
+    \begin{equation}
+        G[k]
+        =
+        \sum_{n=0}^{N-1} g[n] W_{N}^{kn}
+        =
+        \frac{1}{2} \qty(\sum_{n=0}^{N-1} W_{N}^{-(r-k)n} + \sum_{n=0}^{N-1} W_{N}^{(r+k)n} )
+        \label{eq:L12_S14_1}
+    \end{equation}
+    with \( 0 \le k \le N-1 \). Making use of the identity:
+    \begin{equation}
+        \sum_{n=0}^{N-1} W_{N}?{-(k-\ell)n}
+        =
+        \begin{cases}
+            N   &   k-\ell = rN, \ r \in \mathbb{Z} \\
+            0   &   \text{otherwise}
+        \end{cases}
+        \label{eq:L12_S15_1}
+    \end{equation}
+    we get:
+    \begin{equation}
+        \begin{cases}
+            \frac{N}{2} &   k=r \\
+            \frac{N}{2} &   k=N-r   \\
+            0   &   \text{otherwise}
+        \end{cases}
+        \label{eq:L12_S15_2}
+    \end{equation}
+    with \( 0 \le k \le N-1 \).
+\end{example}
+
+
+
+\subsection{Matrix relations}
+The DFT samples defined by:
+\begin{equation}
+    X[k]
+    =
+    \sum_{n=0}^{N-1} x[n] W_{N}^{kn},
+    \qquad
+    0 \le k \le N-1
+    \label{eq:L12_S16_1}
+\end{equation}
+can be expressed in matrix form as:
+\begin{equation}
+    \mathbf{X}
+    =
+    \mathbf{D}_{N} \mathbf{x}
+    \label{eq:L12_S16_2}
+\end{equation}
+where:
+\begin{align}
+    \mathbf{X} &= \qty[X[0] \ X[1] \ \dots \ X[N-1]]^{T}    \\
+    \mathbf{x} &= \qty[x[0] \ x[1] \ \dots \ x[N-1]]^{T}
+\end{align}
+and \( \mathbf{D}_{N} \) is the \( N \times N \) DFT matrix given by:
+\begin{equation}
+    \mathbf{D}_{N}
+    =
+    \begin{bmatrix}
+        1   &   1   &   1   &   \cdots & 1   \\
+        1   &   W_{N}^{1}   &   W_{N}^{2}   &   \cdots & W_{N}^{(N-1)}   \\
+        1   &   W_{N}^{2}   &   W_{N}^{4}   &   \cdots & W_{N}^{2(N-1)}   \\
+        \vdots  &   \vdots  &   \vdots  &   \ddots  &   \vdots  \\
+        1   &   W_{N}^{(N-1)}   &   W_{N}^{2(N-1)}   &   \cdots & W_{N}^{(N-1)^2}   \\
+    \end{bmatrix}
+    \label{eq:L12_S17_1}
+\end{equation}
+Likewise, the IDFT relation given by:
+\begin{equation}
+    x[n]
+    =
+    \frac{1}{N} \sum_{k=0}^{N-1} X[k] W_{N}^{-kn},
+    \qquad
+    0 \le n \le N-1
+    \label{eq:L12_S18_1}
+\end{equation}
+can be expressed in matrix form as:
+\begin{equation}
+    \mathbf{x}
+    =
+    \mathbf{D}_{N}^{-1} \mathbf{X}
+    \label{eq:L12_S18_2}
+\end{equation}
+where \( \mathbf{D}_{N}^{-1} \) is the \( N \times N \) IDFT matrix, given by:
+\begin{equation}
+    \mathbf{D}_{N}^{-1}
+    =
+    \begin{bmatrix}
+        1   &   1   &   1   &   \cdots & 1   \\
+        1   &   W_{N}^{-1}   &   W_{N}^{-2}   &   \cdots & W_{N}^{-(N-1)}   \\
+        1   &   W_{N}^{-2}   &   W_{N}^{-4}   &   \cdots & W_{N}^{-2(N-1)}   \\
+        \vdots  &   \vdots  &   \vdots  &   \ddots  &   \vdots  \\
+        1   &   W_{N}^{-(N-1)}   &   W_{N}^{-2(N-1)}   &   \cdots & W_{N}^{-(N-1)^2}   \\
+    \end{bmatrix}
+    =
+    \frac{1}{N} \mathbf{D}_{N}^{*}
+    \label{eq:L12_S19_1}
+\end{equation}
+
+
+
+\subsection{DTFT from DFT by interpolation}
+The \( N \)-point DFT \( X[k] \) of a length-\( N \) sequence \( x[n] \) is simply the frequency samples of its DTFT \( X(e^{j\omega}) \) evaluated at \( N \) uniformly spaced frequency points:
+\begin{equation}
+    \omega
+    =
+    \omega_{k}
+    =
+    \frac{2\pi k}{N},
+    \qquad
+    0 \le k \le N-1
+    \label{eq:L12_S20_1}
+\end{equation}
+Given the \( N \)-point DFT \( X[k] \) of a length-\( N \) sequence \( x[n] \), its DTFT \( X(e^{j\omega}) \) cane be uniquely determined from \( X[k] \). Thus:
+\begin{align}
+    X(e^{j\omega})
+    &=
+        \sum_{n=0}^{N-1} x[n] e^{-k\omega n}    \nonumber   \\
+    &=
+        \sum_{n=0}^{N-1} \qty[\frac{1}{N} \sum_{k=0}^{N-1} X[k]W_{N}^{-kn}] e^{-j\omega n}  \nonumber   \\
+    &=
+        \frac{1}{N} \sum_{k=0}^{N-1} X[k] \underbrace{\sum_{n=0}^{N-1} e^{-j\qty(\omega - \frac{2\pi k}{N})n}}_{S}
+\end{align}
+
+To develop a compact expression for the sum \( S \), let \( r = e^{-j\qty(\omega - \frac{2\pi k}{N})} \). Then:
+\begin{equation}
+    S
+    =
+    \sum_{n=0}^{N-1} r^{n}
+    \label{eq:L12_S22_1}
+\end{equation}
+From the above:
+\begin{align}
+    rS
+    &=
+        \sum_{n=1}^{N} r^{n} = 1 + \sum_{n=1}^{N-1} r^{n} r^{N} - 1 \nonumber   \\
+    &=
+        \sum_{n=0}^{N-1} r^{n} + r^{N} - 1 = S + r^{N} - 1
+\end{align}
+or, equivalently:
+\begin{equation}
+    S - rS
+    =
+    (1-r)S
+    =
+    1 - r^{N}
+    \label{eq:L12_S23_1}
+\end{equation}
+Hence:
+\begin{align}
+    S
+    &=
+        \frac{1-r^{N}}{1-r} \nonumber   \\
+    &=
+        \frac{1-e^{-j\qty(\omega n - 2\pi k)}}{1-e^{-j\qty(\omega - \frac{2\pi k}{N})}} \nonumber   \\
+    &=
+        \frac{\displaystyle\sin\qty(\frac{\omega N  2\pi k}{2})}{\displaystyle\sin\qty(\frac{\omega N - 2\pi k}{2N})} e^{-j \qty(\frac{\omega - 2\pi k}{N}) \qty(\frac{N-1}{2})}
+\end{align}
+Therefore:
+\begin{equation}
+    X(e^{j\omega})
+    =
+    \frac{1}{N} \sum_{k=0}^{N-1} X[k]
+    \frac{\displaystyle\sin\qty(\frac{\omega N  2\pi k}{2})}{\displaystyle\sin\qty(\frac{\omega N - 2\pi k}{2N})}
+    e^{-j \qty(\frac{\omega - 2\pi k}{N}) \qty(\frac{N-1}{2})}
+    \label{eq:L12_S24_1}
+\end{equation}
+
+
+
+\subsection{Sampling the DTFT}
+Consider a sequence \( x[n] \) with a DTFT \( X(e^{j\omega}) \). We sample \( X(e^{j\omega}) \) at \( N \) equally spaced points \( \omega_{k} = \frac{2\pi k}{N} \), \( 0 \le k \le N-1 \), developing the \( N \) frequency samples \( \qty{X(e^{j\omega_{k}})} \).
+These \( N \) frequency samples can be considered as an \( N \)-point DFT \( Y[k] \) whose \( N \)-point IDFT is a length-\( N \) sequence \( y[n] \). Now:
+\begin{equation}
+    X(e^{j\omega})
+    =
+    \sum_{\ell=-\infty}^{\infty} x[\ell] e^{-j\omega \ell}
+    \label{eq:L12_S26_1}
+\end{equation}
+Thus:
+\begin{equation}
+    Y[k]
+    =
+    X(e^{j\omega_{k}})
+    =
+    X(e^{j\frac{2\pi k}{N}})
+    =
+    \sum_{\ell=-\infty}^{\infty} x[\ell] e^{-j 2\pi k \frac{\ell}{N}}
+    =
+    \sum_{\ell=-\infty}^{\infty} x[\ell] W_{N}^{k\ell}
+    \label{eq:L12_S26_2}
+\end{equation}
+An IDFT of \( Y[k] \) yields:
+\begin{align}
+    y[n]
+    &=
+        \frac{1}{N} \sum_{k=0}^{N-1} Y[k] W_{N}^{-kn}   \nonumber   \\
+    &=
+        \frac{1}{N} \sum_{k=0}^{N-1} \sum_{\ell=-\infty}^{\infty} x[\ell] W_{N}^{k\ell} W_{N}^{-kn} \nonumber   \\
+    &=
+        \sum_{\ell=-\infty}^{\infty} x[\ell] \qty[\sum_{k=0}^{N-1} W_{N}^{-k(n-\ell)}]  \nonumber   \\
+    &=
+        \sum_{m=-\infty}^{\infty} x[n+mN]
+\end{align}
+with \( 0 \le n \le N-1 \), where in the last passage the identity in Eq. \ref{eq:L12_S15_1} is employed. Thus, \( y[n] \) is obtained from \( x[n] \) by adding an infinite number of shifted replicas of \( x[n] \), with each replica shifted by an integer multiple of \( N \) sampling instants, and observing the sum only for the interval \( 0 \le n \le N-1 \).
+
+To apply the last result to finite-length sequences, we assume that the samples outside the specified range are zeros. Thus, if \( x[n] \) is a length-\( M \) sequence with \( M \le N \), then \( y[n] = x[n] \) for \( 0 \le n \le N-1 \).
+If \( M > N \), there is a time-domain aliasing of samples of \( x[n] \) in generating \( y[n] \), and \( x[n] \) cannot be recovered from \( y[n] \).
+
+\begin{example}{Aliasing}{}
+    Let \( x[n] = \qty{0,1,2,3,4,5} \). By sampling its DTFT \( X(e^{j\omega}) \) at \( \omega_{k} = \frac{2\pi k}{4} \), with \( 0 \le k \le 3 \), and then applying a 4-point IDFT to these samples, we arrive at the sequence \( y[n] \) given by:
+    \begin{equation}
+        y[n]
+        =
+        x[n] + x[n+4] + x[n-4],
+        \qquad
+        0 \le n \le 3
+        \label{eq:L12_S30_2}
+    \end{equation}
+    We get \( y[n] = \qty{4,6,2,3} \). \( x[n] \) cannote be recovered from \( y[n] \).
+\end{example}
+
+
+
+\subsection{DFT properties}
+Like the DTFT, the DFT also satisfies a number of properties that are useful in signal processing applications. Some of these properties are essentially identical to those of the DTFT, while some others are somewhat different. A summary of the DFT properties are given in Figures \ref{fig:L12_S32_1}, \ref{fig:L12_S33_1} and \ref{fig:L12_S34_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{12}/12_images/S32_1.pdf}
+    \caption{\label{fig:L12_S32_1} Symmetry relations of DFT for a complex sequence \( x[n] \).}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{12}/12_images/S33_1.pdf}
+    \caption{\label{fig:L12_S33_1} Symmetry relations of DFT for a real sequence \( x[n] \).}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{12}/12_images/S34_1.pdf}
+    \caption{\label{fig:L12_S34_1} General properties of DFT.}
+\end{figure}
+
+\subsection{Circular shift of a sequence}
+This property is analogous to the time-shifting property of the DTFT but with a difference. COnsider length-\( N \) squences defined for \( 0 \le n \le N-1 \). Sample values of such sequences are equal to zero for values of \( n < 0 \) and \( n \ge N \).
+If \( x[n] \) is such a sequence, then for any arbitrary integer \( n_{0} \), the shifted sequence \( x_{1}[n] = x[n-n_{0}] \) is no longer defined for the range \( 0 \le n \le N-1 \). We thus need to define another type of shift that will always keep the shifted sequence in the range \( 0 \le n \le N-1 \).
+The desired shift, called the circular shift, is defined using a modulo operation:
+\begin{equation}
+    x_{c}[n]
+    =
+    x[\expval{n-n_{0}}_{N}]
+    \label{eq:L12_S37_1}
+\end{equation}
+For \( n_{0} > 0 \) (right circular shift), the above equation implies:
+\begin{equation}
+    x_{c}[n]
+    =
+    \begin{cases}
+        x[n-n_{0}]  &   n_{0} \le n \le N-1 \\
+        x[N-n_{0}+n]&   0 \le n \le n_{0}
+    \end{cases}
+    \label{eq:L12_S37_2}
+\end{equation}
+
+An illustration of the concept of circular shift is showed in Figure \ref{fig:L12_S38_1}. As it is possible to observe, a right circular shift by \( n_{0} \) is equivalent to a left circular shift by \( N - n_{0} \) sample periods. A circular shift by an integer number \( n_{0} \) greater than \( N \) is equivalent to a circular shift by \( \expval{n_{0}}_{N} \).
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{12}/12_images/S38_1.pdf}
+    \caption{\label{fig:L12_S38_1} Illustration of circular shift.}
+\end{figure}
+
+
+
+\subsection{Circular convolution}
+This operation is analogous to linear convolution, but with a difference. Consider two length-\( N \) sequences, \( g[n] \) and \( h[n] \), respectively. Their linear convolution results in a length-\( (2N-1) \) sequence \( y_{L}[n] \) given by:
+\begin{equation}
+    y_{L}[n]
+    =
+    \sum_{m=0}^{N-1} g[m]h[n-m],
+    \qquad
+    0 \le n \le 2N-2
+    \label{eq:L12_S40_1}
+\end{equation}
+In computing \( y_{L}[n] \) we have assumed that both length-\( N \) sequences have been zero-padded to extend their lengths to \( 2N - 1 \).
+The longer form of \( y_{L}[n] \) results from the time-reversal of the sequence \( h[n] \) and its linear shift to the right.
+The first nonzero value of \( y_{L}[n] \) is \( y_{L}[0] = g[0]h[0] \) and the last nonzero value is \( y_{L}[2N-2] = g[N-1]h[N-1] \).
+
+To develop a convolution-like operation resulting in a length-\( N \) sequence \( y_{C}[n] \), we need to define a circular time-reversal, and then apply a circular time-shift.
+Resulting operation, called a circular convolution, is defined by:
+\begin{equation}
+    y_{C}[n]
+    =
+    \sum_{m=0}^{N-1} g[m]h[\expval{n-m}_{N}],
+    \qquad
+    0 \le n \le N-1
+    \label{eq:L12_S42_1}
+\end{equation}
+Since the operation defined involves two length-\( N \) sequences, it is often referred to as an \( N \)-point circular convolution, denoted as:
+
+%TODO S43 -> 58
+
+\end{document}
