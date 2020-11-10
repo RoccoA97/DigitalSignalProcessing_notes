@@ -1,0 +1,397 @@
+\providecommand{\main}{../../main}
+\providecommand{\figpath}[1]{\main/../lessons/#1}
+\documentclass[../../main/main.tex]{subfiles}
+
+
+
+\begin{document}
+
+\newdate{date}{10}{11}{2020}
+\marginpar{ \textbf{Lecture 13.} \\  \displaydate{date}.}
+
+\subsection{DFT of real sequences}
+In most practical applications, sequences of interest are real. In such cases, the symmetry properties of the DFT can be exploited to make the DFT computations more efficient.
+
+Let \( g[n] \) and \( h[n] \) be two length-\( N \) real sequences with \( G[k] \) and \( H[k] \) denoting their respective \( N \)-point DFTs. These two \( N \)-point DFTs can be computed efficiently using a single \( N \)-point DFT. Now, define a complex length-\( N \) sequence:
+\begin{equation}
+    x[n]
+    =
+    g[n] + jh[n]
+    \label{eq:L13_S04_1}
+\end{equation}
+Hence, \( g[n] = \operatorname{Re}\qty{x[n]} \) and \( h[n] = \operatorname{Im}\qty{x[n]} \). Let \( X[k] \) denote the \( N \)-point DFT of \( x[n] \). Then, we arrive at:
+\begin{align}
+    G[k] &= \frac{1}{2} \qty{X[k] + X^{*}[\expval{-k}_{N}]} \\
+    H[k] &= \frac{1}{2j} \qty{X[k] - X^{*}[\expval{-k}_{N}]}
+\end{align}
+Note that for \( 0 \le k \le N-1 \):
+\begin{equation}
+    X^{*}[\expval{-k}_{N}]
+    =
+    X^{*}[\expval{N-k}_{N}]
+    \label{eq:L13_S05_3}
+\end{equation}
+
+\begin{example}{DFT of real sequences}{}
+    We compute the 4-point DFTs of the two real sequences \( g[n] \) and \( h[n] \):
+    \begin{align}
+        g[n] &= \qty{1,2,0,1}   \\
+        h[n] &= \qty{2,2,1,1}
+    \end{align}
+    Then \( x[n] = g[n] + jh[n] \) is given by:
+    \begin{equation}
+        x[n]
+        =
+        \qty{1+j2, 2+j2, 1+j}
+        \label{eq:L13_S06_3}
+    \end{equation}
+    Its DFT \( X[k] \) is:
+    \begin{equation}
+        \begin{bmatrix}
+            X[0]    \\
+            X[1]    \\
+            X[2]    \\
+            X[3]
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            1   &   1   &   1   &   1   \\
+            1   &   -j  &   -1  &   j   \\
+            1   &   -1  &   1   &   -1  \\
+            1   &   j   &   -1  &   -1
+        \end{bmatrix}
+        \begin{bmatrix}
+            1 + j2  \\
+            2 + j2  \\
+            j       \\
+            1 + j
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            4 + j6  \\
+            2       \\
+            -2      \\
+            j2
+        \end{bmatrix}
+        \label{eq:L13_S07_1}
+    \end{equation}
+    From the above:
+    \begin{equation}
+        X^{*}[k]
+        =
+        \qty[4-j6, 2, -2, -j2]
+        \label{eq:L13_S07_2}
+    \end{equation}
+    Hence:
+    \begin{equation}
+        X^{*}[\expval{4-k}_{4}]
+        =
+        \qty[4-j6, -j2, -2, 2]
+        \label{eq:L13_S07_3}
+    \end{equation}
+    Therefore:
+    \begin{align}
+        G[k] &= \qty[4,1-j,-2,1+j]  \\
+        H[k] &= \qty[6,1-j, 0,1+j]
+    \end{align}
+    verifying the results derived in Lecture 12
+\end{example}
+
+Now, let \( v[n] \) be a length-\( 2N \) real sequence with a \( 2N \)-point DFT \( V[k] \). Define two length-\( N \) real sequences \( g[n] \) and \( h[n] \) as follows. Let \( G[k] \) and \( H[k] \) denote their respective \( N \)-point DFTs:
+\begin{equation}
+    \begin{cases}
+        g[n] = v[2n]    \\
+        h[n] = v[2n+1]
+    \end{cases}
+    \qquad
+    0 \le n \le N
+    \label{eq:L13_S09_3}
+\end{equation}
+We define a length-\( N \) complex sequence \( x[n] = g[n] + jh[n] \) with an \( N \)-point DFT \( X[k] \). Then, as showed earlier:
+\begin{align}
+    G[k] &= \frac{1}{2} \qty{X[k] + X^{*}[\expval{-k}_{N}]} \\
+    H[k] &= \frac{1}{2j} \qty{X[k] - X^{*}[\expval{-k}_{N}]}
+\end{align}
+Now, for \( 0 \le k \le 2N-1 \):
+\begin{align}
+    V[k]
+    &=
+        \sum_{n=0}^{2N-1} v[n] W_{2N}^{nk}  \nonumber   \\
+    &=
+        \sum_{n=0}^{N-1} v[2n] W_{2N}^{2nk} + \sum_{n=0}^{N-1} v[2n+1] W_{2N}^{(2n+1)k} \nonumber   \\
+    &=
+        \sum_{n=0}^{N-1} g[n] W_{N}^{nk} + \sum_{n=0}^{N-1} W_{N}^{nk} W_{2N}^{k}   \nonumber   \\
+    &=
+        \sum_{n=0}^{N-1} g[n] W_{N}^{nk} + W_{2N}^{k} \sum_{n=0}^{N-1} h[n] W_{N}^{nk}  \nonumber   \\
+    &=
+        G[\expval{k}_{N}] + W_{2N}^{k} H[\expval{k}_{N}]
+\end{align}
+
+\begin{example}{DFT of real sequences}{}
+    Let us determine the 8-point DFT \( V[k] \) of the length-8 real sequence:
+    \begin{equation}
+        v[n]
+        =
+        \qty{1,2,2,2,0,1,1,1}
+        \label{eq:L13_S12_1}
+    \end{equation}
+    We form two length-4 real sequences as follows:
+    \begin{align}
+        g[n] &= v[2n] = \qty{1,2,0,1}   \\
+        h[n] &= v[2n+1] = \qty{2,2,1,1}
+    \end{align}
+    Now:
+    \begin{equation}
+        V[k]
+        =
+        G[\expval{k}_{4}] + W_{8}^{k} H[\expval{k}_{4}]
+        \qquad
+        0 \le k \le 7
+        \label{eq:L13_S13_1}
+    \end{equation}
+    Substituting the values of of the 4-point DFTs \( G[k] \) and \( H[k] \) computed earlier, we get:
+    \begin{align}
+        V[0] &= G[0] +           H[0] = 4 + 6 = 10  \\
+        V[1] &= G[1] + W_{1}^{0} H[1] = (1-j) + e^{-j \frac{\pi}{4}}(1-j) = 1 - j2.4142  \\
+        V[2] &= G[2] + W_{2}^{0} H[2] = -2 + e^{-j\frac{3\pi}{4}} \cdot 0 = -2  \\
+        V[3] &= G[3] + W_{3}^{0} H[3] = (1+j) + e^{-j \frac{3\pi}{4}}(1+j) = 1 - j0.4142 \\
+        V[4] &= G[0] + W_{4}^{0} H[0] = 4 + e^{-j\pi} \cdot 6 = -2   \\
+        V[5] &= G[1] + W_{5}^{0} H[1] = (1-j) + e^{-j \frac{5\pi}{4}}(1-j) = 1 + j0.4142    \\
+        V[6] &= G[2] + W_{6}^{0} H[2] = -2 + e^{-j\frac{3\pi}{2}} \cdot 0 = -2  \\
+        V[7] &= G[3] + W_{7}^{0} H[3] = (1+j) + e^{-j \frac{7\pi}{4}}(1+j) = 1 + j2.4142
+    \end{align}
+\end{example}
+
+
+
+
+\section{Linear convolution using the DFT}
+Linear convolution is a key operation in many signal processing applications. Since a DFT can be efficiently implemented using FFT algorithms, it is of interest to develop methods for the implementation of linear convolution using the DFT.
+
+Let \( g[n] \) and \( h[n] \) be two finite-length sequences of length \( N \) and \( M \), respectively. Moreover, we denote with \( L = N + M + 1 \). Then, we define two length-\( L \) sequences:
+\begin{align}
+    g_{e}[n]
+    &=
+        \begin{cases}
+            g[n]    &   0 \le n \le N-1 \\
+            0       &   N \le n \le L-1
+        \end{cases} \\
+    h_{e}[n]
+    &=
+        \begin{cases}
+            h[n]    &   0 \le n \le M-1 \\
+            0       &   M \le n \le L-1
+        \end{cases}
+\end{align}
+Then:
+\begin{equation}
+    y_{L}[n]
+    =
+    g[n] * h[n]
+    =
+    y_{C}[n]
+    =
+    g_{e}[n] \overset{\mathrm{L}}{*} h_{e}[n]
+    \label{eq:L13_S17_1}
+\end{equation}
+The corresponding implementation scheme is illustrated in Figure \ref{fig:L13_S17_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{13}/13_images/S17_1.pdf}
+    \caption{\label{fig:L13_S17_1} Scheme of linear convolution of two finite-length sequences.}
+\end{figure}
+
+We next consider the DFT-based implementation of:
+\begin{equation}
+    y[n]
+    =
+    \sum_{\ell=0}^{M-1} h[\ell] x[n-\ell]
+    =
+    h[n] * x[n]
+    \label{eq:L13_S18_1}
+\end{equation}
+where \( h[n] \) is a finite-length sequence of length \( M \) and \( x[n] \) is an infinite length (or a finite length sequence of length much greater that \( M \)).
+We first segment \( x[n] \), assumed to be a causal sequence here without any loss of generality, into a set of contiguous finite-length subsequences \( x_{m}[n] \) of length \( N \) each:
+\begin{equation}
+    x[n]
+    =
+    \sum_{m=0}^{\infty} x_{m}[n-mN]
+    \label{eq:L13_S19_1}
+\end{equation}
+where:
+\begin{equation}
+    x_{m}[n]
+    =
+    \begin{cases}
+        x[n+mN] &   0 \le n \le N-1 \\
+        0       &   \text{otherwise}
+    \end{cases}
+    \label{eq:L13_S19_2}
+\end{equation}
+Thus, we can write:
+\begin{equation}
+    y[n]
+    =
+    h[n] * x[n]
+    =
+    \sum_{m=0}^{\infty} y_{m}[n-mN]
+    \label{eq:L13_S20_1}
+\end{equation}
+where:
+\begin{equation}
+    y_{m}
+    =
+    h[n] * x_{m}[n]
+    \label{eq:L13_S20_2}
+\end{equation}
+Since \( h[n] \) is of length \( M \) and \( x_{m}[n] \) is of length \( N \), the linear convolution \( h[n] * x_{m}[n] \) is of length \( N + M - 1 \).
+
+As a result, the desired linear convolution \( y[n] = h[n] * x[n] \) has been broken up into a sum of infinite numbers of short-length linear convolutions of length \( N + M - 1 \) each:
+\begin{equation}
+    y_{m}[n]
+    =
+    h[n] * x_{m}[n]
+    \label{eq:L13_S21_1}
+\end{equation}
+Each of these short convolutions can be implemented using the DFT-based method discussed earlier, where now the DFTs (and the IDFT) are computed on the basis of \( N + M - 1 \) points.
+
+There is one more subtlety to take care of before we can implement:
+\begin{equation}
+    y[n]
+    =
+    \sum_{m=0}^{\infty} y_{m}[n-mN]
+    \label{eq:L13_S22_1}
+\end{equation}
+using the DFT-based approach. Now the first convolution in Eq. \ref{eq:L13_S22_1}, namely \( y_{0} = h[n] * x_{0}[n] \), is of length \( N + M - 1 \) abd us defined for \( 0 \le n \le N + M - 2 \).
+The second short convolution, namely \( y_{1}[n] = h[n] * x_{1}[n] \), is also of length \( N + M - 1 \) but it is deined for \( N \le n \le 2N + M - 2 \). There is an overlap of \( M - 1 \) samples between these two short linear convolutions.
+Likewisem the third short convolution, namely \( y_{2}[n] = h[n] * x_{2}[n] \), is also of length \( N + M - 1 \) but is defined for \( 2N \le b \le 3N + M -2 \). Thus, there is an overlap of \( M - 1 \) samples between \( h[n] * x_{1}[n] \) and \( h[n] * x_{2}[n] \).
+
+In general, there will be an overlap of \( M - 1 \) samples between the samples of the short convolutions \( h[n] * x_{r-1}[n] \) and \( h[n] * x_{r}[n] \) for \( (r-1)N \le n \le rN + M - 1 \). This process is illustrated in Figures \ref{fig:L13_S25_1} and \ref{fig:L13_S26_1} for \( M = 5 \) and \( N = 7 \).
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{13}/13_images/S25_1.pdf}
+    \caption{\label{fig:L13_S25_1} Overlap-add method for \( M=5 \) and \( N=7 \).}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{13}/13_images/S26_1.pdf}
+    \caption{\label{fig:L13_S26_1} Overlap-add method for \( M=5 \) and \( N=7 \).}
+\end{figure}
+
+Therefore, \( y[n] \) obtained by a linear convolution of \( x[n] \) and \( h[n] \) is given by:
+\begin{align}
+    y[n] &= y_{0}[n]                 &   0 \le n \le 6   \\
+    y[n] &= y_{0}[n] + y_{1}[n-7]    &   7 \le n \le 10  \\
+    y[n] &= y_{1}[n-7]               &   11 \le n \le 13 \\
+    y[n] &= y_{1}[n-7] + y_{2}[n-14] &   14 \le n \le 17 \\
+    y[n] &= y_{2}[n-14]              &   18 \le n \le 20 \\
+    \vdots &                         &   \vdots \nonumber
+\end{align}
+
+The above procedure is called the overlap-add method since the results of the short linear convolutions overlap and the overlapped portions are added to get the correct final result.
+
+In implementing the overlap-add method using the DFT, we need to compute two \( (N+ M - 1) \)-point DFTs and one \( (N + M - 1) \)-point IDFT since the overall linear convolution was expressed as a sum of short-length linear convolutions of length \( N + M - 1 \) each. It is possible to implement the overall linear convolution by performing instead circular convolution of length shorter than \( N + M - 1 \).
+To this end, it is necessary to segment \( x[n] \) into overlapping blocks \( x_{m}[n] \), keep the terms of the circular convolution of \( h[n] \) with \( x_{m}[n] \) that corresponds to the terms obtained by a linear convolution of \( h[n] \) and \( x_{m}[n] \), and throw away the other parts of the circular convolution.
+
+To understand the correspondence between the linear and circular convolutions, consider a length-4 sequence \( x[n] \) and a length-3 sequence \( h[n] \). Let \( y_{L}[n] \) denote the result of a linear convolution of \( x[n] \) with \( h[n] \). The six samples of \( y_{L}[n] \) are given by:
+\begin{align}
+    y_{L}[0] &= h[0]x[0]    \\
+    y_{L}[1] &= h[0]x[1] + h[1]x[0] \\
+    y_{L}[2] &= h[0]x[2] + h[1]x[1] + h[2]x[0]  \\
+    y_{L}[3] &= h[0]x[3] + h[1]x[2] + h[2]x[1]  \\
+    y_{L}[4] &= h[1]x[3] + h[2]x[2] \\
+    y_{L}[5] &= h[2]x[3]
+\end{align}
+If we append \( h[n] \) with a single zero-valued sample and convert it into a length-4 sequence \( h_{e}[n] \), the 4-point circular convolution \( y_{C}[n] \) of \( h_{e}[n] \) and \( x[n] \) is given by:
+\begin{align}
+    y_{C}[0] &= h[0]x[0] + h[1]x[3] + h[2]x[2]  \\
+    y_{C}[1] &= h[0]x[1] + h[1]x[0] + h[2]x[3]  \\
+    y_{C}[2] &= h[0]x[2] + h[1]x[1] + h[2]x[0]  \\
+    y_{C}[3] &= h[0]x[3] + h[1]x[2] + h[2]x[1]
+\end{align}
+If we compare the expressions for the samples of \( y_{L}[n] \) with the samples of \( y_{C}[n] \), we observe that the first 2 terms of \( y_{C}[n] \) do not correspond to the first 2 terms of \( y_{L}[n] \), whereas the last 2 terms of \( y_{C}[n] \) are precisely the same as the third and the forth terms of \( y_{L}[n] \).
+
+In general, if we consider the \( N \)-point circular convolution of a length-\( M \) sequence \( h[n] \) with a length-\( N \) sequence \( x[n] \) with \( N > M \), the first \( M - 1 \) samples of the circular convolution are incorrect and are rejected. The remaining \( N - M + 1 \) samples correspond to the correct samples of the linear convolution of \( h[n] \) with \( x[n] \).
+
+Now we consider an infinitely long or very long sequence \( x[n] \). We break it up as a collection of smaller length (length-4) overlapping sequences \( x_{m}[n] \) as \( x_{m}[n] = x[n+2m] \), with \( 0 \le n \le 3 \), \( 0 \le m \le \infty \). Next, we form:
+\begin{equation}
+    w_{m}[n]
+    =
+    h[n] \overset{4}{*} x_{m}[n]
+    \label{eq:L13_S35_1}
+\end{equation}
+or, equivalently
+\begin{align}
+    w_{m}[0] &= h[0]x_{m}[0] + h[1]x_{m}[3] + h[2]x_{m}[2]  \\
+    w_{m}[1] &= h[0]x_{m}[1] + h[1]x_{m}[0] + h[2]x_{m}[3]  \\
+    w_{m}[2] &= h[0]x_{m}[2] + h[1]x_{m}[1] + h[2]x_{m}[0]  \\
+    w_{m}[3] &= h[0]x_{m}[3] + h[1]x_{m}[2] + h[2]x_{m}[1]
+\end{align}
+Computing the above for \( m = 0, 1, 2, 3, \dots \), and substituting the values of \( x_{m}[n] \), we arrive at:
+\begin{align*}
+    w_{0}[0] &= h[0]x[0] + h[1]x[3] + h[2]x[2]          &   \leftarrow \text{Reject}  \\
+    w_{0}[1] &= h[0]x[1] + h[1]x[0] + h[2]x[3]          &   \leftarrow \text{Reject} \\
+    w_{0}[2] &= h[0]x[2] + h[1]x[1] + h[2]x[0] = y[2]   &   \leftarrow \text{Save}  \\
+    w_{0}[3] &= h[0]x[3] + h[1]x[2] + h[2]x[1] = y[3]   &   \leftarrow \text{Save}  \\
+    w_{1}[0] &= h[0]x[2] + h[1]x[5] + h[2]x[4]          &   \leftarrow \text{Reject}  \\
+    w_{1}[1] &= h[0]x[3] + h[1]x[2] + h[2]x[5]          &   \leftarrow \text{Reject} \\
+    w_{1}[2] &= h[0]x[4] + h[1]x[3] + h[2]x[2] = y[4]   &   \leftarrow \text{Save}  \\
+    w_{1}[3] &= h[0]x[5] + h[1]x[4] + h[2]x[3] = y[5]   &   \leftarrow \text{Save}  \\
+    w_{2}[0] &= h[0]x[4] + h[1]x[5] + h[2]x[6]          &   \leftarrow \text{Reject}  \\
+    w_{2}[1] &= h[0]x[5] + h[1]x[4] + h[2]x[7]          &   \leftarrow \text{Reject} \\
+    w_{2}[2] &= h[0]x[6] + h[1]x[5] + h[2]x[4] = y[6]   &   \leftarrow \text{Save}  \\
+    w_{2}[3] &= h[0]x[7] + h[1]x[6] + h[2]x[5] = y[7]   &   \leftarrow \text{Save}
+\end{align*}
+It should be noted that tho determine \( y[0] \) and \( y[1] \) we need to form \( x_{-1}[n] \), setting \( x_{-1}[0] = x_{-1}[1] = 0 \), \( x_{-1}[2] = x[0] \), \( x_{-1}[3] = x[1] \), and compute:
+\begin{equation}
+    w_{-1}[n]
+    =
+    h[n] \overset{4}{*} x_{-1}[n]
+    \qquad
+    0 \le n \le 3
+    \label{eq:L13_S39_2}
+\end{equation}
+then reject \( w_{-1}[0] \) and \( w_{-1}[1] \), and save \( w_{-1}[2] = y[0] \) and \( w_{-1}[3] = y[1] \).
+
+In general, let \( h[n] \) be a length-\( N \) sequence. Let \( x_{m}[n] \) denote the \( m^{\text{th}} \) section of an infinitely long sequence \( x[n] \) of length \( N \) and defined by:
+\begin{equation}
+    x_{m}[n]
+    =
+    x[n + m(N -m + 1)]
+    \qquad
+    0 \le n \le N-1
+    \label{eq:L13_S40_1}
+\end{equation}
+with \( M < N \). Let \( w_{m}[n] = h[n] \overset{N}{*} x_{m}[n] \). Then, we reject the first \( M - 1 \) samples of \( w_{m}[n] \) and ``about'' the remaining \( M - M + 1 \) samples of \( w_{m}[n] \) to form \( y_{L}[n] \), namely the linear convolution of \( h[n] \) and \( x[n] \).
+If \( y_{m}[n] \) denotes the saved portion of \( w_{m}[n] \), i.e.:
+\begin{equation}
+    y_{m}[n]
+    =
+    \begin{cases}0
+        0   &   0 \le n \le M-2 \\
+        w_{m}[n]    &   M-1 \le n \le N-2
+    \end{cases}
+    \label{eq:L13_S41_1}
+\end{equation}
+then:
+\begin{equation}
+    y_{L}[n + m(N-M+1)]
+    =
+    y_{m}[n]
+    \qquad
+    M-1 \le n \le N-1
+    \label{eq:L13_S42_1}
+\end{equation}
+The approach is called overlap-save method since the input is segmented into overlapping sections and parts of the results of the circular convolutions are saved and abutted to determine the linear convolution result. The process is illustrated in Figure \ref{fig:L13_S43_S44_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[height=0.35\textwidth]{\figpath{13}/13_images/S43_1.pdf}
+    \includegraphics[height=0.35\textwidth]{\figpath{13}/13_images/S44_1.pdf}
+    \caption{\label{fig:L13_S43_S44_1} Illustration of the overlap-save method.}
+\end{figure}
+
+\end{document}
