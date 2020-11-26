@@ -352,7 +352,255 @@ An \( M^{\text{th}} \) order causal real-coefficient allpass transfer function i
     \label{eq:L17_S44_2}
 \end{equation}
 If we denote the denominator polynomials of \( A_{M}(z) \) as \( D_{M}(z) \):
+\begin{equation}
+    D_{M}(z)
+    =
+    1 + d_{1}z^{-1} + \dots + d_{M-1}z^{-M+1} + d_{M}z^{-M}
+    \label{eq:L17_S45_1}
+\end{equation}
+then it follows that \( A_{M}(z) \) can be written as:
+\begin{equation}
+    A_{M}(z)
+    =
+    \pm \frac{z^{-M}D_{M}(z^{-1})}{D_{M}(z)}
+    \label{eq:L17_S45_2}
+\end{equation}
+Note that if \( z = re^{j\omega} \) is a pole of a real coefficient allpass transfer function, then it has a zero at \( z = \frac{1}{r} e^{-j \varphi} \).
 
-%TODO S45->S72
+The numerator of a real-coefficient allpass transfer function is said to be the mirror-image polynomial of the denominator, and vice versa. We shall use the notation \( \widetilde{D}_{M}(z) \) to denote the mirror-image polynomial of a degree-\( M \) polynomial \( D_{M}(z) \), i.e.:
+\begin{equation}
+    \widetilde{D}_{M}(z)
+    =
+    z^{-M} D_{M}(z^{-1})
+    \label{eq:L17_S46_1}
+\end{equation}
+The expression in Eq. \ref{eq:L17_S45_2} implies that the poles and zeros of a real-coefficient allpass function exhibit mirror-image symmetry in the z-plane.
+
+\begin{example}{Allpass transfer function}{}
+    \begin{equation}
+        A_{3}(z)
+        \frac{-0.2 + 0.81z^{-1} + 0.4z^{-2} + z^{-3}}{1 + 0.4z^{-1} + 0.18z^{-2} - 0.2z^{-3}}
+        \label{eq:L17_S47_2}
+    \end{equation}
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{\figpath{17}/17_images/S47_1.pdf}
+    \end{center}
+\end{example}
+
+To show that \( \abs{A_{M}(e^{j\omega})}^{2} = 1 \), we observe that:
+\begin{equation}
+    A_{M}(z^{-1})
+    =
+    \pm \frac{z^{M} D_{M}(z)}{D_{M}(z^{-1})}
+    \label{eq:L17_S48_1}
+\end{equation}
+Therefore:
+\begin{equation}
+    A_{M}(z) A_{M}(z^{-1})
+    =
+    \frac{z^{-M}D_{M}(z^{-1})}{D_{M}(z)} \frac{z^{M} D_{M}(z)}{D_{M}(z^{-1})}
+    \label{eq:L17_S48_2}
+\end{equation}
+Hence:
+\begin{equation}
+    \abs{A_{M}(e^{j\omega})}^2
+    =
+    \qty[A_{M}(z) A_{M}(z^{-1})]_{z=e^{j\omega}}
+    =
+    1
+    \label{eq:L17_S48_3}
+\end{equation}
+Now, the poles of a causal stable transfer function must lie inside the unit circle in the z-plane. Hence, all zeros of a causal stable allpass transfer function must lie outside the unit circle in a mirror-image symmetry with its poles situated inside the unit circle.
+
+\begin{example}{Allpass transfer function}{}
+    Consider the \( 3^{\text{rd}} \) order allpass function:
+    \begin{equation}
+        A_{3}(z)
+        =
+        \frac{-0.2 + 0.18z^{-1} + 0.4z^{-2} + z^{-3}}{1 + 0.4z^{-1} + 0.18z^{-2} - 0.2z^{-3}}
+        \label{eq:L17_S50_1}
+    \end{equation}
+
+    The principal value of phase is showed in the plot below. Note the discontinuity by the amount of \( 2\pi \) in the phase \( \theta(\omega) \).
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{\figpath{17}/17_images/S50_1.pdf}
+    \end{center}
+
+    If we unwrap the phase by removing the discontinuity, we arrive at the unwrapped phase function \( \theta_{c}(\omega) \) indicated in the plot below. Note that the unwrapped phase function is a continuous function of \( \omega \).
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{\figpath{17}/17_images/S51_1.pdf}
+    \end{center}
+\end{example}
+
+We list now the properties of allpass transfer function:
+\begin{itemize}
+    \item a causal stable real-coefficient allpass transfer function is a lossless bounded real (LBR) function or, equivalently, a causal stable allpass filter is a lossless structure;
+
+    \item the magnitude function of a stable allpass function \( A(z) \) satisfies:
+    \begin{equation}
+        \abs{A(z)}
+        \begin{cases}
+            <1  &   \abs{z} > 1 \\
+            =1  &   \abs{z} = 1 \\
+            >1  &   \abs{z} < 1
+        \end{cases}
+        \label{eq:L17_S52_1}
+    \end{equation}
+
+    \item let \( \tau(\omega) \) denote the group delay function of an allpass filter \( A(z) \):
+    \begin{equation}
+        \tau(\omega)
+        =
+        - \dv{}{\omega} \qty[\theta_{c}(\omega)]
+        \label{eq:L17_S52_2}
+    \end{equation}
+\end{itemize}
+
+The unwrapped phase function \( \theta_{c}(\omega) \) of a stable allpass function is a monotonically decreasing function of \( \omega \) so that \( \tau(\omega) \) is everywhere positive in the range \( 0 < \omega < \pi \). The group delay of an \( M^{\text{th}} \) order stable real-coefficient allpass transfer function satisfies:
+\begin{equation}
+    \int_{0}^{\pi} \tau(\omega) \d{\omega}
+    =
+    M\pi
+    \label{eq:L17_S53_1}
+\end{equation}
+
+A simple but often used application of an allpass filter is as a delay equalizer. Let \( G(z) \) be the transfer function of a digital filter designed to meet a prescribed magnitude response. The non-linear phase response of \( G(z) \) can be corrected by cascading it with an allpass filter \( A(z) \) so that the overall cascade has a constant group delay in the band of interest.
+Since \( \abs{A_{M}(e^{j\omega})} = 1 \), we have:
+\begin{equation}
+    \abs{G(e^{j\omega}) A(e^{j\omega})}
+    =
+    \abs{G(e^{j\omega})}
+    \label{eq:L17_S55_1}
+\end{equation}
+The overall group delay is given by the sum of the group delays of \( G(z) \) and \( A(z) \).
+
+
+
+\subsection{Phase characteristics}
+A second classification of a transfer function is with respect to its phase characteristics. In many applications, it is necessary that the digital filter designed does not distort the phase of the input signal components for frequencies in the passband.
+One way to avoid any phase distortion is to make the frequency response of the filter real and nonnegative, i.e., to design the filter with a zero-phase characteristic. However, it is not possible to design a causal digital filter with a zero phase.
+
+For non-real-time processing of real-valued input signals of finite length, zero-phase filtering can be very simply implemented by relaxing the causality requirement. One zero-phase filtering scheme is sketched in Figure \ref{fig:L17_S58_1}. It is easy to verify the ladder in the frequency domain.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{17}/17_images/S58_1.pdf}
+    \caption{\label{fig:L17_S58_1} A possible zero-phase filtering scheme.}
+\end{figure}
+
+Let \( X(e^{j\omega}) \), \( V(e^{j\omega}) \), \( U(e^{j\omega}) \), \( W(e^{j\omega}) \) and \( Y(e^{j\omega}) \) denote the DTFTs of \( x[n] \), \( v[n] \), \( u[n] \), \( w[n] \) and \( y[n] \), respectively. Making use of the symmetry relations, we arrive at the relations between various DTFTs:
+\begin{align}
+    V(e^{j\omega})  &=  H(e^{j\omega}) X(e^{j\omega})   \\
+    W(e^{j\omega})  &=  H(e^{j\omega}) U(e^{j\omega})   \\
+    U(e^{j\omega})  &=  V^{*}(e^{j\omega})              \\
+    Y(e^{j\omega})  &=  W^{*}(e^{j\omega})
+\end{align}
+Combining the above equations we get:
+\begin{align}
+    Y(e^{j\omega})
+    &=
+        W^{*}(e^{j\omega})  \nonumber   \\
+    &=
+        H^{*}(e^{j\omega}) U^{*}(e^{j\omega})   \nonumber   \\
+    &=
+        H^{*}(e^{j\omega}) V(e^{j\omega})   \nonumber   \\
+    &=
+        H^{*}(e^{j\omega}) H(e^{j\omega}) X(e^{j\omega})   \nonumber   \\
+    &=
+        \abs{H(e^{j\omega})}^{2} X(e^{j\omega})
+\end{align}
+
+The most general type of a filter with a linear phase has a frequency response given by:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-j\omega D}
+    \label{eq:L17_S61_1}
+\end{equation}
+which has a linear phase from \( \omega = 0 \) to \( \omega = 2\pi \). Note also that:
+\begin{equation}
+    \abs{H(e^{j\omega})} = 1
+    \label{eq:L17_S61_2}
+\end{equation}
+and:
+\begin{equation}
+    \tau(\omega)
+    =
+    - \dv{}{\omega} \qty[\theta_{c}(\omega)]
+    =
+    D
+    \label{eq:L17_S61_3}
+\end{equation}
+The output \( y[n] \) of this filter to an input \( x[n] = Ae^{j\omega n} \) is then given by:
+\begin{equation}
+    y[n]
+    =
+    Ae^{-j\omega D} e^{j\omega n}
+    =
+    Ae^{j\omega(n-D)}
+    \label{eq:L17_S62_1}
+\end{equation}
+If \( x_{a}(t) \) and \( y_{a}(t) \) represent the continuous-time signals whose sampled versions, sampled at \( t = nT \), are \( x[n] \) and \( y[n] \) given above, then the delay between \( x_{a}(t) \) and \( y_{a}(t) \) is precisely the group delay of amount \( D \).
+If \( D \) is an integer, then \( y[n] \) is identical to \( x[n] \), but delayed by \( D \) samples. If \( D \) is not an integer, \( y[n] \), being delayed by a fractional part, is not identical to \( x[n] \). In the latter case, the waveform of the underlying continuous-time output is identical to the waveform of the underlying continuous-time input and delayed \( D \) units of time.
+
+If it is desired to pass input signal components in a certain frequency range undistorted in both magnitude and phase, then the transfer function should exhibit a unity magnitude response and a linear-phase response in the band of interest. In Figure \ref{fig:L17_S65_1} the frequency response of a lowpass filter with a linear-phase characteristic in the passband is showed. Since the signal components in the stopband are blocked, the phase response in the stopband can be of any shape.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{\figpath{17}/17_images/S65_1.pdf}
+    \caption{\label{fig:L17_S65_1} Frequency response of a lowpass filter with a linear-phase characteristic in the passband.}
+\end{figure}
+
+\begin{example}{Linear-phase transfer function}{}
+    We determine now the impulse response of an ideal lowpass filter with a linear phase response:
+    \begin{equation}
+        H_{LP}(e^{j\omega})
+        =
+        \begin{cases}
+            e^{-j\omega n_{0}}  &   0 < \abs{\omega} < \omega_{c}   \\
+            0   &   \omega_{c} \le \abs{\omega} \le \pi
+        \end{cases}
+        \label{eq:L17_S66_1}
+    \end{equation}
+    Applying the frequency-shifting property of the DTFT to the impulse response of an ideal zero-phase lowpass filter we arrive at:
+    \begin{equation}
+        h_{LP}[n]
+        =
+        \frac{\sin\qty(\omega(n-n_{0}))}{\pi (n-n_{0})}
+        \qquad
+        -\infty < n < \infty
+        \label{eq:L17_S67_1}
+    \end{equation}
+    As before, the above filter is noncausal and of doubly infinite length, and hence, unrealizable. By truncating the impulse response to a finite number of terms, a realizable FIR approximation to the ideal lowpass filter can be developed. The truncated approximation may or may not exhibit linear phase, depending on the value of \( n_{0} \) chosen.
+
+    If we choose \( n_{0} = \frac{N}{2} \) with \( N \) a positive integer, the truncated and shifted approximation:
+    \begin{equation}
+        \hat{h}_{LP}[n]
+        =
+        \frac{\displaystyle \sin\qty(\omega_{c}\qty(n-\frac{N}{2}))}{\displaystyle \pi \qty(n-\frac{N}{2})}
+        \qquad
+        0 \le n \le N
+        \label{eq:L17_S69_1}
+    \end{equation}
+    will be a length \( N+1 \) causal linear-phase FIR filter. In the plot below the filter coefficients are showed. They are obtained using the function \( \operatorname{sinc} \) for two different values of \( N \).
+
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{\figpath{17}/17_images/S70_1.pdf}
+    \end{center}
+
+    Because of the symmetry of the impulse response coefficients as indicated in the two plots, the frequency response of the truncated approximation can be expressed as:
+    \begin{equation}
+        \hat{H}_{LP}(e^{j\omega})
+        =
+        \sum_{n=0}^{N} \hat{h}_{LP}[n] e^{-j\omega n}
+        =
+        e^{-j\omega \frac{N}{2}} \widetilde{H}_{LP}(\omega)
+        \label{eq:L17_S71_1}
+    \end{equation}
+    where \( \widetilde{H}_{LP}(\omega) \), called the zero-phase response or amplitude response, is a real function of \( \omega \).
+\end{example}
 
 \end{document}
