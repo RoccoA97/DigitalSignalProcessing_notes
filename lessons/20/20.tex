@@ -1,0 +1,721 @@
+\providecommand{\main}{../../main}
+\providecommand{\figpath}[1]{\main/../lessons/#1}
+\documentclass[../../main/main.tex]{subfiles}
+
+
+
+\begin{document}
+
+\newdate{date}{10}{12}{2020}
+\marginpar{ \textbf{Lecture 20.} \\  \displaydate{date}.}
+
+\section{Linear-phase FIR transfer functions}
+It is impossible to design an IIR transfer function with an exact linear-phase. However, it is always possible to design a FIR transfer function with an exact linear-phase response. We now develop the forms of the linear-phase FIR transfer function \( H(z) \) with real impulse response \( h[n] \). Let:
+\begin{equation}
+    H(z)
+    =
+    \sum_{n=0}^{N} h[n] z^{-n}
+    \label{eq:L20_S03_1}
+\end{equation}
+If \( H(z) \) is to have a linear-phase, its frequency response must be of the form:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{j(c\omega + \beta)} \overset{\smallsmile}{H}(\omega)
+    \label{eq:L20_S03_2}
+\end{equation}
+where \( c \) and \( \beta \) are constants, and \( \overset{\smallsmile}{H}(\omega) \), called the amplitude response, also called the zero-phase response, is a real function of \( \omega \). For a real impulse response, the magnitude response \( \abs{H(e^{j\omega})} \) is an even function of \( \omega \), i.e.:
+\begin{equation}
+    \abs{H(e^{j\omega})}
+    =
+    \abs{H(e^{-j\omega})}
+    \label{eq:L20_S04_1}
+\end{equation}
+Since \( \abs{H(e^{j\omega})} = \abs{\overset{\smallsmile}{H}(\omega)} \), the amplitude response is then either an even function or an odd function of \( \omega \), i.e.:
+\begin{equation}
+    \overset{\smallsmile}{H}(-\omega)
+    =
+    \pm \overset{\smallsmile}{H}(\omega)
+    \label{eq:L20_S04_2}
+\end{equation}
+The frequency response satisfies the relation:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    H^{*}(e^{-j\omega})
+    \label{eq:L20_S05_1}
+\end{equation}
+or, equivalently, the relation:
+\begin{equation}
+    e^{j(c\omega + \beta)} \overset{\smallsmile}{H}(\omega)
+    =
+    e^{-j(c(-\omega) + \beta)} \overset{\smallsmile}{H}(\omega)
+    \label{eq:L20_S05_2}
+\end{equation}
+If \( \overset{\smallsmile}{H}(\omega) \) is an even function, then the above relation leads to:
+\begin{equation}
+    e^{j\beta}
+    =
+    e^{-j\beta}
+    \label{eq:L20_S05_3}
+\end{equation}
+implying that either \( \beta = 0 \) or \( \beta = \pi \). From:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{j(c\omega + \beta)} \overset{\smallsmile}{H}(\omega)
+    \label{eq:L20_S06_1}
+\end{equation}
+we have:
+\begin{equation}
+    \overset{\smallsmile}{H}(\omega)
+    =
+    e^{-j(c\omega + \beta)} H(e^{j\omega})
+    \label{eq:L20_S06_2}
+\end{equation}
+Substituting the value of \( \beta \) in Eq. \ref{eq:L20_S06_2}, we get:
+\begin{equation}
+    \overset{\smallsmile}{H}(\omega)
+    =
+    \pm e^{-jc\omega} H(e^{j\omega})
+    =
+    \pm \sum_{n=0}^{N} h[n] e^{-j\omega (c + n)}
+    \label{eq:L20_S06_3}
+\end{equation}
+Replacing \( \omega \) with \( - \omega \) in Eq. \ref{eq:L20_S06_3}, we get:
+\begin{equation}
+    \overset{\smallsmile}{H}(-\omega)
+    =
+    \pm \sum_{\ell = 0}^{N} h[\ell] e^{j\omega (c + \ell)}
+    \label{eq:L20_S07_1}
+\end{equation}
+Making a change of variable \( \ell = N - n \), we rewrite Eq. \ref{eq:L20_S07_1} as:
+\begin{equation}
+    \overset{\smallsmile}{H}(-\omega)
+    =
+    \pm \sum_{n=0}^{N} h[N-n] e^{j\omega (c + N - n)}
+    \label{eq:L20_S07_2}
+\end{equation}
+Now, as \( \overset{\smallsmile}{H}(\omega) = \overset{\smallsmile}{H}(-\omega) \), we have:
+\begin{equation}
+    h[n] e^{-j\omega (c+n)}
+    =
+    h[N-n] e^{j\omega (c+N-n)}
+    \label{eq:L20_S08_1}
+\end{equation}
+Eq. \ref{eq:L20_S08_1} leads to the condition:
+\begin{equation}
+    h[n]
+    =
+    h[N-n]
+    \qquad
+    0 \le n \le N
+    \label{eq:L20_S08_2}
+\end{equation}
+with \( c = - \frac{N}{2} \). Thus, the FIR filter with an even amplitude response will have a linear phase if it has a symmetric impulse response. If \( \overset{\smallsmile}{H}(\omega) \) is an odd function of \( \omega \), then from:
+\begin{equation}
+    e^{j(c\omega + \beta)} \overset{\smallsmile}{H}(\omega)
+    =
+    e^{-j(-c\omega + \beta)} \overset{\smallsmile}{H}(-\omega)
+    \label{eq:L20_S09_1}
+\end{equation}
+we get \( e^{j\beta} = - e^{-j\beta} \) as \( \overset{\smallsmile}{H}(-\omega) = - \overset{\smallsmile}{H}(\omega) \).
+Eq. \ref{eq:L20_S09_1} is satisfied if \( \beta = \pm \frac{\pi}{2} \). Then \( H(e^{j\omega}) = e^{j(c\omega + \beta)} \) reduces to:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    j e^{jc\omega} \overset{\smallsmile}{H}(\omega)
+    \label{eq:L20_S09_3}
+\end{equation}
+Eq. \ref{eq:L20_S09_3} can be rewritten as:
+\begin{equation}
+    \overset{\smallsmile}{H}(\omega)
+    =
+    -j e^{-jc\omega} H(e^{j\omega})
+    =
+    -j \sum_{m=0}^{N} h[n] e^{-j\omega (c+n)}
+    \label{eq:L20_S10_1}
+\end{equation}
+Again, as \( \overset{\smallsmile}{H}(\omega) = \overset{\smallsmile}{H}(-\omega) \), from Eq. \ref{eq:L20_S10_1} we get:
+\begin{equation}
+    \overset{\smallsmile}{H}(-\omega)
+    =
+    j \sum_{\ell = 0}^{N} h[\ell] e^{j\omega (c+\ell)}
+    \label{eq:L20_S10_2}
+\end{equation}
+Making a change of variable \( \ell = N - n \), we rewrite Eq. \ref{eq:L20_S10_2} as:
+\begin{equation}
+    \overset{\smallsmile}{H}(-\omega)
+    =
+    j \sum_{\ell = 0}^{N} h[\ell] e^{j\omega (c+\ell)}
+    \label{eq:L20_S11_1}
+\end{equation}
+Equating the RHS of Eq. \ref{eq:L20_S11_1} with the RHS of Eq. \ref{eq:L20_S10_1}, we arrive at the condition for linear phase as:
+\begin{equation}
+    h[n]
+    =
+    h[N-n]
+    \qquad
+    0 \le n \le N
+    \label{eq:L20_S12_1}
+\end{equation}
+with \( c = - \frac{N}{2} \). Therefore, a FIR filter with an odd amplitude response will have linear-phase response if it has an antisymmetric impulse response.
+
+Since the length of the impulse response can be either even or odd, we can define four types of linear-phase FIR transfer functions. In particular, for an antisymmetric FIR filter of odd length, namely \( N \) even, \( h\qty[\frac{N}{2}] = 0 \). We examine in the following discussion each of the four cases, sketched in Figure \ref{fig:L20_S14_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{20}/20_images/S14_1.pdf}
+    \caption{\label{fig:L20_S14_1} The four types of linear-phase FIR transfer functions.}
+\end{figure}
+
+
+
+\subsection{Symmetric impulse response with odd length}
+In this case, the degree \( N \) is even. In the following discussion we assume also \( N = 8 \) for simplicity. Therefore, the transfer function \( H(z) \) is given by:
+\begin{equation}
+    H(z)
+    =
+    h[0] + h[1]z^{-1} + h[2]z^{-2} + h[3]z^{-3} + h[4]z^{-4} + h[5]z^{-5} + h[6]z^{6} + h[7]z^{-7} + h[8]z^{-8}
+    \label{eq:L20_S15_1}
+\end{equation}
+Because of symmetry, we have:
+\begin{align}
+    h[0] &= h[8]    \\
+    h[1] &= h[7]    \\
+    h[2] &= h[6]    \\
+    h[3] &= h[5]
+\end{align}
+Thus, we can write:
+\begin{align}
+    H(z)
+    &=
+        h[0](1 + z^{-8}) + h[1](z^{-1} + z^{-7}) + h[2](z^{-2} + z^{-6}) + h[3](z^{-3} + z^{-5}) + h[4]z^{-4}   \nonumber   \\
+    &=
+        z^{-4} \qty{h[0](z^{4} + z^{-4}) + h[1](z^{3} + z^{-3}) + h[2](z^{2} + z^{-2}) + h[3](z + z^{-1}) + h[4]}
+\end{align}
+The corresponding frequency response is then given by:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-j4\omega} \qty{2h[0]\cos(4\omega) + 2h[1]\cos(3\omega) + 2h[2]\cos(2\omega) + 2h[3]\cos(\omega) + h[4]}
+    \label{eq:L20_S17_1}
+\end{equation}
+The quantity inside the braces is a real function of \( \omega \) and can assume positive or negative values in the range \( 0 \le \abs{\omega} \le \pi \). The phase function is given by:
+\begin{equation}
+    \theta(\omega)
+    =
+    -4\omega + \beta
+    \label{eq:L20_S18_1}
+\end{equation}
+where \( \beta \) is either \( 0 \) or \( \pi \), and hence, it is a linear function of \( \omega \). The group delay is given by:
+\begin{equation}
+    \tau(\omega)
+    =
+    - \dv{\theta(\omega)}{\omega}
+    =
+    4
+    \label{eq:L20_S18_2}
+\end{equation}
+indicating a constant group delay of \( 4 \) samples.
+
+In the general case for Type 1 FIR filters, the frequency response is of the form:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-jN \frac{\omega}{2}} \overset{\smallsmile}{H}(\omega)
+    \label{eq:L20_S19_1}
+\end{equation}
+where the amplitude response \( \breve{H}(\omega) \), also called the zero-phase response, is of the form:
+\begin{equation}
+    \breve{H}(\omega)
+    =
+    h\qty[\frac{N}{2}] + 2 \sum_{n=1}^{\frac{N}{2}} h\qty[\frac{N}{2} - n] \cos(\omega n)
+    \label{eq:L20_S19_2}
+\end{equation}
+
+\begin{example}{Symmetric impulse response with odd length}{}
+    We consider:
+    \begin{equation}
+        H_{0}(z)
+        =
+        \frac{1}{6} \qty[\frac{1}{2} + z^{-1} + z^{-3} + z^{-4} + z^{-5} + \frac{1}{2}z^{-6}]
+        \label{eq:L20_S20_1}
+    \end{equation}
+    which is seen to be a slightly modified version of a length-7 moving-average FIR filter.
+
+    This transfer function has a symmetriic impulse response and therefore a linear phase response. A plot of the magnitude response of \( H_{0}(z) \) along with that of the 7-point moving-average filter is showed below.
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{\figpath{20}/20_images/S21_1.pdf}
+    \end{center}
+
+    Note the improved magnitude response obtained by simply changing the first and the last impulse response coefficients of a moving-average (MA) filter. It can be showed that we can express:
+    \begin{equation}
+        H_{0}(z)
+        =
+        \frac{1}{2} (1 + z^{-1})
+        \cdot
+        \frac{1}{6} (1 + z^{-1} + z^{-2} + z^{-3} + z^{-4} + z^{-5})
+        \label{eq:L20_S22_1}
+    \end{equation}
+    which is seen to be a cascade of a 2-point MA filter with a 6-point MA filter. Thus, \( H_{0}(z) \) has a double zero at \( z = -1 \), i.e. \( \omega = \pi \).
+\end{example}
+
+
+
+\subsection{Symmetric impulse response with even length}
+In this case, the degree \( N \) is odd and we assume \( N = 7 \) for simplicity for the following discussion. Therefore, the transfer function is of the form:
+\begin{equation}
+    H(z)
+    =
+    h[0] + h[1]z^{-1} + h[2]z^{-2} + h[3]z^{-3} + h[4]z^{-4} + h[5]z^{-5} + h[6]z^{6} + h[7]z^{-7}
+    \label{eq:L20_S23_1}
+\end{equation}
+Making use of the symmetry of the impulse response coefficients, the transfer function can be rewritten as:
+\begin{align}
+    H(z)
+    &=
+        h[0](1 + z^{-7}) + h[1](z^{-1} + z^{-6}) + h[2](z^{-2} + z^{-5}) + h[3](z^{-3} + z^{-4})   \nonumber   \\
+    &=
+        z^{-\frac{7}{2}} \qty{h[0](z^{\frac{7}{2}} + z^{-\frac{7}{2}}) + h[1](z^{\frac{5}{2}} + z^{-\frac{5}{2}}) + h[2](z^{\frac{3}{2}} + z^{-\frac{3}{2}}) + h[3](z^{\frac{1}{2}} + z^{-\frac{1}{2}})}
+\end{align}
+The corresponding frequency response is given by:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-j\frac{7\omega}{2}} \qty{2h[0]\cos\qty(\frac{7\omega}{2}) + 2h[1]\cos\qty(\frac{5\omega}{2}) + 2h[2]\cos\qty(\frac{3\omega}{2}) + 2h[3]\cos\qty(\frac{\omega}{2})}
+    \label{eq:L20_S25_1}
+\end{equation}
+As before, the quantity inside the braces is a real function of \( \omega \) and can assume positive or negative values in the range \( 0 \le \abs{\omega} \le \pi \). Here, the phase function is given by:
+\begin{equation}
+    \theta(\omega)
+    =
+    - \frac{7}{2} \omega + \beta
+    \label{eq:L20_S26_1}
+\end{equation}
+where \( \beta \) is either \( 0 \) or \( \pi \). A a result, the phase is also a linear function of \( \omega \) and the corresponding group delay is:
+\begin{equation}
+    \tau(\omega)
+    =
+    \frac{7}{2}
+    \label{eq:L20_S26_2}
+\end{equation}
+indicating a group delay of \( \frac{7}{2} \) samples.
+
+The expression for the frequency response in the general case for Type 2 FIR filters is of the form:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-jN \frac{\omega}{2}} \breve{H}(\omega)
+    \label{eq:L20_S27_1}
+\end{equation}
+where the amplitude response is given by:
+\begin{equation}
+    \breve{H}(\omega)
+    =
+    2 \sum_{n=1}^{\frac{N+1}{2}} h\qty[\frac{N+1}{2} - n] \cos\qty(\omega \qty(n - \frac{1}{2}))
+    \label{eq:L20_S27_2}
+\end{equation}
+
+
+
+\subsection{Antisymmetric impulse response with odd length}
+In this case, the degree \( N \) is even and we assume \( N = 8 \) for simplicity for the following discussion. Therefore, applying the symmetry condition we get:
+\begin{equation}
+    H(z)
+    =
+    z^{-4}\qty{h[0](z^{4} - z^{-4}) + h[1](z^{3} - z^{-3}) + h[2](z^{2} - z^{-2}) + h[3](z - z^{-1})}
+    \label{eq:L20_S28_1}
+\end{equation}
+The corresponding frequency response is given by:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-j4\omega} e^{j \frac{\pi}{2}} \qty{2h[0]\sin\qty(4\omega) + 2h[1]\sin\qty(3\omega) + 2h[2]\sin\qty(2\omega) + 2h[3]\sin\qty(\omega)}
+    \label{eq:L20_S29_1}
+\end{equation}
+It also exhibits a linear phase response given by:
+\begin{equation}
+    \theta(\omega)
+    =
+    -4\omega + \frac{\pi}{2} + \beta
+    \label{eq:L20_S29_2}
+\end{equation}
+where \( \beta \) is either \( 0 \) or \( \pi \). The group delay here is:
+\begin{equation}
+    \tau(\omega)
+    =
+    4
+    \label{eq:L20_S30_1}
+\end{equation}
+indicating a constant group delay of \( 4 \) samples.
+
+The expression for the frequency response in the general case for Type 3 FIR filters is of the form:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-jN \frac{\omega}{2}} \breve{H}(\omega)
+    \label{eq:L20_S30_2}
+\end{equation}
+where the amplitude response is given by:
+\begin{equation}
+    \breve{H}(\omega)
+    =
+    2 \sum_{n=1}^{\frac{N}{2}} h\qty[\frac{N}{2} - n] \sin\qty(\omega n)
+    \label{eq:L20_S30_3}
+\end{equation}
+
+
+
+\subsection{Antisymmetric impulse response with even length}
+In this case, the degree \( N \) is even and we assume \( N = 7 \) for simplicity for the following discussion. Therefore, applying the symmetry condition we get:
+\begin{equation}
+    H(z)
+    =
+    z^{\frac{7}{2}}\qty{h[0](z^{\frac{7}{2}} - z^{-\frac{7}{2}}) + h[1](z^{\frac{5}{2}} - z^{-\frac{5}{2}}) + h[2](z^{\frac{3}{2}} - z^{-\frac{3}{2}}) + h[3](z^{\frac{1}{2}} - z^{-\frac{1}{2}})}
+    \label{eq:L20_S31_1}
+\end{equation}
+The corresponding frequency response is given by:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-j\frac{7\omega}{2}} e^{j \frac{\pi}{2}} \qty{2h[0]\sin\qty(\frac{7\omega}{2}) + 2h[1]\sin\qty(\frac{5\omega}{2}) + 2h[2]\sin\qty(\frac{3\omega}{2}) + 2h[3]\sin\qty(\frac{\omega}{2})}
+    \label{eq:L20_S32_1}
+\end{equation}
+It again exhibits a linear phase response given by:
+\begin{equation}
+    \theta(\omega)
+    =
+    - \frac{7}{2} \omega + \frac{\pi}{2} + \beta
+    \label{eq:L20_S32_2}
+\end{equation}
+where \( \beta \) is either \( 0 \) or \( \pi \). The group delay is constant and is given by:
+\begin{equation}
+    \tau(\omega)
+    =
+    \frac{7}{2}
+    \label{eq:L20_S33_1}
+\end{equation}
+
+The expression for the frequency response in the general case for Type 4 FIR filters is of the form:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-jN \frac{\omega}{2}} \breve{H}(\omega)
+    \label{eq:L20_S33_2}
+\end{equation}
+where the amplitude response is given by:
+\begin{equation}
+    \breve{H}(\omega)
+    =
+    2 \sum_{n=1}^{\frac{N+1}{2}} h\qty[\frac{N+1}{2} - n] \sin\qty(\omega \qty(n - \frac{1}{2}))
+    \label{eq:L20_S33_3}
+\end{equation}
+
+
+
+\subsection{General form of frequency response}
+In each of the four types of linear-phase FIR filters, the frequency response is of the form:
+\begin{equation}
+    H(e^{j\omega})
+    =
+    e^{-jN \frac{\omega}{2}} e^{j\beta} \breve{H}(\omega)
+    \label{eq:L20_S34_1}
+\end{equation}
+The amplitude response \( \breve{H}(\omega) \) for each type can become negative over certain frequency ranges, typically in the stopband.
+
+\begin{example}{General form of frequency response}{}
+    We consider the causal Type 1 FIR transfer function:
+    \begin{equation}
+        H_{1}(z)
+        =
+        - 1 + 2z^{-1} - 3z^{-2} + 6z^{-3} - 3z^{-4} + 2z^{-5} - z^{-6}
+        \label{eq:L20_S35_1}
+    \end{equation}
+    Its amplitude and phase responses are given by:
+    \begin{equation}
+        \breve{H}_{1}(\omega)
+        =
+        6 - 6\cos(\omega) + 4\cos(2\omega) - 2\cos(3\omega)
+        \label{eq:L20_S35_2}
+    \end{equation}
+    \begin{equation}
+        \theta_{1}(\omega)
+        =
+        -3\omega
+        \label{eq:L20_S35_3}
+    \end{equation}
+
+    Next, we consider the causal Type 1 FIR transfer function:
+    \begin{equation}
+        H_{2}(z)
+        =
+        1 - 2z^{-1} + 3z^{-2} - 6z^{-3} + 3z^{-4} - 2z^{-5} + z^{-6}
+        \label{eq:L20_S36_1}
+    \end{equation}
+    Its amplitude and phase responses are given by:
+    \begin{equation}
+        \breve{H}_{2}(\omega)
+        =
+        - \breve{H}_{1}(\omega)
+        \label{eq:L20_S36_2}
+    \end{equation}
+    \begin{equation}
+        \theta_{2}(\omega)
+        =
+        -3\omega + \pi
+        \label{eq:L20_S36_3}
+    \end{equation}
+    Note that:
+    \begin{equation}
+        \abs{H_{1}(e^{j\omega})}
+        =
+        \abs{H_{2}(e^{j\omega})}
+        \label{eq:L20_S36_4}
+    \end{equation}
+
+    Hence, \( H_{1}(z) \) and \( H_{2}(z) \) have identical magnitude responses but phase responses differing by \( \pi \), as showed in the figure below.
+
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{\figpath{20}/20_images/S37_1.pdf}
+    \end{center}
+\end{example}
+
+\begin{example}{General form of frequency response}{}
+    We consider the causal Type 1 FIR transfer function:
+    \begin{equation}
+        H_{3}(z)
+        =
+        1 - 2z^{-1} + 3z^{-2} - 3z^{-4} + 2z^{-5} - z^{-6}
+        \label{eq:L20_S38_1}
+    \end{equation}
+    Its amplitude and phase responses are given by:
+    \begin{equation}
+        \breve{H}_{3}(\omega)
+        =
+        - 6\sin(\omega) + 4\sin(2\omega) + 2\sin(3\omega)
+        \label{eq:L20_S38_2}
+    \end{equation}
+    \begin{equation}
+        \theta_{3}(\omega)
+        =
+        -3\omega + \frac{\pi}{2}
+        \label{eq:L20_S38_3}
+    \end{equation}
+
+    Next, we consider the causal Type 1 FIR transfer function:
+    \begin{equation}
+        H_{4}(z)
+        =
+        - 1 + 2z^{-1} - 3z^{-2} + 3z^{-4} - 2z^{-5} + z^{-6}
+        \label{eq:L20_S39_1}
+    \end{equation}
+    Its amplitude and phase responses are given by:
+    \begin{equation}
+        \breve{H}_{4}(\omega)
+        =
+        - \breve{H}_{3}(\omega)
+        \label{eq:L20_S39_2}
+    \end{equation}
+    \begin{equation}
+        \theta_{4}(\omega)
+        =
+        -3\omega - \frac{\pi}{2}
+        \label{eq:L20_S39_3}
+    \end{equation}
+    Note that:
+    \begin{equation}
+        \abs{H_{3}(e^{j\omega})}
+        =
+        \abs{H_{4}(e^{j\omega})}
+        \label{eq:L20_S39_4}
+    \end{equation}
+
+    Hence, \( H_{3}(z) \) and \( H_{4}(z) \) have identical magnitude responses but phase responses differing by \( \pi \), as showed in the figure below.
+
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{\figpath{20}/20_images/S40_1.pdf}
+    \end{center}
+\end{example}
+
+Now, in general, the magnitude and phase responses of the linear-phase FIR are given by:
+\begin{equation}
+    \abs{H(e^{j\omega})}
+    =
+    \abs{\breve{H}(\omega)}
+    \label{eq:L20_S41_1}
+\end{equation}
+\begin{equation}
+    \theta(\omega)
+    =
+    \begin{cases}
+        - \frac{N\omega}{2} + \beta         &   \breve{H}(\omega) \ge 0 \\
+        - \frac{N\omega}{2} + \beta - \pi   &   \breve{H}(\omega) <   0
+    \end{cases}
+    \label{eq:L20_S41_2}
+\end{equation}
+The group delay in each case is:
+\begin{equation}
+    \tau(\omega)
+    =
+    \frac{N}{2}
+    \label{eq:L20_S42_1}
+\end{equation}
+Note that, even though the group delay is constant, since in general \( \abs{H(e^{j\omega})} \) is not a constant, the output waveform is not a replica of the input waveform.
+
+A FIR filter with a frequency response that is a real function of \( \omega \) is often called a zero-phase filter.
+Such a filter must have a noncausal impulse response: a zero-phase filter needs to have a purely real-valued frequency response, and, consequently, it must have an impulse response that is even with respect to the time index \( n = 0 \), i.e., it is non-causal.
+
+
+
+\subsection{Zero locations}
+Let us consider first a FIR filter with a symmetric impulse response:
+\begin{equation}
+    h[n]
+    =
+    h[N-n]
+    \label{eq:L20_S43_1}
+\end{equation}
+Its transfer function can be written as:
+\begin{equation}
+    H(z)
+    =
+    \sum_{n=0}^{N} h[n]z^{-n}
+    =
+    \sum_{n=0}^{N} h[N-n]z^{-n}
+    \label{eq:L20_S43_2}
+\end{equation}
+By making a change of variable \( m = N - n \), we can write:
+\begin{equation}
+    H(z)
+    =
+    \sum_{n=0}^{N} h[N-n]z^{-n}
+    =
+    \sum_{m=0}^{N} h[m]z^{-N+m}
+    =
+    z^{-N} \underbrace{\sum_{m=0}^{N} h[m]z^{m}}_{H(z^{-1})}
+    \label{eq:L20_S43_3}
+\end{equation}
+Hence, for a FIR filter with a symmetric impulse response of length \( N + 1 \) we have:
+\begin{equation}
+    H(z)
+    =
+    z^{-N} H(z^{-1})
+    \label{eq:L20_S44_2}
+\end{equation}
+A real-coefficient polynomial \( H(z) \) satisfying the aboce condition is called a mirror-image polynomial (MIP).
+
+Now, let us consider first an FIR filter with an antisymmetric impulse response:
+\begin{equation}
+    h[n]
+    =
+    -h[N-n]
+    \label{eq:L20_S45_1}
+\end{equation}
+Its transfer function can be written as:
+\begin{equation}
+    H(z)
+    =
+    \sum_{n=0}^{N} h[n]z^{-n}
+    =
+    - \sum_{n=0}^{N} h[N-n]z^{-n}
+    \label{eq:L20_S45_2}
+\end{equation}
+By making a change of variable \( m = N - n \), we can write:
+\begin{equation}
+    H(z)
+    =
+    - \sum_{n=0}^{N} h[N-n]z^{-n}
+    =
+    - \sum_{m=0}^{N} h[m]z^{-N+m}
+    =
+    - z^{-N} H(z^{-1})
+    \label{eq:L20_S45_3}
+\end{equation}
+Hence, the transfer function \( H(z) \) of an FIR filter with an antisymmetric impulse response satisfies the condition:
+\begin{equation}
+    H(z)
+    =
+    z^{-N} H(z^{-1})
+    \label{eq:L20_S46_1}
+\end{equation}
+A real-coefficient polynomial \( H(z) \) satisying the above condition is called antimirror-image polynomial (AIP).
+
+Now, it follows from the relation \( H(z) = \pm z^{-N} H(z^{-1}) \) that if \( z = \xi_{0} \) is a zero of \( H(z) \), so is \( z = \frac{1}{\xi_{0}} \). Moreover, for an FIR filter with a real impulse response, the zeros of \( H(z) \) occur in complex conjugate pairs. Hence, a zero at \( z = \xi_{0} \) is associated with a zero at \( z = \xi^{*}_{0} \).
+Thus, a complex zero that is not on the unit circle is associated with a set of 4 zeros given by:
+\begin{equation}
+    z
+    =
+    re^{\pm j \varphi},
+    \quad
+    \frac{1}{r} e^{\pm j \varphi}
+    \label{eq:L20_S48_1}
+\end{equation}
+A zero on the unit circle appear as a pair:
+\begin{equation}
+    z
+    =
+    e^{\pm j \varphi}
+    \label{eq:L20_S48_2}
+\end{equation}
+as its reciprocal is also its complex conjugate. Since a zero at \( z = \pm 1 \) is its own reciprocal, it can appear only singly.
+
+Now, a Type 2 FIR filter satisfies:
+\begin{equation}
+    H(z)
+    =
+    z^{-N} H(z^{-1})
+    \label{eq:L20_S49_1}
+\end{equation}
+with degree \( N \) odd. Hence, \( H(-1) = (-1)^{-N} H(-1) = - H(-1) \), implying \( H(-1) = 0 \), i.e., \( H(z) \) must have a zero at \( z = -1 \).
+
+Likewise, a Type 3 or 4 FIR filter satisfies:
+\begin{equation}
+    H(z)
+    =
+    - z^{-N} H(z^{-1})
+    \label{eq:L20_S50_1}
+\end{equation}
+Thus:
+\begin{equation}
+    H(1)
+    =
+    (-1)^{-N} H(1)
+    =
+    - H(1)
+    \label{eq:L20_S50_2}
+\end{equation}
+implying that \( H(z) \) must have a zero at \( z = 1 \). On the other hand, only the Type 3 FIR filter is restricterd to have a zero at \( z = -1 \) since here the degree \( N \) is even and hence:
+\begin{equation}
+    H(-1)
+    =
+    - (-1)^{-N} H(-1)
+    =
+    - H(-1)
+    \label{eq:L20_S50_3}
+\end{equation}
+Typical zero locations are showed in Figure \ref{fig:L20_S51_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{20}/20_images/S51_1.pdf}
+    \caption{\label{fig:L20_S51_1} Typical zero locations.}
+\end{figure}
+
+So, to summarize:
+\begin{itemize}
+    \item Type 1 FIR filter: either an even number or no zeros at \( z = 1 \) and \( z = -1 \);
+    \item Type 2 FIR filter: either an even number or no zeros at \( z = 1 \) and an odd number of zeros at \( z = -1 \);
+    \item Type 3 FIR filter: an odd number of zeros at \( z = 1 \) and \( z = -1 \);
+    \item Type 4 FIR filter: an odd number of zeros at \( z = 1 \) and either an even number or no zeros at \( z = -1 \).
+\end{itemize}
+The presence of zeros at \( z = \pm 1 \) leads to the following limitations on the use of these linear-phase transfer functions for designing frequency-selective filters:
+\begin{itemize}
+    \item a Type 2 FIR filter cannot be used to design a highpass filter since it always has a zero;
+    \item a Type 3 FIR filter has zeros at both \( z = 1 \) and \( z = -1 \), and hence cannot be used to design either a lowpass or a highpass or a bandstop filter;
+    \item a Type 4 FIR filter is not appropriate to design lowpass and bandstop filters due to the presence of a zero at \( z = 1 \);
+    \item a Type 1 FIR filter has no such restrictions and can be used to design almost any type of filter.
+\end{itemize}
+
+\end{document}
