@@ -1,0 +1,220 @@
+\providecommand{\main}{../../main}
+\providecommand{\figpath}[1]{\main/../lessons/#1}
+\documentclass[../../main/main.tex]{subfiles}
+
+
+
+\begin{document}
+
+\chapter{Introduction}
+
+\newdate{date}{29}{09}{2020}
+\marginpar{ \textbf{Lecture 1.} \\  \displaydate{date}.}
+
+In this course we will enter into the world of Digital Signal Processing, trying to understand the theoretical fundations of this field with several examples. In particular, we will follow this outline of arguments:
+\begin{itemize}
+    \item What is Digital Signal Processing?
+    \item Discrete-time signals.
+    \item Signals and Hilbert spaces.
+    \item Fourier analysis.
+    \item Discrete-time filters.
+    \item The z-transform.
+    \item Filter design, in particular A/D and D/A conversions and the design of a digital communication system.
+\end{itemize}
+
+Concerning the study material, along with the teaching professor's notes and slides, several textbooks are suggested to integrate the study material:
+\begin{itemize}
+    \item[\cite{sp4comm}] \textit{Signal Processing for Communication}, P. Prandoni and M. Vetterli.
+    \item[\cite{oppenheim}] \textit{Digital Signal Processing}, A. V. Oppenheim and R. W. Schafer.
+    \item[\cite{mitra}] \textit{Digital Signal Processing: Digital Signal Processing: A Computer-Based Approach}, S. K. Mitra.
+\end{itemize}
+
+
+
+
+
+\section{What is a signal?}
+Let us start with a definition of what we are going to deal with for most of our time. \marginpar{Signal definition and types of signals}A signal is the description of the evolution of a physical phenomenon. For example, we can have:
+\begin{itemize}
+    \item \textbf{continuous-time signals}, such as voltage, current, temperature and speed, whose spectrum is sketched in Figure \ref{fig:L01_S21_1};
+    \item \textbf{discrete-time signals}, such as minimum/maximum temperature, lap intervals in races, sampled continuous signals, with an example spectrum showed in Figure \ref{fig:L01_S21_2}.
+\end{itemize}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{01}/01_images/S21_1.pdf}
+    \caption{\label{fig:L01_S21_1} Example of continuous-time signal spectrum.}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{01}/01_images/S21_2.pdf}
+    \caption{\label{fig:L01_S21_2} Example of discrete-time signal spectrum, obtained from sampling of the signal in Figure \ref{fig:L01_S21_1}.}
+\end{figure}
+
+\marginpar{Operations on signals}
+Signals may have to be transformed in order to:
+\begin{itemize}
+    \item be analyzed: this is necessary to \textbf{understand} the informations carried by the signal itself. For example, we can amplify or filter out embedded information, detect patterns, prepare the signal to survive a transmission channel and much more;
+    \item be synthesized: this is necessary to \textbf{create} a signal to contain a specific information. Some common examples in this case are the cellphones, tv, radio and synthetic music.
+\end{itemize}
+Therefore, to do these operations we need specific methods to measure, characterize, model and simulate transmission channels, but also mathematical tools that split common channels and transformations into easily manipulated building blocks.
+
+\medskip
+\marginpar{From analog to digital signals}
+Now, we enter more into the detail of digital signals. When we are dealing with analog signals, we can record them but we can hardly find a function that can describe them. In order to have an idea of the difficulty of this task, let us look at the signal in Figure \ref{fig:L01_S24_1}: how can we describe this function? This is where the digital part comes into practice.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{01}/01_images/S24_1.pdf}
+    \caption{\label{fig:L01_S24_1} Example of analog signal.}
+\end{figure}
+
+\marginpar{Mathematical definition of digital signals}
+A continuous-time (analog) signal is defined along a continuum of time and is thus represented by a continuous independent variable. Discrete-time signals are defined at discrete times, and thus, the independent variable has discrete values. Therefore, the ladders are represented as sequences of numbers \( x \), in which the \( n^{\text{th}} \) number in the sequence is denoted \( x[n] \), and it is formally written as:
+\begin{equation}
+    x
+    =
+    \qty{x[n]},
+    \qquad
+    -\infty < n < \infty
+    \label{eq:L01_S28_1}
+\end{equation}
+where \( n \) is an integer. An example is showed in Figure \ref{fig:L01_S29_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{01}/01_images/S29_1.pdf}
+    \caption{\label{fig:L01_S29_1} Example of graphic representation of a discrete-time signal.}
+\end{figure}
+
+\marginpar{Digital signal sampled from periodic signals}
+Such sequences can arise from periodic sampling of an analog signal \( x_{a}(t) \). In this case the numeric value of the \( n^{\text{th}} \) number in the sequence is equal to the value of the analog signal, namely \( x_{a}(t) \), at time \( nT \):
+\begin{equation}
+    x[n]
+    =
+    x_{a}(nT),
+    \qquad
+    - \infty < n < \infty
+    \label{eq:L01_S28_2}
+\end{equation}
+where \( T \) is the sampling period.
+
+
+
+
+
+\section{Is sampling of a continuous signal always possible?}
+At this point we ask ourselves a question: when we represent an analog signal as a digital one, are we loosing information? The question has been answered by C. Shannon and H. Nyquist: under specific conditions, the analog and the digital representations of a signal are equivalent. Here we come to the sampling theorem.
+\marginpar{Sampling theorem}
+An analog signal can be represented as a linear combination of cardinal sine (denoted by \( \operatorname{sinc} \) and plotted in Figure \ref{fig:L01_S31_1}) functions shifted ad scaled by the values of the discrete time sequence. Mathematically, this translates into:
+\begin{equation}
+    x(t)
+    =
+    \sum_{n=-\infty}^{\infty} x[n] \operatorname{sinc}\qty(\frac{t - nT_{S}}{T_{S}})
+    \label{eq:L01_S31_1}
+\end{equation}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{01}/01_images/S31_1.pdf}
+    \caption{\label{fig:L01_S31_1} Cardinal sine \( \operatorname{sinc} \) function.}
+\end{figure}
+
+It is important to determine the value of \( T_{S} \) so that the sampling theorem holds.
+\marginpar{Utility of Fourier transform}
+The Fourier transform helps us understanding how fast the signal moves and consequently guides us to the selection of \( T_{S} \).
+
+
+
+
+
+\section{Discrete time and amplitude}
+Till now we discussed the discretization of time. What if we discretize also the amplitude of the signal? In this case each sample can take predetermmined values in a countable set. Moreover, as consequence, we can always map the level of the sample onto an integer. An example of a sampled \( \sin \) function is showed in Figure \ref{fig:L01_S33_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{01}/01_images/S33_1.pdf}
+    \caption{\label{fig:L01_S33_1} Sampled \( \sin \) function.}
+\end{figure}
+
+%\marginpar{Importance of time and amplitude discretization}
+It is of paramount importance to discretize both time and amplitude. By this way, we can ease tasks like storage, processing and transmission. In particular, let us describe the ladder.
+
+\medskip
+\marginpar{Signal transmission}
+Transmission is one of the fields that most benefits from discrete signal representation. We give an idea of this fact through an example. Let us consider the channel scheme in Figure \ref{fig:L01_S38_1} and a sinusoidal analog signal, which is attenuated and acquires a noise component, as represented in Figure \ref{fig:L01_S40_1}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{\figpath{01}/01_images/S38_1.pdf}
+    \hspace{1cm}
+    \includegraphics[width=0.4\textwidth]{\figpath{01}/01_images/S39_1.pdf}
+    \caption{\label{fig:L01_S38_1} Scheme of an example of transmission channel.}
+\end{figure}
+
+We can counteract this problem by trying to undo the errors introduced by the signal (only the gain):
+\begin{equation}
+    \hat{x}_{1}(t)
+    =
+    G \qty[\frac{x(t)}{G} + \sigma(t)]
+    =
+    x(t) + G \sigma(t)
+    \label{eq:L01_S43_1}
+\end{equation}
+By this way, we also amplify the noise. Sometimes this is unavoidable, but what we can do is to amplify the signal as near to the place where it is acquired as possible, so that the noise is amplified before it increases in the transmission to the place where it is analyzed. In particular, noise amplification becomes more relevant if we put in cascade several transmission blocks, as represented in Figure \ref{fig:L01_S46_1}. In this case, the output of the transmission chain reads:
+\begin{equation}
+    \hat{x}_{N}(t)
+    =
+    x(t) + N G \sigma(t)
+    \label{eq:}
+\end{equation}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{01}/01_images/S46_1.pdf}
+    \caption{\label{fig:L01_S46_1} Scheme of an example of a cascade of transmission blocks.}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{01}/01_images/S40_1.pdf}
+    \includegraphics[width=0.5\textwidth]{\figpath{01}/01_images/S41_1.pdf}
+    \includegraphics[width=0.5\textwidth]{\figpath{01}/01_images/S42_1.pdf}
+    \caption{\label{fig:L01_S40_1} Sinusoidal analog signal (top), sinusoidal attenuated signal (center), sinusoidal attenuated noisy signal (bottom).}
+\end{figure}
+
+This discussion was mainly related to analog signals. Now, if we take into account the transmission of a digital signal, we have to perform other operations, such as introducing a thresholding operator to discretize the signal. With respect to the previous example, the new transmission block is showed in Figure \ref{fig:L01_S47_1} and the output reads:
+\begin{equation}
+    \hat{x}_{1}(t)
+    =
+    \sign\qty[x(t) + G \sigma(t)]
+    \label{eq:L01_S47_1}
+\end{equation}
+which is in practice a square wave.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{01}/01_images/S47_1.pdf}
+    \caption{\label{fig:L01_S47_1} Scheme of an example of transmission channel for digital signals.}
+\end{figure}
+
+
+
+
+
+\section{Advantages and disadvantages of digital signals}
+To conclude this introduction, we have still to present the main advantage of digital signals, but also their drawbacks:
+\marginpar{Pro and cons}
+\begin{itemize}
+    \item[{\color{dartmouthgreen}\checkmark}] noise is easy to control after initial quantization;
+    \item[{\color{dartmouthgreen}\checkmark}] highly linear (within limited dynamic range);
+    \item[{\color{dartmouthgreen}\checkmark}] complex algorithms fit into a single chip;
+    \item[{\color{dartmouthgreen}\checkmark}] flexibility, parameters can easily be varied in software;
+    \item[{\color{dartmouthgreen}\checkmark}] digital processing is insensitive o component tolerances, aging, environmental conditions, electromagnetic interference;
+    \item[{\color{red}\( \bm{\times} \)}] discrete-time processing artifacts (aliasing);
+    \item[{\color{red}\( \bm{\times} \)}] a significantly large amount of power can be required (battery, cooling);
+    \item[{\color{red}\( \bm{\times} \)}] digital clock and switching cause interference.
+\end{itemize}
+
+\end{document}
