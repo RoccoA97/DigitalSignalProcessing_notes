@@ -10,23 +10,454 @@
 \marginpar{ \textbf{Lecture 5.} \\  \displaydate{date}.}
 
 \section{Impulse and step response}
+Linearity and time-invariance taken together have an incredibly powerful consequence on the behavior of a system. Indeed, an LTI system turns out to be completely characterized by its response to the input \( x[n] = \delta[n] \).
+\marginpar{Impulse and step responses}
+More in general, the response of a discrete-time system to a unit sample sequence \( \qty{\delta[n]} \) is called the unit sample response or, simply, the \textbf{impulse response}, and it is denoted by \( \qty{h[n]} \).
+On the other hand, the response of a discrete-time system to a unit step sequence \( \qty{\mu[n]} \) is called the unit step response, or simply, the \textbf{step responce}, and is denoted by \( \qty{s[n]} \).
 
+\begin{example}{Impulse response}{}
+    The impulse response of the system:
+    \begin{equation}
+        y[n]
+        =
+        \alpha_{1}x[n] + \alpha_{2}x[n-1] + \alpha_{3}x[n-2] + \alpha_{4}x[n-3]
+        \label{eq:L05_S04_1}
+    \end{equation}
+    is obtained by setting \( x[n] = \delta[n] \), resulting in:
+    \begin{equation}
+        h[n]
+        =
+        \alpha_{1}\delta[n] + \alpha_{2}\delta[n-1] + \alpha_{3}\delta[n-2] + \alpha_{4}\delta[n-3]
+        \label{eq:L05_S04_2}
+    \end{equation}
+    The impulse response is thus a finite-length sequence of length \( 4 \) given by:
+    \begin{equation}
+        \qty{h[n]}
+        =
+        \qty{{\color{red}\alpha_{1}}, \alpha_{2}, \alpha_{3}, \alpha_{4}}
+        \label{eq:L05_S04_3}
+    \end{equation}
+\end{example}
 
+\begin{example}{Impulse response of accumulator}{}
+    The impulse response of the discrete-time accumulator:
+    \marginnote{\flushleft\textsl{\small Impulse response of accumulator}}
+    \begin{equation}
+        y[n]
+        =
+        \sum_{\ell = -\infty}^{\infty} x[\ell]
+        \label{eq:L05_S05_1}
+    \end{equation}
+    is obtained by setting \( x[n] = \delta[n] \), resulting in:
+    \begin{equation}
+        h[n]
+        =
+        \sum_{\ell = -\infty}^{\infty} \delta[\ell]
+        =
+        \mu[n]
+        \label{eq:L05_S05_2}
+    \end{equation}
+\end{example}
 
+\begin{example}{Impulse response of interpolator}{}
+    The impulse response of the factor-of-2 interpolator:
+    \marginnote{\flushleft\textsl{\small Impulse response of interpolator}}
+    \begin{equation}
+        y[n]
+        =
+        x_{u}[n] + \frac{1}{2} \qty(x_{u}[n-1] + x_{u}[n+1])
+        \label{eq:L05_S06_1}
+    \end{equation}
+    is obtained by setting \( x_{u}[n] = \delta[n] \) and is given by:
+    \begin{equation}
+        h[n]
+        =
+        \delta[n] + \frac{1}{2} \qty(\delta[n-1] + \delta[n+1])
+        \label{eq:L05_S06_2}
+    \end{equation}
+    The impulse response is thus a finite-length sequence of length \( 3 \):
+    \begin{equation}
+        \qty{h[n]}
+        =
+        \qty{0.5, {\color{red}1}, 0.5}
+        \label{eq:L05_S06_3}
+    \end{equation}
+\end{example}
 
-
-\section{Shift-Invariant systems}
-
-
-
-
-
-\section{Time domain characterizatio of LTI discrete-time system}
+\medskip
+\marginpar{Input-output realationship}
+As we have already pointed out, a consequence of the linear, time-invariance property is that an LTI discrete system is completely characterized by its impulse response. This means that, knowing the impulse response, one can compute the output of the system for any arbitrary input. Let us explain this fact with an example. We considere an LTI discrete-time system and we denote with \( h[n] \) its impulse response. We compute its output \( y[n] \) for the input:
+\begin{equation}
+    x[n]
+    =
+    0.5 \delta[n+2] + 1.5 \delta[n-1] - \delta[n-2] + 0.75 \delta[n-5]
+    \label{eq:L05_S08_1}
+\end{equation}
+As the system is linear, we can compute its outputs for each member of the input separately and add the individual outputs to determine \( y[n] \). Since the system is time-invariant:
+\begin{align}
+    \text{Input}    &\longrightarrow    \text{Output}   \nonumber   \\
+    \delta[n+2]     &\longrightarrow    h[n+2]  \\
+    \delta[n-1]     &\longrightarrow    h[n-1]  \\
+    \delta[n-2]     &\longrightarrow    h[n-2]  \\
+    \delta[n-5]     &\longrightarrow    h[n-5]
+\end{align}
+Likewise, as the system is linear:
+\begin{align}
+    \text{Input}    &\longrightarrow    \text{Output}   \nonumber   \\
+    0.5 \delta[n+2]     &\longrightarrow    0.5  h[n+2]  \\
+    1.5 \delta[n-1]     &\longrightarrow    1.5  h[n-1]  \\
+    -   \delta[n-2]     &\longrightarrow    -    h[n-2]  \\
+    0.75\delta[n-5]     &\longrightarrow    0.75 h[n-5]
+\end{align}
+Hence, because of the linearity property we get:
+\begin{equation}
+    y[n]
+    =
+    0.5 h[n+2] + 1.5 h[n-1] - h[n-2] + 0.75 h[n-5]
+    \label{eq:L05_S10_2}
+\end{equation}
+Now, any arbitrary input sequence \( x[n] \) can be expressed as a linear combination of delayed and advanced unit sample sequences in the form:
+\begin{equation}
+    x[n]
+    =
+    \sum_{k = -\infty}^{\infty} x[k] \delta[n-k]
+    \label{eq:L05_S11_1}
+\end{equation}
+The response of the LTI system to an input \( x[k] \delta[n-k] \) will be \( x[k] h[n-k] \). Hence, the response \( y[n] \) to an input like Eq. \ref{eq:L05_S11_1} will be:
+\begin{equation}
+    y[n]
+    =
+    \sum_{k = -\infty}^{\infty} x[k] h[n-k]
+    \label{eq:L05_S12_2}
+\end{equation}
+which can be alternately written as:
+\begin{equation}
+    y[n]
+    =
+    \sum_{k = -\infty}^{\infty} x[n-k] h[k]
+    \label{eq:L05_S12_3}
+\end{equation}
 
 
 
 
 
 \section{Convolution sum}
+The summation in Eqs. \ref{eq:L05_S12_2} and \ref{eq:L05_S12_3} requires a separate discussion since it is a very common operation in the field of Digital Signal Processing.
+\marginpar{Convolution sum}
+It is called \textbf{convolution sum} of the sequences \( x[n] \) and \( h[n] \) and represented compactly as:
+\begin{equation}
+    y[n]
+    =
+    x[n] \circledast h[n]
+    \label{eq:L05_S13_2}
+\end{equation}
+\marginpar{Properties of convolution sum}
+and it has the following properties:
+\begin{itemize}
+    \item \textbf{commutative}:
+    \begin{equation}
+        x[n] \circledast h[n]
+        =
+        h[n] \circledast x[n]
+        \label{eq:L05_S14_1}
+    \end{equation}
+
+    \item \textbf{associative}:
+    \begin{equation}
+        \qty(x[n] \circledast h[n]) \circledast y[n]
+        =
+        x[n] \circledast \qty(h[n] \circledast y[n])
+        \label{eq:L05_S14_2}
+    \end{equation}
+
+    \item \textbf{distributive}:
+    \begin{equation}
+        x[n] \circledast \qty(h[n] + y[n])
+        =
+        x[n] \circledast h[n] + x[n] \circledast y[n]
+        \label{eq:L05_S14_3}
+    \end{equation}
+\end{itemize}
+It is also possible to give an interpretation of the convolution sum, which is schematized in Figure \ref{fig:L05_S16_1} with the following operations:
+\marginpar{Operations of convolution sum}
+\begin{itemize}
+    \item time-reverse \( h[k] \) to form \( h[-k] \);
+    \item shift \( h[-k] \) to the right by \( n \) sampling periods if \( n > 0 \) or shift to the left by \( n \) sampling periods if \( n < 0 \) to form \( h[n-k] \);
+    \item form the product \( v[k] = x[k]h[n-k] \);
+    \item sum all samples of \( v[k] \) to develop the \( n^{\text{th}} \) sample of \( y[n] \) of the convolution sum.
+\end{itemize}
+The computation of an output sample using the convolution sum is simply a sum of products, therefore, it involves fairly sinple operations such as additions, multiplications and delays.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{05}/05_images/S16_1.pdf}
+    \caption{\label{fig:L05_S16_1} Scheme of convolution sum operations.}
+\end{figure}
+
+In practice, if either the input or the impulse response is of finite length, the convolution sum can be used to compute the output sample as it involves a finite sum of products. Moreover, if both the input sequence and the impulse response sequence are of finite length, the output sequence is also of finite length. If both of them are of infinite length, the convolution sum cannot be used to compute the output. In particular, for systems characterized by an infinite impulse response sequence, an alternate time-domain description involving a finite sum of products will be considered.
+
+\begin{example}{Characterization of LTI discrete-time system}{}
+    We develop the sequence \( y[n] \) generated by the convolution of the sequences \( x[n] \) and \( h[n] \) showed below.
+    \marginnote{\flushleft\textsl{\small Example of characterization of LTI system}}
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{\figpath{05}/05_images/S19_1.pdf}
+    \end{center}
+
+    As can be seen from the shifted time-reversed version \( \qty{h[n-k]} \) for \( n < 0 \), showed below for \( n = -3 \), for any value of the sample index \( k \), the \( k^{\text{th}} \) sample of either \( \qty{x[k]} \) or \( \qty{h[n-k]} \) is zero.
+
+    \begin{center}
+        \includegraphics[width=0.3\textwidth]{\figpath{05}/05_images/S20_1.pdf}
+    \end{center}
+
+    As a result, for \( n < 0 \), the product of the \( k^{\text{th}} \) samples of \( \qty{x[k]} \) and \( \qty{h[n-k]} \) is always zero and hence:
+    \begin{equation}
+        y[n]
+        =
+        0,
+        \qquad
+        n < 0
+        \label{eq:L05_S21_1}
+    \end{equation}
+    We consider now the computation of \( y[0] \). The sequence \( \qty{h[-k]} \) is showed below.
+
+    \begin{center}
+        \includegraphics[width=0.3\textwidth]{\figpath{05}/05_images/S21_1.pdf}
+    \end{center}
+
+    The product sequence \( \qty{x[k]h[-k]} \) is plotted below which has a single non-zero sample \( x[0]h[0] \) for \( k = 0 \).
+
+    \begin{center}
+        \includegraphics[width=0.3\textwidth]{\figpath{05}/05_images/S22_1.pdf}
+    \end{center}
+
+    Thus \( y[0] = x[0]h[0] = -2 \). For the computation of \( y[1] \), we shift \( \qty{h[-k]} \) to the right by one sample period to form \( \qty{h[1-k]} \) as showed below.
+
+    \begin{center}
+        \includegraphics[width=0.3\textwidth]{\figpath{05}/05_images/S23_1.pdf}
+    \end{center}
+
+    The product sequence \( \qty{x[k]h[1-k]} \) is showed below as well.
+
+    \begin{center}
+        \includegraphics[width=0.3\textwidth]{\figpath{05}/05_images/S23_2.pdf}
+    \end{center}
+
+    Hence \( y[1] = x[0]h[1] + x[1]h[0] = -4 + 0 = -4 \). To calculate \( y[2] \), we form \( \qty{h[2-k]} \) and the product sequence \( \qty{x[k]h[2-k]} \). Hence, \( y[2] = x[0]h[2] + x[1]h[1] + x[2]h[0] = 0 + 0 + 1 = 1 \). Continuing the process, we get:
+    \begin{align}
+        y[3] &= x[0]h[3] + x[1]h[2] + x[2]h[1] + x[3]h[0] = 2 + 0 + 0 + 1 =  3   \\
+        y[4] &= x[1]h[3] + x[2]h[2] + x[3]h[1] + x[4]h[0] = 0 + 0 - 2 + 3 =  1   \\
+        y[5] &= x[2]h[3] + x[3]h[2] + x[4]h[1]            =-1 + 0 + 6     =  5   \\
+        y[6] &= x[3]h[3] + x[4]h[2]                       = 1 + 0         =  1   \\
+        y[7] &= x[4]h[3]                                  =                 -3
+    \end{align}
+    From the plot of \( \qty{h[n-k]} \) for \( n > 7 \) and the plot of \( \qty{x[k]} \), it can be seen that there is no overlap between these two sequences. As a result, \( y[n] = 0 \) for \( n > 7 \).
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{\figpath{05}/05_images/S26_1.pdf}
+    \end{center}
+
+    Finally, the sequence \( \qty{y[n]} \) generated by the convolution sum is showed below.
+
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{\figpath{05}/05_images/S27_1.pdf}
+    \end{center}
+\end{example}
+
+We have to note that the sum of indices of each sample product inside the convolution sum is equal to the index of the sample being generated by the convolution operation. For example, the computation of \( y[3] \) in the previous example involves the products \( x[0]h[3] \), \( x[1]h[2] \), \( x[2]h[1] \) and \( x[3]h[0] \), and so, the sum of indices in each of these products is equal to \( 3 \).
+
+Again, in the same example, we can observe that the convolution of a sequence \( \qty{x[n]} \) of length \( 5 \) with a sequence \( \qty{h[n]} \) of length \( 4 \) resulted in a sequence \( \qty{y[n]} \) of length \( 8 \).
+In general, if the lengths of the two sequences being convolved are \( M \) and \( N \), then the sequence generated by the convolution is of length \( M + N - 1 \).
+
+\medskip
+\marginpar{Tabular method for convolution sum computation}
+Taking again into account the previous example, we can notice a certain patter in the calculation of \( y[n] \). From this intuition, we introduce the \textbf{tabular method}, that can be used to convolve two finite.length sequences in a clean and intuitive way.
+We present it by considering the particular case of the convolution of \( \qty{g[n]} \), \( 0 \le n \le 3 \), with \( \qty{h[n]} \), \( 0 \le n \le 2 \), generating the sequence \( y[n] = g[n] \circledast h[n] \).
+The samples of \( \qty{g[n]} \) and \( \qty{h[n]} \) are then multiplied using the conventional multiplication method without any carry operation. The result of the entire procedure is showed in Table \ref{tab:L05_S31_1}.
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{ccccccc}
+        \toprule
+        \( n \): &   \( 0 \) &   \( 1 \) &   \( 2 \) &   \( 3 \) &   \( 4 \) &   \( 5 \) \\
+        \midrule
+        \( g[n] \): &   \( g[0] \)  &   \( g[1] \)  &   \( g[2] \)  &   \( g[3] \)  &   &   \\
+        \( h[n] \): &   \( h[0] \)  &   \( h[1] \)  &   \( h[2] \)  &               &   &   \\
+        \midrule
+            &   \( g[0]h[0] \)  &   \( g[1]h[0] \)  &   \( g[2]h[0] \)  &   \( g[3]h[0] \)  &   &   \\
+            &   &   \( g[0]h[1] \)  &   \( g[1]h[1] \)  &   \( g[2]h[1] \)  &   \( g[3]h[1] \)  &   \\
+            &   &   &   \( g[0]h[2] \)  &   \( g[0]h[2] \)  &   \( g[0]h[2] \)  &   \( g[0]h[2] \)  \\
+        \midrule
+        \( y[n] \): &   \( y[0] \)  &   \( y[1] \)  &   \( y[2] \)  &   \( y[3] \)  &   \( y[4] \)  &   \( y[5] \)  \\
+        \bottomrule
+    \end{tabular}
+    \caption{\label{tab:L05_S31_1} Results obtained by applying the tabular method for convolution sum computation.}
+\end{table}
+
+The samples \( y[n] \) generated by the convolution sum are obtained by adding the entries in the column above each sample:
+\begin{align}
+    y[0] &= g[0]h[0]    \\
+    y[1] &= g[1]h[0] + g[0]h[1] \\
+    y[2] &= g[2]h[0] + g[1]h[1] + g[0]h[2]  \\
+    y[3] &= g[3]h[0] + g[2]h[1] + g[1]h[2]  \\
+    y[4] &=            g[3]h[1] + g[2]h[2]  \\
+    y[5] &=                       g[3]h[2]
+\end{align}
+The method can also be applied to convolve two finite-length two-sided sequences. In this case, a decimal point is first placed to the right of the sample with the time index \( n = 0 \) for each sequence. Next, the convolution is computed ignoring the location of the decimal point. Finally, the decimal point is inserted according to the rules of conventional multiplication. The sample immediately to the left of the decimal point is then located at the time index \( n = 0 \).
+
+
+
+
+
+\section{Simple interconnection schemes}
+\marginpar{Examples of simple interconnection schemes}
+Now, we move to some examples of interconnection schemes of discrete-time systems. There are two main possibilities:
+\begin{itemize}
+    \item \textbf{cascade connection};
+    \item \textbf{parallel connection}.
+\end{itemize}
+
+
+
+\subsection{Cascade connection}
+\marginpar{Cascade connection scheme}
+The impulse response \( h[n] \) of the cascade of two LTI discrete-time systems with impulse responses \( h_{1}[n] \) and \( h_{2}[n] \) is given by the scheme in Figure \ref{fig:L05_S37_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{05}/05_images/S37_1.pdf}
+    \caption{\label{fig:L05_S37_1} Scheme of the cascade connection of two LTI discrete-time systems.}
+\end{figure}
+
+Note that the ordering of the systems in the cascade has no effect on the overall impulse response because of the commutative property of convolution. Moreover, the cascade connection of two stable systems is stable and the cascade of two passive (lossless) systems is passive (lossless).
+
+\marginpar{Applications of the cascade connection}
+An application of the cascade connection can be found in the development of an inverse system. If the cascade connection satisfies the relation \( h_{1}[n] \circledast h_{2}[n] \), then the LTI system \( h_{1}[n] \) is said to be the inverse of \( h_{2}[n] \) and viceversa.
+Consequently, an application of the inverse system concept is in the recovery of a signal \( x[n] \) from its distorted version \( \hat{x}[n] \) appearing at the output of a transmission channel.
+If the impulse response of the channel is known, then \( x[n] \) can be recovered by designing an inverse system of the channel as represented in Figure \ref{fig:L05_S40_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{\figpath{05}/05_images/S40_1.pdf}
+    \caption{\label{fig:L05_S40_1} Scheme of the cascade connection for signal recoverying.}
+\end{figure}
+
+\begin{example}{Cascade connection and inverse system}{}
+    We consider the discrete-time accumulator with an impulse response \( \mu[n] \). Its inverse system satisfies the condition:
+    \marginnote{\flushleft\textsl{\small Backward difference system}}
+    \begin{equation}
+        \mu[n] \circledast h_{2}[n]
+        =
+        \delta[n]
+        \label{eq:L05_S41_1}
+    \end{equation}
+    It follows from Eq. \ref{eq:L05_S41_1} that:
+    \begin{align}
+        h_{2}[n] &= 0,   \qquad n < 0    \\
+        h_{2}[0] &= 1
+    \end{align}
+    and that:
+    \begin{equation}
+        \sum_{\ell = 0}^{n} h_{2}[\ell]
+        =
+        0,
+        \qquad
+        n \ge 1
+        \label{eq:L05_S41_4}
+    \end{equation}
+    Thus, the impulse response of the inverse system of the discrete-time accumulator is given by:
+    \begin{equation}
+        h_{2}[n]
+        =
+        \delta[n] - \delta[n-1]
+        \label{eq:L05_S42_1}
+    \end{equation}
+    which is called a \textbf{backward difference system}.
+\end{example}
+
+
+
+\subsection{Parallel connection}
+\marginpar{Parallel connection scheme}
+The impulse response \( h[n] \) of the parallel of two LTI discrete-time systems with impulse responses \( h_{1}[n] \) and \( h_{2}[n] \) is given by \( h[n] = h_{1}[n] + h_{2}[n] \) and it is schematized in Figure \ref{fig:L05_S43_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{05}/05_images/S43_1.pdf}
+    \caption{\label{fig:L05_S43_1} Scheme of the parallel connection of two LTI discrete-time systems.}
+\end{figure}
+
+Now, we give a simple example of interconnection scheme.
+
+\begin{example}{Interconnection schemes}{}
+    We consider the discrete-time system where:
+    \begin{align}
+        h_{1}[n] &= \delta[n] + 0.5 \delta[n-1] \\
+        h_{2}[n] &= 0.5 \delta[n] - 0.25 \delta[n-1]    \\
+        h_{3}[n] &= 2.0 \delta[n]   \\
+        h_{4}[n] &= -2(0.5)^{n} \mu[n]
+    \end{align}
+    which can be schematized as in the diagram below.
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{\figpath{05}/05_images/S44_1.pdf}
+    \end{center}
+
+    The block diagram can be further simplified.
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{\figpath{05}/05_images/S45_1.pdf}
+    \end{center}
+
+    The overall impulse response \( h[n] \) is given by:
+    \begin{align}
+        h[n]
+        &=
+            h_{1}[n] + h_{2}[n] \circledast \qty(h_{3}[n] + h_{4}[n])   \nonumber   \\
+        &=
+            h_{1}[n] + h_{2}[n] \circledast h_{3}[n] + h_{2}[n] \circledast h_{4}[n]
+    \end{align}
+    Now, we can rewrite:
+    \begin{equation}
+        h_{2}[n] \circledast h_{3}[n]
+        =
+        \qty(
+            \frac{1}{2} \delta[n] - \frac{1}{4} \delta[n-1]
+        ) \circledast \qty(2 \delta[n])
+        =
+        \delta[n] - \frac{1}{2} \delta[n-1]
+        \label{eq:L05_S46_2}
+    \end{equation}
+    an:
+    \begin{align}
+        h_{2}[n] \circledast h_{4}[n]
+        &=
+            \qty(
+                \frac{1}{2} \delta[n] - \frac{1}{4} \delta[n-1]
+            )
+            \circledast
+            \qty(
+                -2 \qty(\frac{1}{2})^{n} \mu[n]
+            )   \nonumber   \\
+        &=
+            - \qty(\frac{1}{2})^{n} \mu[n] + \frac{1}{2} \qty(\frac{1}{2})^{n-1} \mu[n-1]   \nonumber   \\
+        &=
+            - \qty(\frac{1}{2})^{n} \mu[n] + \qty(\frac{1}{2})^{n} \mu[n-1]   \nonumber   \\
+        &=
+            - \qty(\frac{1}{2})^{n} \delta[n]   \nonumber   \\
+        &=
+            - \delta[n]
+    \end{align}
+    Therefore, we come to the final result:
+    \begin{align}
+        h[n]
+        &=
+            \delta[n] + \frac{1}{2} \delta[n-1] + \delta[n] - \frac{1}{2} \delta[n-1]   \nonumber   \\
+        &=
+            \delta[n]
+    \end{align}
+\end{example}
+
 
 \end{document}
