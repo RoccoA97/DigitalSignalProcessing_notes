@@ -9,35 +9,547 @@
 \chapter{Discrete-Time systems}
 
 \newdate{date}{06}{10}{2020}
-\marginpar{ \textbf{Lecture 3.} \\  \displaydate{date}.}
+% \marginpar{\begin{mdframed}\textbf{Lecture 3.} \\  \displaydate{date}.\end{mdframed}}
+\marginpar{\textbf{Lecture 3.} \\  \displaydate{date}.}
 
-\section{Linear systems}
+In this Chapter we will introduce the concept of discrete-time system in the framework of Hilbert spaces and we will study how linear algebra can be extremely useful when dealing with this kind of systems.
 
+\marginpar{Discrete-time system}
+A discrete-time system processes a given input sequence \( x[n] \) to generate an output sequence \( y[n] \) with more desirable properties. In most applicationns, the discrete-time system is a single-input and single-output system, just like in the scheme in Figure \ref{fig:L03_S03_1}.
 
-
-
-
-\section{Shift-Invariant systems}
-
-
-
-
-
-\section{Causal systems}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{03}/03_images/S03_1.pdf}
+    \caption{\label{fig:L03_S03_1} Scheme of a single-input single-output discrete-time system.}
+\end{figure}
 
 
 
 
 
-\section{Stable systems}
+\section{Examples of discrete-time systems}
+Some already seen examples of discrete-time systems are the modulator and the adder, which are 2-input 1-output systems, and the multiplier, the unit delay, the unit advance, which are 1-input 1-output. In this Section, we study other types of systems.
+
+
+
+\subsection{Accumulator system}
+\marginpar{Accumulator system}
+The output of the \textbf{accumulator} \( y[n] \) at time instant \( n \) is the sum of the input sample \( x[n] \) at time instant \( n \) and the previous output \( y[n-1] \) at time instant \( n-1 \), which is the sum of all previous input sample values from \( - \infty \) to \( n-1 \). Mathematically, this reads:
+\begin{align}
+    y[n]
+    &=
+        \sum_{\ell = -\infty}^{n} x[\ell]
+        =
+        \sum_{\ell = -\infty}^{n-1} x[\ell] \nonumber   \\
+    &=
+        y[n-1] + x[n]
+\end{align}
+So, the system cumulatively adds, namely it accumulates all input sample values. The input-output relation can also be rewritten in the form:
+\begin{align}
+    y[n]
+    &=
+        \sum_{\ell = -\infty}^{-1} x[\ell] + \sum_{\ell = 0}^{n} x[\ell]    \nonumber   \\
+    &=
+        y[-1] + \sum_{\ell = 0}^{n} x[\ell],
+        \qquad
+        n \ge 0
+\end{align}
+This form is used for a causal input sequence, in which case \( y[-1] \) is called the initial condition.
+
+
+
+\subsection{\( M \)-point moving average system}
+\marginpar{\( M \)-point moving average system}
+The \textbf{\( M \)-point moving average} is used to smooth random variations in data. In fact, the operation it applies reads:
+\begin{equation}
+    y[n]
+    =
+    \frac{1}{M} \sum_{k=0}^{M-1} x[n-k]
+    \label{eq:L03_S07_1}
+\end{equation}
+In most applications, the data \( x[n] \) is a bounded sequence, so also the \( M \)-point aaverage \( y[n] \) is a bounded sequence. Moreover, if there is no bias in the measurements, an improved estimate of the noisy data is obtained by simply increasing \( M \).
+
+From a complexity point of view, the direct implementation of this system requires \( M-1 \) additions, \( 1 \) division and the storage of the \( M-1 \) past input data samples. However, a more efficient implementation can be developed if we write:
+\marginpar{Recursive \( M \)-point moving average system}
+\begin{align}
+    y[n]
+    &=
+        \frac{1}{M} \qty(
+            \sum_{\ell = 0}^{M-1} x[n-\ell] + x[n-M] - x[n-M]
+        )   \nonumber   \\
+    &=
+        \frac{1}{M} \qty(
+            \sum_{\ell = 1}^{M} x[n-\ell] + x[n] - x[n-M]
+        )   \nonumber   \\
+    &=
+        \frac{1}{M} \qty(
+            \sum_{\ell = 0}^{M-1} x[n-1-\ell] + x[n] - x[n-M]
+        )   \nonumber   \\
+    &=
+        y[n-1] + \frac{1}{M} \qty(x[n] - x[n-M])
+\end{align}
+In this case, the computation of the \( M \)-point moving average system is recursive and it requires only \( 2 \) additions and \( 1 \) division.
+
+Let us consider an application using this system.
+
+\begin{example}{\( M \)-point moving average system}{}
+    We consider a signal \( s[n] \) corrupted by a noise \( d[n] \), namely:
+    \begin{equation}
+        x[n]
+        =
+        s[n] + d[n]
+        \label{eq:L03_S10_1}
+    \end{equation}
+    In particular:
+    \begin{align}
+        s[n] &= 2\qty[n(0.9)^{n}]   \\
+        d[n] &= \text{random signal}
+    \end{align}
+    The results obtained by applying the moving average are showed below:
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{\figpath{03}/03_images/S11_1.pdf}
+    \end{center}
+\end{example}
+
+
+
+\subsection{Exponentially weighted running average system}
+\marginpar{Exponentially weighted running average system}
+In this case, the computation of the \textbf{exponentially weighted running average} requires only \( 2 \) additions, \( 1 \) multiplication and the storage of the previous running average and it does not require the storage of past input data samples. Mathematically, the operation applied reads:
+\begin{equation}
+    y[n]
+    =
+    \alpha y[n-1] + x[n],
+    \qquad
+    0 < \alpha < 1
+    \label{eq:L03_S12_1}
+\end{equation}
+In particular, for \( 0 < \alpha < 1 \), the exponentially weighted average filter places more emphasis on current data samples and less emphasis on past data samples. In fact:
+\begin{align}
+    y[n]
+    &=
+        \alpha \qty(\alpha y[n-2] + x[n-1]) + x[n]  \nonumber   \\
+    &=
+        \alpha^{2} y[n-2] + \alpha x[n-1] + x[n]    \nonumber   \\
+    &=
+        \alpha^{2} \qty(\alpha y[n-3] + x[n-2]) + \alpha x[n-1] + x[n]  \nonumber   \\
+    &=
+        \alpha^{3} y[n-3] + \alpha^{2} x[n-2] + \alpha x[n-1] + x[n]
+\end{align}
+
+
+
+\subsection{Linear interpolation system}
+\marginpar{Linear interpolation system}
+The \textbf{linear interpolation} is employed to estimate the sample values between pairs of adjacent samples of a discrete-time system. A clear example of how this stuff works is showed in Figure \ref{fig:L03_S14_1}, where the so called factor-of-4 interpolation is employed.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{\figpath{03}/03_images/S14_1.pdf}
+    \includegraphics[width=0.5\textwidth]{\figpath{03}/03_images/S14_2.pdf}
+    \caption{\label{fig:L03_S14_1} Result of the factor-of-4 interpolation.}
+\end{figure}
+
+Now, we explain how it works mathematically. If we consider the factor-of-2 interpolator, the operation it performs reads:
+\begin{equation}
+    y[n]
+    =
+    x_{u}[n] + \frac{1}{2} \qty(x_{u}[n-1] + x_{u}[n+1])
+    \label{eq:L03_S15_1}
+\end{equation}
+Again, the operation performed by a factor-of-3 interpolator reads:
+\begin{equation}
+    y[n]
+    =
+    x_{u}[n] + \frac{1}{3} \qty(x_{u}[n-1] + x_{u}[n+2]) + \frac{2}{3} \qty(x_{u}[n-2] + x_{u}[n+1])
+    \label{eq:L03_S15_2}
+\end{equation}
+and so on and so forth. The application of a factor-of-2 interpolator to an image for can be observed in Figure \ref{fig:L03_S16_1}. This is a simple example of compression and decompression of informations.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{03}/03_images/S16_1.pdf}
+    \caption{\label{fig:L03_S16_1} Application of a factor-of-2 interpolator to a watch image, which is down-sampled before applying the operation.}
+\end{figure}
+
+
+
+\subsection{Median system}
+\marginpar{Median system}
+The \textbf{median} of a set of \( (2k+1) \) numbers is the number such that \( k \) numbers from the set have values greater than this number and the other \( k \) numbers have smaller values. The median can be determined by rank-ordering the numbers in the set by their values and choosing the number in the middle.
+
+\begin{example}{Median system}{}
+    If we consider the set of numbers:
+    \begin{equation}
+        \qty{2, -3, 10, 5, -1}
+        \label{eq:L03_S18_1}
+    \end{equation}
+    the rank-order set is given by:
+    \begin{equation}
+        \qty{-3, -1, 2, 5, 10}
+        \label{eq:L03_S18_2}
+    \end{equation}
+    and hence, the median is \( 2 \)
+\end{example}
+
+Now, a median filter can be implemented by sliding a window of odd length over the input sequence \( \qty{x[n]} \) one sample at a time. The output \( y[n] \) at the instant \( n \) is the median value of the samples inside the window centered at \( n \). A possible application is found in removing additive random noise, which shows up as sudden large errors in the corrupted signal. Some plots of the result of this application are showed in Figure \ref{fig:L03_S21_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{03}/03_images/S21_1.pdf}
+    \caption{\label{fig:L03_S21_1} Example of results of the application of median filtering to a corrupted signal.}
+\end{figure}
 
 
 
 
 
-\section{Passive and lossless systems}
+\section{Classification of discrete-time systems}
+After having sketched some common examples, in this Section we present the classification of discrete-system based on their features and we enter into the detail by studying each of them. We can have:
+\begin{itemize}
+    \item linear systems;
+    \item shift-invariant systems;
+    \item causal systems;
+    \item stable systems;
+    \item passive and lossless systems.
+\end{itemize}
 
 
+
+\subsection{Linear systems}
+\marginpar{Definition of linear system}
+\begin{definition}{Linear systems}{}
+    If \( y_{1}[n] \) is the output due to an input \( x_{1}[n] \) and \( y_{2}[n] \) is the output due to an input \( x_{2}[n] \), then for an input:
+    \begin{equation}
+        x[n]
+        =
+        \alpha x_{1}[n] + \beta x_{2}[n]
+        \label{eq:L03_S23_1}
+    \end{equation}
+    the output is given by:
+    \begin{equation}
+        y[n]
+        =
+        \alpha y_{1}[n] + \beta y_{2}[n]
+        \label{eq:L03_S23_2}
+    \end{equation}
+    This property must hold for any arbitrary constants \( \alpha \) and \( \beta \) and for all possible inputs \( x_{1}[n] \) and \( x_{2}[n] \) in order to have a \textbf{linear system}.
+\end{definition}
+
+\medskip
+\marginpar{Linear systems: the accumulator}
+Let us return to the accumulator example. Here we show that this is a linear system. In fact, if we consider the accumulator outputs for the input sequences \( x_{1}[n] \) and \( x_{2}[n] \), which read respectively:
+\begin{align}
+    y_{1}[n] &= \sum_{\ell = -\infty}^{n} x_{1}[\ell]   \\
+    y_{2}[n] &= \sum_{\ell = -\infty}^{n} x_{2}[\ell]
+\end{align}
+then the output for an input \( x[n] = \alpha x_{1}[n] + \beta x_{2}[n] \) reads:
+\begin{align}
+    y[n]
+    &=
+        \sum_{\ell = -\infty}^{n} \qty(\alpha x_{1}[\ell] + \beta x_{2}[\ell])  \nonumber   \\
+    &=
+        \alpha \sum_{\ell = -\infty}^{n} x_{1}[\ell] + \beta \sum_{\ell = -\infty}^{n} x_{2}[\ell]  \nonumber   \\
+    &=
+        \alpha y_{1}[n] + \beta y_{2}[n]
+\end{align}
+If we consider tha accumulator with causal input applied at \( n = 0 \), the outputs \( y_{1}[n] \) and \( y_{2}[n] \) for inputs \( x_{1}[n] \) and \( x_{2}[n] \) are given by:
+\begin{align}
+    y_{1}[n] &= y_{1}[-1] + \sum_{\ell = 0}^{n} x_{1}[\ell] \\
+    y_{2}[n] &= y_{2}[-1] + \sum_{\ell = 0}^{n} x_{2}[\ell]
+\end{align}
+Moreover, the output \( y[n] \) for an input \( \alpha x_{1}[n] + \beta x_{2}[n] \) is given by:
+\begin{equation}
+    y[n]
+    =
+    y[-1] + \sum_{\ell = 0}^{n} \qty(\alpha x_{1}[\ell] + \beta x_{2}[\ell])
+    \label{eq:L03_S25_1}
+\end{equation}
+and, again, for \( \alpha y_{1}[n] + \beta y_{2}[n] \):
+\begin{align}
+    y[n]
+    &=
+        \alpha y_{1}[n] + \beta y_{2}[n]    \nonumber   \\
+    &=
+        \alpha \qty(
+            y_{1}[-1] + \sum_{\ell = 0}^{n} x_{1}[\ell]
+        ) +
+        \beta \qty(
+            y_{2}[-1] + \sum_{\ell = 0}^{n} x_{2}[\ell]
+        )   \nonumber   \\
+    &=
+        \qty(
+            \alpha y_{1}[-1] + \beta y_{2}[-1]
+        ) +
+        \qty(
+            \alpha \sum_{\ell = 0}^{n} x_{1}[\ell] + \beta \sum_{\ell = 0}^{n} x_{2}[\ell]
+        )
+\end{align}
+Thus, if \( y[-1] = \alpha y_{1}[-1] + \beta y_{2}[-1] \):
+\begin{equation}
+    y[n]
+    =
+    \alpha y_{1}[n] + \beta y_{2}[n]
+    \label{eq:L03_S26_1}
+\end{equation}
+For the causal accumulator to be linear, the condition \( y[-1] = \alpha y_{1}[-1] + \beta y_{2}[-1] \) must gold for all initial conditions \( y[-1] \), \( y_{1}[-1] \), \( y_{2}[-1] \), and for all constants \( \alpha \) and \( \beta \). This condition cannot be satisfied unless the accumulator is initially at rest with zero initial condition. Instead, for non-zero initial condition, the system is non-linear.
+
+
+\medskip
+\marginpar{Non-linear systems: the median filter}
+Let us move to the median filter example in the contest of linear systems discussion. The median filter described earlier is a non-linear dscrete-time system. To show this, we consider an example with a window length of \( 3 \). The output of the filter for an input:
+\begin{equation}
+    \qty{x_{1}[n]}
+    =
+    \qty{3, 4, 5},
+    \qquad
+    0 \le n \le 2
+    \label{eq:L03_S28_1}
+\end{equation}
+is:
+\begin{equation}
+    \qty{y_{1}[n]}
+    =
+    \qty{3, 4, 4},
+    \qquad
+    0 \le n \le 2
+    \label{eq:L03_S28_2}
+\end{equation}
+Again, the output for an input:
+\begin{equation}
+    \qty{x_{2}[n]}
+    =
+    \qty{2, -1, -1},
+    \qquad
+    0 \le n \le 2
+    \label{eq:L03_S29_1}
+\end{equation}
+is:
+\begin{equation}
+    \qty{y_{2}[n]}
+    =
+    \qty{0, -1, -1},
+    \qquad
+    0 \le n \le 2
+    \label{eq:L03_S29_2}
+\end{equation}
+However, the output for the sum of the previous inputs:
+\begin{equation}
+    \qty{x[n]}
+    =
+    \qty{x_{1}[n] + x_{2}[n]}
+    \label{eq:L03_S29_3}
+\end{equation}
+is:
+\begin{equation}
+    \qty{y[n]}
+    =
+    \qty{3, 4, 3}
+    \neq
+    \qty{y_{1}[n] + y_{2}[n]}
+    \label{eq:L03_S29_4}
+\end{equation}
+Hence, the median filter is a non-linear discrete-time system.
+
+
+
+\subsection{Shift-Invariant systems}
+\marginpar{Definition of shift-invariant system}
+\begin{definition}{Shift-invariant systems}{}
+    A \textbf{shift-invariant system} is a discrete-time system such that, if \( y_{1}[n] \) is the response to an input \( x_{1}[n] \), then the response to an input:
+    \begin{equation}
+        x[n]
+        =
+        x_{1}[n-n_{0}]
+        \label{eq:L03_S31_1}
+    \end{equation}
+    is:
+    \begin{equation}
+        y[n]
+        =
+        y_{1}[n-n_{0}]
+        \label{eq:L03_S31_2}
+    \end{equation}
+    where \( n_{0} \) is any positive or negative integer. This relation must hold for any arbitrary input and its corresponding output.
+\end{definition}
+
+In the case of sequences and systems with indices \( n \) related ti discrete instants of time, the shift-invariance property is called \textbf{time-invariance property}. The ladder ensures that for a specified input, the output is independent of the time the input is being applied.
+
+\begin{example}{Shift-invariant system}{}
+    We consider the up-sampler with an input-output relation given by:
+    \begin{equation}
+        x_{u}[n]
+        \begin{cases}
+            x\qty[\frac{n}{L}]  &   n = 0, \pm L, \pm 2L, \dots \\
+            0                   &   \text{otherwise}
+        \end{cases}
+        \label{eq:L03_S33_1}
+    \end{equation}
+    For an input \( x[n] = x_{1}[n-n_{0}] \), the output \( x_{1,u}[n] \) is given by:
+    \begin{align}
+        x_{1,u}[n]
+        &=
+            \begin{cases}
+                x\qty[\frac{n}{L}]  &   n = 0, \pm L, \pm 2L, \dots \\
+                0                   &   \text{otherwise}
+            \end{cases}
+            \nonumber   \\
+        &=
+            \begin{cases}
+                x\qty[\frac{n-Ln_{0}}{L}]   &   n = 0, \pm L, \pm 2L, \dots     \\
+                0                           &   \text{otherwise}
+            \end{cases}
+    \end{align}
+    However, from the definition of the up-sampler:
+    \begin{equation}
+        x_{u}[n-n_{0}]
+        =
+        \begin{cases}
+            x\qty[\frac{n-n_{0}}{L}]    &   n = n_{0}, n_{0} \pm L, n_{0} \pm 2L, \dots    \\
+            0                           &   \text{otherwise}
+        \end{cases}
+        \neq
+        x_{1,u}[n]
+        \label{eq:L03_S34_1}
+    \end{equation}
+    Hence, the up-sampler is a \textbf{time-varying system}.
+\end{example}
+
+
+\medskip
+\marginpar{Linear time-invariant (LTI) systems}
+Returning to the main discussion, if a system satisfies both the linearity and the time-invariance properties, it is known as \textbf{linear time-invariant (LTI) system}. LTI systems are mathematically easy to analyze and characterize, and consequently, easy to design. Indeed, highly useful signal processing algorithms have been developed utilizing this class of systems over the last several decades.
+
+
+
+\subsection{Causal systems}
+\marginpar{Definition of causal system}
+\begin{definition}{Causal systems}{}
+    A \textbf{causal system} is a discrete-time system such that the \( n_{0}^{\text{th}} \) output sample \( y[n_{0}] \) depends only on the input samples \( x[n] \) for \( n \le n_{0} \) and does not depend on input samples for \( n > n_{0} \).
+\end{definition}
+
+Now, let \( y_{1}[n] \) and \( y_{2}[n] \) be the responses of a causal discrete-time system to the inputs \( x_{1}[n] \) and \( x_{2}[n] \), respectively. Then:
+\begin{equation}
+    x_{1}[n]
+    =
+    x_{2}[n],
+    \qquad
+    n < N
+    \label{eq:L03_S36_1}
+\end{equation}
+implies also that:
+\begin{equation}
+    y_{1}[n]
+    =
+    y_{2}[n],
+    \qquad
+    n < N
+    \label{eq:L03_S36_2}
+\end{equation}
+Therefore, for a causal system, changes in output samples do not precede changes in the input samples.
+
+\begin{example}{Causal systems}{}
+    We give here some examples of causal systems:
+    \begin{align}
+        y[n]
+        &=
+            \alpha_{1}x[n] + \alpha_{2}x[n-1] + \alpha_{3}x[n-2] + \alpha_{4}x[n-3] \\
+        y[n]
+        &=
+            b_{0}x[n] + b_{1}x[n-1] + b_{2}x[n-2] + \alpha_{1}y[n-1] + \alpha_{2}y[n-2] \\
+        y[n]
+        &=
+            y[n-1] + x[n]
+    \end{align}
+    We give here some examples of non-causal systems as well:
+    \begin{align}
+        y[n]
+        &=
+            x_{u}[n] + \frac{1}{2} \qty(x_{u}[n-1] + x_{u}[n+1])    \\
+        y[n]
+        &=
+            x_{u}[n] + \frac{1}{3} \qty(x_{u}[n-1] + x_{u}[n+2]) + \frac{2}{3} \qty(x_{u}[n-2] + x_{u}[n+1])
+    \end{align}
+\end{example}
+
+Note that a non-causal system can be implemented as a causal system by delaying the output by an appropriate number of samples. For example, a causal implementation of the factor-of-2 interpolator is given by:
+\begin{equation}
+    y[n]
+    =
+    x_{u}[n-1] + \frac{1}{2} \qty(x_{u}[n-2] + x_{u}[n])
+    \label{eq:L03_S38_1}
+\end{equation}
+
+
+
+\subsection{Stable systems}
+\marginpar{Definition of stable system}
+\begin{definition}{Stable systems}{}
+    There are various definitions of stability. We consider here the \textbf{bounded-input, bounded-output (BIBO) stability}. If \( y[n] \) is the response to an input \( x[n] \) and if:
+    \begin{equation}
+        \abs{x[n]}
+        \le
+        B_{x}
+        \qquad
+        \forall n
+        \label{eq:L03_S39_1}
+    \end{equation}
+    then:
+    \begin{equation}
+        \abs{y[n]}
+        \le
+        B_{y}
+        \qquad
+        \forall n
+        \label{eq:L03_S39_2}
+    \end{equation}
+    With our conventions, a \textbf{stable system} is a discrete-time system satisfying this property.
+\end{definition}
+
+\begin{example}{Stable systems}{}
+    The \( M \)-point moving average filter is BIBO stable. In fact, for a bounded input \( \abs{x[n]} \le B_{x} \), we have:
+    \begin{equation}
+        \abs{y[n]}
+        =
+        \abs{\frac{1}{M} \sum_{k=0}^{M-1} x[n-k]}
+        \le
+        \frac{1}{M} \sum_{k=0}^{M-1} \abs{x[n-k]}
+        \le
+        \frac{1}{M} \qty(MB_{x})
+        \le
+        B_{x}
+        \label{eq:L03_S40_2}
+    \end{equation}
+\end{example}
+
+
+
+\subsection{Passive and lossless systems}
+\marginpar{Definition of passive and lossless system}
+\begin{definition}{Passive and lossless systems}{}
+    A discrete-time system is defined to be \textbf{passive} if, for every finite-energy input \( x[n] \), the output \( y[n] \) has, at most, the same energy, namely:
+    \begin{equation}
+        \sum_{n = -\infty}^{\infty} \abs{y[n]}^{2}
+        \le
+        \sum_{n = -\infty}^{\infty} \abs{x[n]}^{2}
+        <
+        \infty
+        \label{eq:L03_S41_1}
+    \end{equation}
+    For a \textbf{lossless} system, the inequality in Eq. \ref{eq:L03_S41_1} is satisfied with an equal sign for every output.
+\end{definition}
+
+\begin{example}{Passive and lossless systems}{}
+    We consider the discrete-time system defined by \( y[n] = \alpha x[n-N] \) with \( N \) a positive integer. Its output energy is given by:
+    \begin{equation}
+        \sum_{n = -\infty}^{\infty} \abs{y[n]}^{2}
+        =
+        \abs{\alpha}^{2} \sum_{n = -\infty}^{\infty} \abs{x[n]}^{2}
+        \label{eq:L03_S42_1}
+    \end{equation}
+    Hence, it is a passive system if \( \abs{\alpha} < 1 \) and a lossless system if \( \abs{\alpha} = 1 \).
+\end{example}
 
 
 
