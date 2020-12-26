@@ -10,11 +10,529 @@
 \marginpar{ \textbf{Lecture 6.} \\  \displaydate{date}.}
 
 \section{Stablility and causality conditions}
+Now, we deepen the discussion on the stabilty and the causality of discrete time system. We have already defined these concepts, but now we enter more into the detail.
+
+
+
+\subsection{Stability condition of an LTI discrete-time system}
+\marginpar{Stability condition of an LTI system}
+In the previous discussion we have chosen among the numerous definitions of stability the convention of \textbf{BIBO stability condition}. We recall that a discrete-time system is BIBO stable if and only if the output sequence \( \qty{y[n]} \) remains bounded for all bounded input sequences \( \qty{x[n]} \). We specialize this definition to an LTI system.
+
+\marginpar{BIBO stability of LTI system}
+\begin{corollary}{BIBO stability of LTI system}{}
+    An LTI discrete-time system is BIBO stable if and only if its impulse response sequence \( \qty{h[n]} \) is absolutely summable, namely:
+    \begin{equation}
+        S
+        =
+        \sum_{n = -\infty}^{\infty} \abs{h[n]}
+        <
+        \infty
+        \label{eq:L06_S03_1}
+    \end{equation}
+
+    \begin{proof}
+        We assume that \( h[n] \) is a real sequence. Since the input sequence \( x[n] \) is bounded, we have:
+        \begin{equation}
+            \abs{x[n]}
+            \le
+            B_{x}
+            <
+            \infty
+            \label{eq:L06_S04_1}
+        \end{equation}
+        Therefore:
+        \begin{align}
+            \abs{y[n]}
+            &=
+                \abs{\sum_{k = -\infty}^{\infty} h[n]x[n-k]}    \nonumber   \\
+            &\le
+                \sum_{k = -\infty}^{\infty} \abs{h[k]} \abs{x[n-k]} \nonumber   \\
+            &\le
+                B_{x} \sum_{k = -\infty}^{\infty} \abs{h[k]} = B_{x}S
+        \end{align}
+        Thus, \( S < \infty \) implies \( \abs{y[n]} \le B_{y} < \infty \), indicating that \( y[n] \) is also bounded.
+
+        To prove the converse, we assume that \( y[n] \) is bounded, i.e. \( \abs{y[n]} \le B_{y} \). Then, we consider the input given by:
+        \begin{equation}
+            x[n]
+            =
+            \sign\qty(h[-n])
+            \label{eq:L06_S05_1}
+        \end{equation}
+        where \( \sign(c) = +1 \) if \( c \ge 0 \) and \( \sign(c) = -1 \) if \( c < 0 \). Note also that, since \( \abs{x[n]} = 1 \), \( \qty{x[n]} \) is bounded. For this input, \( y[n] \) at \( n = 0 \) is:
+        \begin{equation}
+            y[0]
+            =
+            \sum_{k = -\infty}^{\infty} \sign\qty(h[k]) h[k]
+            =
+            S
+            \le
+            B_{y}
+            <
+            \infty
+            \label{eq:L06_S06_1}
+        \end{equation}
+        Therefore, \( \abs{y[n]} \le B_{y} \) implies \( S < \infty \).
+    \end{proof}
+\end{corollary}
+
+We further study the BIBO stability for an LTI system through an example.
+
+\begin{example}{BIBO stability of LTI systems}{}
+    We consider a causal LTI discrete-time system with an impulse response:
+    \begin{equation}
+        h[n]
+        =
+        \qty(\alpha)^{n} \mu[n]
+        \label{eq:L06_S07_1}
+    \end{equation}
+    For this system, we have:
+    \begin{equation}
+        S
+        =
+        \sum_{n = -\infty}^{\infty} \abs{\alpha^{n}} \mu[n]
+        =
+        \sum_{n = 0}^{\infty} \abs{\alpha^{n}}
+        =
+        \frac{1}{1 - \abs{\alpha}}
+        \label{eq:L06_S07_2}
+    \end{equation}
+    Therefore, \( S < \infty \) if \( \abs{\alpha} < 1 \), for which the system is BIBO stable. If \( \abs{\alpha} \ge 1 \), the system is not BIBO stable.
+\end{example}
+
+
+
+\subsection{Causality condition of an LTI discrete-time system}
+\marginpar{Causality condition of an LTI system}
+As before, the causality condition has already been discussed beforem but here we focus on the LTI case. Let \( x_{1}[n] \) and \( x_{2}[n] \) be two input sequences with:
+\begin{equation}
+    x_{1}[n]
+    =
+    x_{2}[n],
+    \qquad
+    n \le n_{0}
+    \label{eq:L06_S08_1}
+\end{equation}
+The corresponding output samples at \( n = n_{0} \) of an LTI system with an impulse response \( \qty{h[n]} \) are then given by:
+\begin{align}
+    y_{1}[n_{0}]
+    &=
+        \sum_{k = -\infty}^{\infty} h[k]x_{1}[n_{0}-k]
+        =
+        \sum_{k=0}^{\infty} h[k]x_{1}[n_{0}-k] + \sum_{k=-\infty}^{-1} h[k]x_{1}[n_{0}-k]   \\
+    y_{2}[n_{0}]
+    &=
+        \sum_{k = -\infty}^{\infty} h[k]x_{2}[n_{0}-k]
+        =
+        \sum_{k=0}^{\infty} h[k]x_{2}[n_{0}-k] + \sum_{k=-\infty}^{-1} h[k]x_{2}[n_{0}-k]
+\end{align}
+If the LTI system is also causal, then:
+\begin{equation}
+    y_{1}[n]
+    =
+    y_{2}[n]
+    \label{eq:L06_S09_2}
+\end{equation}
+As \( x_{1}[n] = x_{2}[n] \) for \( n \le n_{0} \):
+\begin{equation}
+    \sum_{k=0}^{\infty} h[k]x_{1}[n_{0}-k]
+    =
+    \sum_{k=0}^{\infty} h[k]x_{2}[n_{0}-k]
+    \label{eq:L06_S09_3}
+\end{equation}
+This implies:
+\begin{equation}
+    \sum_{k=\infty}^{-1} h[k]x_{1}[n_{0}-k]
+    =
+    \sum_{k=\infty}^{-1} h[k]x_{2}[n_{0}-k]
+    \label{eq:L06_S10_1}
+\end{equation}
+As \( x_{1}[n] \neq x_{2}[n] \) for \( n > n_{0} \), the only way the condition in Eq. \ref{eq:L06_S10_1} will hold is if both sums are equal to zero, which is satisfied if:
+\begin{equation}
+    h[k]
+    =
+    0,
+    \qquad
+    k < 0
+    \label{eq:L06_S10_3}
+\end{equation}
+So, an LTI discrete-time system is causal if and only if its impulse response \( \qty{h[n]} \) is a causal sequence.
+
+
+
+
+
+\section{Classification of LTI discrete-time systems}
+\marginpar{Classification of LTI systems}
+In this Section we list some of the possible ways through which an LTI discrete-time system can be classified.
+
+
+\medskip
+\marginpar{Finite-dimensional LTI systems}
+An important subclass of LTI discrete-time systems is characterized by a \textbf{linear constant coefficient difference equation} of the form:
+\begin{equation}
+    \sum_{k=0}^{N} d_{k} y[n-k]
+    =
+    \sum_{k=0}^{M} p_{k} x[n-k]
+    \label{eq:L06_S15_1}
+\end{equation}
+where \( x[n] \) and \( y[n] \) are, respectively, the input and the output of the system, while \( \qty{d_{k}} \) and \( \qty{p_{k}} \) are constants characterizing the system. The order of the system is given by \( \max\qty(N,M) \), which is the order of the difference equation.
+
+It is possible to implement an LTI system characterized by a constant coefficient difference equation as here the computation involves two finite sums of products. If we assume the system to be causal, then the output \( y[n] \) can be recursively computed using:
+\begin{equation}
+    y[n]
+    =
+    - \sum_{k=1}^{N} \frac{d_{k}}{d_{0}} y[n-k]
+    + \sum_{k=0}^{M} \frac{p_{k}}{d_{0}} x[n-k]
+    \label{eq:L06_S17_1}
+\end{equation}
+provided \( d_{0} \neq 0 \). \( y[n] \) can be computed for all \( n \ge 0 \), knowing \( x[n] \) and the initial conditions \( y[n_{0}-1] \), \( y[n_{0}-2] \), \( \dots \), \( y[n_{0]-N}] \).
+
+
+\medskip
+\marginpar{Classification on impulse response length: FIR and IIR systems}
+A common classification is based on the \textbf{impulse response length}. If \( h[n] \) is of finite length, namely \( h[n] = 0 \) for \( n < N_{1} \) and \( n > N_{2} \), with \( N_{1} < N_{2} \), then it is known as a \textbf{finite impulse response (FIR)} discrete-time system. The convolution sum description here reads:
+\begin{equation}
+    y[n]
+    =
+    \sum_{k=N_{1}}^{N_{2}} h[k]x[n-k]
+    \label{eq:L06_S18_2}
+\end{equation}
+The output \( y[n] \) of an FIR LTI discrete-time system can be computed directly from the convolution sum as it is a finite sum of products. Some examples are the moving-average system and the linear interpolators.
+
+If the impulse response is of infinite length, then it is known as an \textbf{infinite impulse response (IIR)} discrete-time system. The class of IIR systems we are interested in this course is characterized by linear constant coefficient difference equations. For example, the discrete-time accumulator defined by \( y[n] = y[n-1] + x[n] \) is seen to be an IIR system. Let us consider another important example.
+
+\begin{example}{IIR systems: integrator}{}
+    The numerical integration formulas that are used to numerically solve integrals of the form:
+    \begin{equation}
+        y(t)
+        =
+        \int_{0}^{t} x(\tau) \d{\tau}
+        \label{eq:L06_S21_1}
+    \end{equation}
+    can be showed to be characterized by linear constant coefficient difference equations, and hence, are examples of IIR systems.
+
+    If we divide the interval of integration into \( n \) equal parts of length \( T \), then the previous integral can be rewritten as:
+    \begin{equation}
+        y(nT)
+        =
+        y\qty((n-1)T) + \int_{(n-1)T}^{nT} x(\tau) \d{\tau}
+        \label{eq:L06_S22_1}
+    \end{equation}
+    where we have set \( t = nT \) and used the notation:
+    \begin{equation}
+        y(nT)
+        =
+        \int_{0}^{nT} x(\tau) \d{\tau}
+        \label{eq:L06_S22_2}
+    \end{equation}
+    Using the trapezoidal method we can write:
+    \begin{equation}
+        \int_{(n-1)T}^{nT} x(\tau) \d{\tau}
+        =
+        \frac{T}{2} \qty{x\qty((n-1)T) + x(nT)}
+        \label{eq:L06_S23_1}
+    \end{equation}
+    Hence, a numerical representation of the definite integral is given by:
+    \begin{equation}
+        y(nT)
+        =
+        y\qty((n-1)T) + \frac{T}{2} \qty{x\qty((n-1)T) + x(nT)}
+        \label{eq:L06_S23_2}
+    \end{equation}
+    Now, let \( y[n] = y(nT) \) and \( x[n] = x(nT) \). Then, Eq. \ref{eq:L06_S23_2} reduces to:
+    \begin{equation}
+        y[n]
+        =
+        y[n-1] + \frac{T}{2} \qty{x[n] + x[n-1]}
+        \label{eq:L06_S24_1}
+    \end{equation}
+    which is recognized as the difference equation representation of a first-order IIR discrete-time system.
+\end{example}
+
+
+\medskip
+\marginpar{Classification on the output calculation process: recursive and non-recursive systems}
+Another important classification is based on the \textbf{output calculation process}. We can have:
+\begin{itemize}
+    \item \textbf{non-recursive systems}, where the output can be calculated sequentially, knowing only the present and past input samples;
+    \item \textbf{recursive systems}, where the output computation involves past output samples in addition to the present and past input samples.
+\end{itemize}
+
+
+\medskip
+\marginpar{Classification on the coefficients: real and complex systems}
+Lastly, there is a classification based on the \textbf{nature of the coefficients}. We can have:
+\begin{itemize}
+    \item \textbf{real systems}, in which the impulse response samples are real valued;
+    \item \textbf{complex systems}, in which the impulse response samples are complex valued.
+\end{itemize}
 
 
 
 
 
 \section{Correlation and autocorrelation}
+There are applications where it is necessary to compare one reference signal with one or more signals to determine the similarity between the pair and to determine additional information based on the similarity.
+For example, in digital communications, a set of data symbols are represented by a set of unique discrete-time sequences. If one of these sequences has been transmitted, the receiver has to determine which particular sequence has been received by comparing the received signal with every member of possible sequences from the set.
+Similarly, in radar and sonar applications, the received signal reflected from the target is a delayed version of the transmitted signal and by measuring the delay, one can determine the location of the target. The detection problem gets more complicated in practice, as often the received signal is corrupted by additive random noise.
+
+\medskip
+\marginpar{Correlation of signals}
+A measure of similarity between a pair of energy signals, \( x[n] \) and \( y[n] \), is given by the \textbf{cross-correlation sequence} defined by:
+\begin{equation}
+    r_{xy}[\ell]
+    =
+    \sum_{n=-\infty}^{\infty} x[n]y[n-\ell],
+    \qquad
+    \ell = 0, \pm 1, \pm 2, \dots
+    \label{eq:L06_S29_1}
+\end{equation}
+The parameter \( \ell \) is called \textbf{lag} and it indicates the time-shift between the pair of signals. So, \( y[n] \) is said to be shifted by \( \ell \) samples to the right with respect to the reference sequence \( x[n] \) for positive values of \( \ell \), and shifted by \( \ell \) samples to the left for negative values of \( \ell \).
+The ordering of the subscripts \( xy \) in the definition of \( r_{xy}[\ell] \) specifies that \( x[n] \) is the reference sequence which remains fixed in time, while \( y[n] \) is being shifted with respect to \( x[n] \).
+If \( y[n] \) is made the reference signal and we shift \( x[n] \) with respect to \( y[n] \), then the corresponding cross-correlation sequence is given by:
+\begin{align}
+    r_{yx}[\ell]
+    &=
+        \sum_{n=-\infty}^{\infty} y[n]x[n-\ell] \nonumber   \\
+    &=
+        \sum_{m=-\infty}^{\infty} y[m+\ell] x[m]    \nonumber   \\
+    &=
+        r_{xy}[-\ell]
+\end{align}
+Thus, \( r_{yx}[\ell] \) is obtained by time-reversing \( r_{xy}[\ell] \).
+
+
+\medskip
+\marginpar{Autocorrelation sequence}
+The \textbf{autocorrelation sequence} of \( x[n] \) is given by:
+\begin{equation}
+    r_{xx}[\ell]
+    =
+    \sum_{n=-\infty}^{\infty} x[n]x[n-\ell]
+    \label{eq:L06_S32_1}
+\end{equation}
+obtained by setting \( y[n] = x[n] \) in the definition of the cross-correlation sequence \( r_{xy}[\ell] \). Note that:
+\begin{equation}
+    r_{xx}[0]
+    =
+    \sum_{n=-\infty}^{\infty} \qty(x[n])^{2}
+    =
+    E_{x}
+    \label{eq:L06_S32_2}
+\end{equation}
+namely the energy of the signal \( x[n] \).
+
+From the relation \( r_{yx}[\ell] = r_{xy}[\ell] \), it follows that \( r_{xx}[\ell] = r_{xx}[-\ell] \), implying that \( r_{xx}[\ell] \) is an even function for real \( x[n] \). Moreover, an examination of Eq. \ref{eq:L06_S29_1} reveals that the expression for the cross-correlation looks quite similar to that of the linear convolution. This similarity is much clearer if we rewrite the expression for the cross-correlation as:
+\begin{equation}
+    r_{xy}[\ell]
+    =
+    \sum_{n=-\infty}^{\infty} x[n]y[-(\ell - n)]
+    =
+    x[\ell] \circledast y[-\ell]
+    \label{eq:L06_S34_1}
+\end{equation}
+So, the cross-correlation of \( y[n] \) with the reference signal \( x[n] \) can be computed by processing \( x[n] \) with an LTI discrete-system of impulse response \( y[-n] \), as showed in the scheme in Figure \ref{fig:L06_S34_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{\figpath{06}/06_images/S34_1.pdf}
+    \caption{\label{fig:L06_S34_1} Scheme of cross-correlation computation.}
+\end{figure}
+
+Likewise, the autocorrelation of \( x[n] \) can be computed by processing \( x[n] \) with an LTI discrete-time system of impulse response \( x[-n] \), as showed in the scheme in Figure \ref{fig:L06_S35_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{\figpath{06}/06_images/S34_1.pdf}
+    \caption{\label{fig:L06_S35_1} Scheme of autocorrelation computation.}
+\end{figure}
+
+
+
+\subsection{Properties of autocorrelation and cross-correlation}
+\marginpar{Properties of autocorrelation and cross-correlation sequences}
+Now, we consider two finite-energy sequences \( x[n] \) and \( y[n] \). The energy of the combined sequence \( ax[n] + y[n-\ell] \) is also finite and non-negative, i.e.:
+\begin{align}
+    \sum_{n=-\infty}^{\infty} \qty(ax[n] + y[n-\ell])^{2}
+    &=
+    a^{2} \sum_{n=-\infty}^{\infty} \qty(x[n])^{2}  \nonumber   \\
+    &+
+    2a \sum_{n=-\infty}^{\infty} x[n]y[n-\ell]  \nonumber   \\
+    &+
+    \sum_{n=-\infty}^{\infty} \qty(y[n-\ell])^{2}   \nonumber   \\
+    &\ge
+    0
+    \label{eq:L06_S36_1}
+\end{align}
+Thus:
+\begin{equation}
+    a^{2} r_{xx}[0] + 2a r_{xy}[\ell] + r_{yy}[0]
+    \ge
+    0
+    \label{eq:L06_S37_1}
+\end{equation}
+where \( r_{xx}[0] = E_{x} > 0 \) and \( r_{yy}[0] = E_{y} > 0 \). We can rewrite Eq. \ref{eq:L06_S36_1} as:
+\begin{equation}
+    \begin{bmatrix}
+        a   &   1
+    \end{bmatrix}
+    \begin{bmatrix}
+        r_{xx}[0]   &   r_{xy}[\ell]    \\
+        r_{xy}[\ell]&   r_{yy}[0]
+    \end{bmatrix}
+    \begin{bmatrix}
+        a   \\
+        1
+    \end{bmatrix}
+    \ge
+    0
+    \label{eq:L06_S37_2}
+\end{equation}
+for any finite value of \( a \). Or, in other words, the matrix in Eq. \ref{eq:L06_S37_2} is positive semidefinite, which means:
+\begin{equation}
+    r_{xx}[0] r_{yy}[0] - r^{2}_{xy}[\ell]
+    \ge
+    0
+    \label{eq:L06_S38_2}
+\end{equation}
+or, equivalently:
+\begin{equation}
+    \abs{r_{xy}[\ell]}
+    \le
+    \sqrt{r_{xx}[0] r_{yy}[0]}
+    =
+    \sqrt{E_{x} E_{y}}
+    \label{eq:L06_S38_3}
+\end{equation}
+The inequality in Eq. \ref{eq:L06_S38_3} provides an upper bound for the cross-correlation samples. If we set \( y[n] = x[n] \), then the inequality reduces to:
+\begin{equation}
+    \abs{r_{xy}[\ell]}
+    \le
+    r_{xx}[0]
+    =
+    E_{x}
+    \label{eq:L06_S39_1}
+\end{equation}
+Thus, at zero lag (\( \ell = 0 \)), the sample value of the autocorrelation sequence has its maximum value.
+
+Now, we consider the case:
+\begin{equation}
+    y[n]
+    =
+    \pm b x[n-N]
+    \label{eq:L06_S40_1}
+\end{equation}
+where \( N \) is an integer and \( b > 0 \) is an arbitrary number. In this case:
+\begin{equation}
+    E_{y}
+    =
+    b^{2} E_{x}
+    \label{eq:L06_S40_2}
+\end{equation}
+Therefore:
+\begin{equation}
+    \sqrt{E_{x} E_{y}}
+    =
+    \sqrt{b^{2} E^{2}_{x}}
+    =
+    b E_{x}
+    \label{eq:L06_S41_1}
+\end{equation}
+Using the result of Eq. \ref{eq:L06_S38_3}, we get:
+\begin{equation}
+    -b r_{xx}[0]
+    \le
+    r_{xy}[\ell]
+    \le
+    b r_{xx}[0]
+    \label{eq:L06_S41_3}
+\end{equation}
+
+
+
+\subsection{Normalized forms of correlation}
+\marginpar{Normalized forms of correlation}
+\textbf{Normalized forms} of autocorrelation and cross-correlation are given by:
+\begin{align}
+    \rho_{xx}[\ell] &= \frac{r_{xx}[\ell]}{r_{xx}[0]} \\
+    \rho_{xy}[\ell] &= \frac{r_{xy}[\ell]}{\sqrt{r_{xx}[0] r_{yy}[0]}}
+\end{align}
+They are often used for convenience in compairing and displaying. Note also that:
+\begin{align}
+    \abs{\rho_{xx}[\ell]} &\le 1    \\
+    \abs{\rho_{xy}[\ell]} &\le 1
+\end{align}
+indipendently of the range of values of \( x[n] \) and \( y[n] \).
+
+
+
+\subsection{Particular cases of correlation computation}
+\marginpar{Correlation computation for power signals}
+The cross correlation sequence for a pair of power signals, \( x[n] \) and \( y[n] \), is defined as:
+\begin{equation}
+    r_{xy}[\ell]
+    =
+    \lim_{k \to \infty} \frac{1}{2k + 1} \sum_{n=-k}^{k} x[n]y[n-\ell]
+    \label{eq:L06_S43_1}
+\end{equation}
+The autocorrelation sequence of a power signal \( x[n] \) is given by:
+\begin{equation}
+    r_{xx}[\ell]
+    =
+    \lim_{k \to \infty} \frac{1}{2k + 1} \sum_{n=-k}^{k} x[n]x[n-\ell]
+    \label{eq:L06_S43_2}
+\end{equation}
+
+
+\medskip
+\marginpar{Correlation computation for periodic signals}
+The cross-correlation sequence for a pair of periodic signals of period \( N \), \( \tilde{x}[n] \) and \( \tilde{y}[n] \), is defined as:
+\begin{equation}
+    r_{\tilde{x}\tilde{y}}[\ell]
+    =
+    \frac{1}{N} \sum_{n=0}^{N-1} \tilde{x}[n] \tilde{y}[n-\ell]
+    \label{eq:L06_S44_1}
+\end{equation}
+The autocorrelation sequence of a periodic signal \( \tilde{x}[n] \) of period \( N \) is given by:
+\begin{equation}
+    r_{\tilde{x}\tilde{x}}[\ell]
+    =
+    \frac{1}{N} \sum_{n=0}^{N-1} \tilde{x}[n] \tilde{x}[n-\ell]
+    \label{eq:L06_S44_2}
+\end{equation}
+Note that both \( r_{\tilde{x}\tilde{y}}[\ell] \) and \( r_{\tilde{x}\tilde{x}}[\ell] \) are also periodic signals with a period \( N \). The periodicity propertu of the autocorrelation sequence can be exploited to determine the period of a periodic signal that may have been corrupted by an additive random disturbance.
+
+Now, let \( \tilde{x}[n] \) be a periodic signal corrupted by the random noise \( d[n] \) resulting in the signal:
+\begin{equation}
+    w[n]
+    =
+    \tilde{x}[n] + d[n]
+    \label{eq:L06_S46_1}
+\end{equation}
+which is observed for \( 0 \le n \le M-1 \), where \( M \gg N \). The autocorrelation of \( w[n] \) is given by:
+\begin{align}
+    r_{ww}[\ell]
+    &=
+        \frac{1}{M} \sum_{n=0}^{M-1} w[n]w[n-\ell]  \nonumber   \\
+    &=
+        \frac{1}{M} \sum_{n=0}^{M-1} \qty(\tilde{x}[n] + d[n]) \qty(\tilde{x}[n-\ell] + d[n-\ell])  \nonumber   \\
+    &=
+        \frac{1}{M} \sum_{n=0}^{M-1} \tilde{x}[n]\tilde{x}[n-\ell] +
+        \frac{1}{M} \sum_{n=0}^{M-1} d[n]d[n-\ell]  \nonumber    \\
+    &+
+        \frac{1}{M} \sum_{n=0}^{M-1} \tilde{x}[n]d[n-\ell] +
+        \frac{1}{M} \sum_{n=0}^{M-1} d[n]\tilde{x}[n-\ell]  \nonumber   \\
+    &=
+        r_{\tilde{x}\tilde{x}}[\ell] +
+        r_{dd}[\ell] +
+        r_{\tilde{x}d}[\ell] +
+        r_{d\tilde{x}}[\ell]
+    \label{eq:L06_S47_1}
+\end{align}
+In Eq. \ref{eq:L06_S47_1}, \( r_{\tilde{x}\tilde{x}}[\ell] \) is a periodic sequence with a period \( N \) and hence it will have peaks at \( \ell = 0, N, 2N, \dots \), with the same amplitudes as \( \ell \) approaches \( M \).
+As \( \tilde{x}[n] \) and \( d[n] \) are not correlated, sampels of cross-correlation sequences \( r_{\tilde{x}d}[\ell] \) and \( r_{d\tilde{x}}[\ell] \) are likely to be very samll with respect to the amplitudes of \( r_{\tilde{x}\tilde{x}}[\ell] \).
+The autocorrelation \( r_{dd}[\ell] \) of \( d[n] \) will show a peak at \( \ell = 0 \) with other samples having rapidly decreasing amplitudes with increasing values of \( \abs{\ell}  \).
+Hence, peaks of \( r_{ww}[\ell] \) for \( \ell > 0 \) are essentially due to the peaks of \( r_{\tilde{x}\tilde{x}}[\ell] \) and they can be used to determine wheter \( \tilde{x}[n] \) is a periodic sequence and also its period \( N \), if the peaks occur at periodic intervals.
 
 \end{document}
