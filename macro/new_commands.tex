@@ -184,4 +184,9 @@
 \usepackage{xpatch}
 \xpatchcmd{\proof}{\itshape}{\normalfont\proofnamefont}{}{}
 \newcommand{\proofnamefont}{\bfseries}
-\renewcommand\qedsymbol{$\blacksquare$}  
+\renewcommand\qedsymbol{$\blacksquare$}
+
+\newcommand*{\circled}[2][]{~\tikz[baseline=(C.base)]{
+    \node[inner sep=0pt] (C) {\tiny\vphantom{1g}#2};
+    \node[draw, circle, inner sep=1pt, yshift=1pt, minimum size = 1mm]
+        at (C.center) {\vphantom{1g}};}~}
