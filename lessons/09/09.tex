@@ -43,7 +43,7 @@
         \frac{\alpha e^{-j\omega}}{(1 - \alpha e^{-j\omega})^2}
         \label{eq:L09_S04_1}
     \end{equation}
-    Next, using thhe linearity property of the DTFT, we arrive at:
+    Next, using the linearity property of the DTFT, we arrive at:
     \begin{equation}
         Y(e^{j\omega})
         =
@@ -62,7 +62,8 @@
         p_{0}\delta[n] + p_{1}\delta[n-1]
         \label{eq:L09_S05_1}
     \end{equation}
-    The DTFT of \( \delta[n] \) is \( 1 \). Using the time-shifting property of the DTFT, we observe that the DTFT of \( \delta[n-1] \) is \( e^{-j\omega} \) and the DTFT of \( v[n-1] \) is \( e^{-j\omega} V(e^{j\omega}) \). Using the linearity property we then obtain the frequency-domain representation of \( d_{0}v[n] + d_{1}v[n-1] \) as:
+    The DTFT of \( \delta[n] \) is \( 1 \). Using the time-shifting property of the DTFT, we observe that the DTFT of \( \delta[n-1] \) is \( e^{-j\omega} \) and the DTFT of \( v[n-1] \) is \( e^{-j\omega} V(e^{j\omega}) \).
+    Using the linearity property, we then obtain the frequency-domain representation of \( d_{0}v[n] + d_{1}v[n-1] \) as:
     \begin{equation}
         d_{0}V(e^{j\omega}) + d_{1}e^{-j\omega}V(e^{j\omega})
         =
@@ -80,8 +81,10 @@
 
 
 
-\subsection{Energy density spectrum}
-The total energy of a finite-energy sequence \( g[n] \) is given by:
+\medskip
+\marginpar{Energy density spectrum}
+As in the previous Section for the CTFT, we move to the discussion on the energy density spectrum for the DTFT.
+The \textbf{total energy} of a finite-energy sequence \( g[n] \) is given by:
 \begin{equation}
     E_{g}
     =
@@ -104,14 +107,16 @@ The quantity:
     \abs{G(e^{j\omega})}^2
     \label{eq:L09_S08_1}
 \end{equation}
-is called the energy density spectrum. The area under this curve in the range \( -\pi \le \omega \le \pi \) divided by \( 2\pi \) is the energy of the sequence.
+is called the \textbf{energy density spectrum}. The area under this curve in the range \( -\pi \le \omega \le \pi \) divided by \( 2\pi \) is the energy of the sequence.
 
 
 
-\subsection{Band-limited discrete-time signals}
-Since the spectrum of a discrete-time signal is a periodic function of \( \omega \) with a period \( 2\pi \), a full-band signal has a spectrum occupying the frequency range \( -\pi \le \omega \le \pi \). A band-limited discrete-time signal has a spectrum that is limited to a portion of the frequency range \( -\pi \le \omega \le \pi \).
+\medskip
+\marginpar{(Ideal) Band-limited discrete-time signals}
+As before, we also discuss about the case of band-limited signals, but in the discrete-time version.
+Since the spectrum of a discrete-time signal is a periodic function of \( \omega \) with a period \( 2\pi \), a full-band signal has a spectrum occupying the frequency range \( -\pi \le \omega \le \pi \). A \textbf{band-limited discrete-time signal} has a spectrum that is limited to a portion of the frequency range \( -\pi \le \omega \le \pi \).
 
-An ideal band-limited signal has a spectrum that is zero outside a frequency range \( 0 < \omega_{a} \le \abs{\omega} \le \omega_{b} < \pi \), that is:
+An \textbf{ideal band-limited discrete-time signal} has a spectrum that is zero outside a frequency range \( 0 < \omega_{a} \le \abs{\omega} \le \omega_{b} < \pi \), that is:
 \begin{equation}
     X(e^{j\omega})
     =
@@ -123,11 +128,7 @@ An ideal band-limited signal has a spectrum that is zero outside a frequency ran
 \end{equation}
 However, an ideal band-limited discrete-time signal cannot be generated in practice.
 
-A classification of a band-limited discrete-time signal is based on the frequency range where most of the signal energy is concentrated. A lowpass discrete-time real signal has a spectrum occupying the frequency range \( 0 < \abs{\omega} \le \omega_{p} < \pi \) and has a bandwidth of \( \omega_{p} \).
-
-A highpass discrete-time real signal has a spectrum occupying the frequency range \( 0 < \omega_{p} \le \abs{\omega} < \pi \) and has a bandwidth of \( \pi - \omega_{p} \).
-
-A bandpass discrete-time real signal has a spectrum occupying the frequency range \( 0 < \omega_{L} \le \abs{\omega} \le \omega_{H} < \pi \) and has a bandwidth of \( \omega_{H} - \omega_{L} \).
+A classification of a band-limited discrete-time signal is based on the frequency range where most of the signal energy is concentrated and it is analog to the classification given in the previous Section (lowpass, highpass and bandpass).
 
 \begin{example}{Band-limited discrete-time signals}{}
     Consider the sequence:
@@ -200,18 +201,25 @@ Returning to the energy density spectrum, we consider some other examples introd
 
 
 \section{Linear convolution using DTFT}
-An important property of the DTFT is given by the convolution theorem. It states that if \( y[n] = x[n] * h[n] \), then the DTFT \( Y(e^{j\omega}) \) of \( y[n] \) is given by:
-\begin{equation}
-    Y(e^{j\omega})
-    =
-    X(e^{j\omega}) H(e^{j\omega})
-    \label{eq:L09_S17_1}
-\end{equation}
+An important property of the DTFT is given by the \textbf{convolution theorem}.
+
+\marginpar{Convolution theorem}
+\begin{theorem}{Convolution theorem}{}
+    If \( y[n] = x[n] \circledast h[n] \), then the DTFT \( Y(e^{j\omega}) \) of \( y[n] \) is given by:
+    \begin{equation}
+        Y(e^{j\omega})
+        =
+        X(e^{j\omega}) H(e^{j\omega})
+        \label{eq:L09_S17_1}
+    \end{equation}
+\end{theorem}
+
+\marginpar{Linear convolution using DTFT}
 An implication of this result is that the linear convolution \( y[n] \) of the sequences \( x[n] \) and \( h[n] \) can be performed as follows:
 \begin{itemize}
     \item compute the DTFTs \( X(e^{j\omega}) \) and \( H(e^{j\omega}) \) of the sequences \( x[n] \) and \( h[n] \), respectively;
     \item form the DTFT \( Y(e^{j\omega}) = X(e^{j\omega}) H(e^{j\omega}) \);
-    \item compute the IDFT \( y[n] \) of \( Y(e^{j\omega}) \).
+    \item compute the inverse DTFT \( y[n] \) of \( Y(e^{j\omega}) \).
 \end{itemize}
 
 \begin{figure}[!h]
@@ -234,7 +242,8 @@ Note that in numerical computation, when the computed phase function is outside 
     \caption{\label{fig:L09_S20_1} Discontinuity in the phase response of Eq. \ref{eq:L09_S20_1}.}
 \end{figure}
 
-In such cases, often an alternate type of phase function that is continuous function of \( \omega \) is derived from the original phase function by removing the discontinuities of \( 2\pi \). Process of discontinuity removal is called unwrapping the phase and the unwrapped phase function will be denoted as \( \theta_{c}(\omega) \).
+\marginpar{Unwrapped phase function}
+In such cases, often an alternate type of phase function that is continuous function of \( \omega \) is derived from the original phase function by removing the discontinuities of \( 2\pi \). Process of discontinuity removal is called \textbf{unwrapping the phase} and the \textbf{unwrapped phase function} will be denoted as \( \theta_{c}(\omega) \).
 
 For example, the unwrapped phase function of the DTFT in Eq. \ref{eq:L09_S20_1} is showed in Figure \ref{fig:L09_S22_1}.
 
@@ -284,7 +293,7 @@ Hence:
     ]
     \label{eq:L09_S26_2}
 \end{equation}
-The phase function can thus be defined unequivocally by its derivative:
+\marginpar{Definition of phase function from its derivate}The phase function can thus be defined unequivocally by its derivative:
 \begin{equation}
     \theta(\omega)
     =
@@ -293,7 +302,7 @@ The phase function can thus be defined unequivocally by its derivative:
 \end{equation}
 with the constraint \( \theta(0) = 0 \).
 
-The phase function defined by Eq. \ref{eq:L09_S27_1} is called the unwrapped phase function of \( X(e^{j\omega}) \) and it is a continuous function of \( \omega \). Therefore, \( \ln{X(e^{j\omega})} \) exists.
+The phase function defined by Eq. \ref{eq:L09_S27_1} is called the \textbf{unwrapped phase function} of \( X(e^{j\omega}) \) and it is a continuous function of \( \omega \). Therefore, \( \ln{X(e^{j\omega})} \) exists.
 Moreover, the phase function will be an odd function of \( \omega \) if:
 \begin{equation}
     \frac{1}{\pi} \int_{0}^{2\pi} \qty[\dv{\theta(\eta)}{\eta}] \d{\eta}
@@ -310,7 +319,8 @@ If the above constraint is not satisfied, then the computed phase function will 
 \section{The frequency response}
 Most discrete-time signals encountered in practice can be represented as a linear combination of a very large, maybe infinite, number of sinusoidal discrete-time signals of different angular frequencies. Thus, knowing the response of the LTI system to a single sinusoidal signal, we can determine its response to more complicated signals by making use of the superposition property.
 
-An important property of an LTI system is that for certain types of input signals, called eigen functions, the output signal is the input signal multiplied by a complex constant. We consider here one such eigen function as the input.
+\marginpar{Output of LTI systems for eigenfunction signals}
+An important property of an LTI system is that for certain types of input signals, called \textbf{eigenfunctions}, the output signal is the input signal multiplied by a complex constant. We consider here one such eigenfunction as the input.
 
 Consider the LTI discrete-time system with an impulse response \( \qty{h[n]} \). Its input-output relationship in the time-domain is given by the convolution sum:
 \begin{equation}
@@ -345,15 +355,16 @@ Now, let:
     \label{eq:L09_S33_3}
 \end{equation}
 Then we can write:
+\marginpar{Frequency response}
 \begin{equation}
     y[n]
     =
     H(e^{j\omega}) e^{j\omega n}
     \label{eq:L09_S34_1}
 \end{equation}
-Thus for a complex exponential input signal \( e^{j\omega n} \), the output of an LTI discrete-time system is also a complex exponential signal of the same frequency multiplied by a complex constant \( H(e^{j\omega}) \). Thusm \( e^{j\omega n} \) is an eigen function of the system.
+Thus for a complex exponential input signal \( e^{j\omega n} \), the output of an LTI discrete-time system is also a complex exponential signal of the same frequency multiplied by a complex constant \( H(e^{j\omega}) \). Thus, \( e^{j\omega n} \) is an eigenfunction of the system.
 
-The quantity \( H(e^{j\omega}) \) is called the frequency response of the LTI discrete-time system. \( H(e^{j\omega}) \) provides a frequency-domain description of the system and is precisely the DTFT of the impulse response \( \qty{h[n]} \) of the system.
+The quantity \( H(e^{j\omega}) \) is called the \textbf{frequency response} of the LTI discrete-time system. \( H(e^{j\omega}) \) provides a frequency-domain description of the system and is precisely the \textbf{DTFT of the impulse response} \( \qty{h[n]} \) of the system.
 \( H(e^{j\omega}) \), in general, is a complex function of \( \omega \) with a period \( 2\pi \). It can be expressed in terms of its real and imaginary parts:
 \begin{equation}
     H(e^{j\omega})
@@ -376,16 +387,18 @@ where:
     \label{eq:L09_S36_3}
 \end{equation}
 
-The function \( \abs{H(e^{j\omega})} \) is called the magnitude response and the function \( \theta(\omega) \) is called the phase response of the LTI discrete-time system. Design specifications for the LTI discrete-time system, in many applications, are given in terms of the magnitude response or the phase response or both.
+\marginpar{Magnitude and phase responses}
+The function \( \abs{H(e^{j\omega})} \) is called the \textbf{magnitude response} and the function \( \theta(\omega) \) is called the \textbf{phase response} of the LTI discrete-time system. Design specifications for the LTI discrete-time system, in many applications, are given in terms of the magnitude response or the phase response or both.
 
 In some cases, the magnitude function is specified in decibels as:
+\marginpar{Decibel notation}
 \begin{equation}
     g(\omega)
     =
-    20 \log_{10} \abs{H(e^{j\omega})} \si{dB}
+    20 \log_{10} \abs{H(e^{j\omega})} \ \si{dB}
     \label{eq:L09_S38_1}
 \end{equation}
-where \( G(\omega) \) is called the gain function. The negative of the gain function \( A(\omega) = - G(\omega) \) is called the attenuation or loss function.
+\marginpar{Gain and attenuation (or loss) functions}where \( G(\omega) \) is called the \textbf{gain function}. The negative of the gain function \( A(\omega) = - G(\omega) \) is called the \textbf{attenuation or loss function}.
 
 Note that magnitude and phase functions are real functions of \( \omega \), whereas the frequency response is a complex function of \( \omega \). If the impulse response \( h[n] \) is real then it follows that the magnitude function is an even function of \( \omega \):
 \begin{equation}
@@ -401,9 +414,10 @@ and the phase function is an odd function od \( \omega \):
     - \theta(-\omega)
     \label{eq:L09_S39_2}
 \end{equation}
-Likewise, for a real impulse response \( h[n] \), \( H_{\mathrm{re}(e^{j\omega})} \) is even and \( H_{\mathrm{im}(e^{j\omega})} \) is odd.
+Likewise, for a real impulse response \( h[n] \), \( H_{\mathrm{re}}(e^{j\omega}) \) is even and \( H_{\mathrm{im}}(e^{j\omega}) \) is odd.
 
-\begin{example}{M-point moving average filter}{}
+\begin{example}{\( M \)-point moving average filter}{}
+    \marginnote{\flushleft\textsl{\small Frequency response of \( M \)-point moving average filter}}
     Consider the \( M \)-point moving average filter with an impulse response given by:
     \begin{equation}
         h[n]
@@ -449,9 +463,10 @@ Likewise, for a real impulse response \( h[n] \), \( H_{\mathrm{re}(e^{j\omega})
     \end{equation}
 \end{example}
 
-Note that the frequency response also determines the steady-state response of an LTI discrete-time system to a sinusoidal input.
+Note that the frequency response also determines the \textbf{steady-state response} of an LTI discrete-time system to a sinusoidal input.
 
 \begin{example}{Steady-state response}{}
+    \marginnote{\flushleft\textsl{\small Steady-state response of an LTI system to a sinusoidal input}}
     We determine the steady-state output \( y[n] \) of a real coefficient LTI discrete-time system with a frequency response \( H(e^{j\omega}) \) for an input:
     \begin{equation}
         x[n]
@@ -529,6 +544,7 @@ the output is given by:
     \label{eq:L09_S49_3}
 \end{equation}
 The output for \( n < 0 \) is \( y[n] = 0 \), while for \( n \ge 0 \) it is given by:
+\marginpar{Steady-state and transient responses}
 \begin{align}
     y[n]
     &=
@@ -536,14 +552,14 @@ The output for \( n < 0 \) is \( y[n] = 0 \), while for \( n \ge 0 \) it is give
     &=
         H(e^{j \omega}) e^{j \omega n} - \qty(\sum_{k=n+1}^{\infty} h[k] e^{-j \omega k}) e^{j \omega n}
 \end{align}
-The first term on the RHS is the same as that obtained when the input is applied at \( n = 0 \) to an initially relaxed system and it is the steady-state response:
+The first term on the RHS is the same as that obtained when the input is applied at \( n = 0 \) to an initially relaxed system and it is the \textbf{steady-state response}:
 \begin{equation}
     y_{\mathrm{sr}}[n]
     =
     H(e^{j \omega}) e^{j \omega n}
     \label{eq:L09_S51_2}
 \end{equation}
-The second term on the RHS is called the transient response:
+The second term on the RHS is called the \textbf{transient response}:
 \begin{equation}
     y_{\mathrm{tr}}[n]
     =
@@ -578,7 +594,8 @@ For a causal FIR LTI discrete-time system with an impulse response \( h[n] \) of
 
 
 \section{The concept of filtering}
-One application of an LTI discrete-time system is to pass certain frequency components in an input sequence without any distortion (if possible) and to block other frequency components. Such systems are called digital filters and one of the main subjects of discussion in this course.
+\marginpar{Digital filters and importance of Fourier transform}
+One application of an LTI discrete-time system is to pass certain frequency components in an input sequence without any distortion (if possible) and to block other frequency components. Such systems are called \textbf{digital filters} and one of the main subjects of discussion in this course.
 
 The key to the filtering process is the Fourier transform
 \begin{equation}
@@ -588,9 +605,10 @@ The key to the filtering process is the Fourier transform
     \label{eq:L09_S56_1}
 \end{equation}
 It expresses an arbitrary input as a linear weighted sum of an infinite number of exponential sequences, or equivalently, as a linear weighted sum of sinusoidal sequences.
-Thus, by appropriately choosing the values of the magnitude function \( \abs{H(e^{j \omega})} \) of the LTI digital filter at frequencies corresponding to the frequencies of the sinusoidal components of the input, some of these components can be selectively heavily attenuated or filtered with respect to the others.
+\marginpar{Frequency-selective filters}
+Thus, by appropriately choosing the values of the magnitude function \( \abs{H(e^{j \omega})} \) of the LTI digital filter at frequencies corresponding to the frequencies of the sinusoidal components of the input, some of these components can be selectively and heavily attenuated or filtered with respect to the others.
 
-To understand the mechanism behind the design of frequency-selective filters, consider a real-coefficient LTI discrete-time system characterized by a magnitude function:
+To understand the mechanism behind the design of \textbf{frequency-selective filters}, consider a real-coefficient LTI discrete-time system characterized by a magnitude function:
 \begin{equation}
     \abs{H(e^{j \omega})}
     \approx
@@ -629,6 +647,7 @@ Thus, the system acts like a lowpass filter.
 Now we consider an example of design of a very simple digital filter.
 
 \begin{example}{Design of a simple digital filter}{}
+    \marginnote{\flushleft\textsl{\small Example of design of a simple digital filter}}
     The input consists of a sum of two sinusoidal sequences of angular frequencies \( 0.1 \ \si{rad/sample} \) and \( 0.4 \ \si{rad/sample} \). We need to design a highpass filter that will pass the high-frequency component of the input but block the low-frequency component.
 
     For simplicity, assume the filter to be an FIR filter of length 3 with an impulse response:
@@ -646,7 +665,7 @@ Now we consider an example of design of a very simple digital filter.
     \end{align}
     \( y[n] \) and \( x[n] \) are, respectively, the output and the input sequences.
 
-    The desiign objective is to choose suitable values of \( \alpha \) and \( \beta \) so that the output is a sinusoidal sequence with a frequency of \( 0.4 \ \si{rad/sample} \).
+    The design objective is to choose suitable values of \( \alpha \) and \( \beta \) so that the output is a sinusoidal sequence with a frequency of \( 0.4 \ \si{rad/sample} \).
 
     Now, the frequency response of the FIR filter is given by:
     \begin{align}
