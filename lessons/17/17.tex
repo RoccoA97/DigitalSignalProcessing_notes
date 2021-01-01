@@ -10,7 +10,7 @@
 \marginpar{ \textbf{Lecture 17.} \\  \displaydate{date}.}
 
 \section{Stability condition}
-A causal LTI digital filter is BIBO stable if and only if its impulse response \( h[n] \) is absolutely summable, i.e.:
+We move to the discussion about stability, which represents a very important topic. We have already seen that a causal LTI digital filter is BIBO stable if and only if its impulse response \( h[n] \) is absolutely summable, i.e.:
 \begin{equation}
     S
     =
@@ -20,12 +20,15 @@ A causal LTI digital filter is BIBO stable if and only if its impulse response \
 \end{equation}
 We now develop a stability condition in terms of the pole locations of the transfer function \( H(z) \).
 
-The ROC of the z-transform \( H(z) \) of the impulse response sequence \( h[n] \) is defined by values of \( \abs{z} = r \) for which \( h[n]r^{-n} \) is absolutely summable. Thus, if the ROC includes the unit circle \( \abs{z} = 1 \), then the digital filter is stable, and viceversa. In addition, for a stable and causal digital filter for which \( h[n] \) is a right-sided sequence, the ROC will include the unit circle and entire z-plane including the point \( z = \infty \).
+\marginpar{Stability condition in terms of the pole locations}
+The ROC of the \( z \)-transform \( H(z) \) of the impulse response sequence \( h[n] \) is defined by values of \( \abs{z} = r \) for which \( h[n]r^{-n} \) is absolutely summable. Thus, if the ROC includes the unit circle \( \abs{z} = 1 \), then the digital filter is stable, and viceversa. In addition, for a stable and causal digital filter for which \( h[n] \) is a right-sided sequence, the ROC will include the unit circle and entire \( z \)-plane including the point \( z = \infty \).
 
-Note that a FIR digital filter with bounded impulse response is always stable. On the other hand, a IIR filter may be unstable if not designed properly. In addition, an originally stable IIR filter characterized by infinite precision coefficients may become unstable when coefficients get quantized due to implementation.
+Note that a FIR digital filter with bounded impulse response is always stable. On the other hand, a IIR filter may be unstable if not designed properly.
+\marginpar{Problem of coefficients quantization}
+In addition, an originally stable IIR filter characterized by infinite precision coefficients may become unstable when coefficients get quantized due to implementation.
 
 \begin{example}{Stability condition}{}
-    Consider the causal IIR transfer function:
+    We consider the causal IIR transfer function:
     \begin{equation}
         H(z)
         =
@@ -54,7 +57,7 @@ Note that a FIR digital filter with bounded impulse response is always stable. O
     In this case, the impulse coefficient \( \hat{h}[n] \) increases rapidly to a constant value as \( n \) increases. Hence, the absolute summability condition of \( \hat{h}[n] \) is violated. Thus, \( \hat{H}[z] \) is an unstable transfer function.
 \end{example}
 
-The stability testing of a IIR transfer function is therefore an important problem. In most cases it is difficult to compute the infinite sum in Eq. \ref{eq:L17_S03_1}. For a causal IIR transfer function, the sum \( S \) can be computed approximately as:
+\marginpar{Stability testing of an IIR transfer function}The stability testing of an IIR transfer function is therefore an important problem. In most cases it is difficult to compute the infinite sum in Eq. \ref{eq:L17_S03_1}. For a causal IIR transfer function, the sum \( S \) can be computed approximately as:
 \begin{equation}
     S_{k}
     =
@@ -70,7 +73,7 @@ Let us consider the causal IIR digital filter with a rational transfer function 
     \frac{\displaystyle \sum_{k=0}^{M} p_{k}z^{-k}}{\displaystyle \sum_{k=0}^{N} d_{k}z^{-k}}
     \label{eq:L17_S13_1}
 \end{equation}
-Its impulse response \( \qty{h[n]} \) is a right-sided sequence. The ROC of \( H(z) \) is exterior to a circle going through the pole furthest from \( z = 0 \). But stability requires that \( \qty{h[n]} \) is absolutely summable. This in turn implies that the DTFT \( H(e^{j\omega}) \) of \( \qty{h[n]} \) exists. Now, if the ROC of the x-transform \( H(z) \) includes the unit circle, then:
+Its impulse response \( \qty{h[n]} \) is a right-sided sequence. The ROC of \( H(z) \) is exterior to a circle going through the pole furthest from \( z = 0 \). But stability requires that \( \qty{h[n]} \) is absolutely summable. This in turn implies that the DTFT \( H(e^{j\omega}) \) of \( \qty{h[n]} \) exists. Now, if the ROC of the \( z \)-transform \( H(z) \) includes the unit circle, then:
 \begin{equation}
     H(e^{j\omega})
     =
@@ -113,11 +116,21 @@ In conclusion, all the poles of a causal stable transfer function \( H(z) \) mus
 
 
 
+
+
+
+
+
 \chapter{Filter design}
 
-Before starting with the discussion of filter design, we have to go some steps backward and introduce some concepts
+In the previous Chapters we have seen an overview on both the nature of discrete-time signals and on the tools that can be used to analyze their properties. Now, we can focus on the study of the fundamental building blocks of any Digital Signal Processing system and on the design of more complex composite systems. We will go on by studying several examples to understand how the theory can be applied in practice.
 
-\section{Phase and group delay}
+
+
+
+
+\section{Preliminary concepts and definitions}
+Before starting with the discussion of filter design, we have to introduce and recap some other useful concepts for the following discussion.
 
 
 
@@ -144,22 +157,24 @@ We can rewrite the output expression as:
 \begin{equation}
     y[n]
     =
-    A \abs{H(e^{j\omega_{0}})} \cos\qty(\omega_{0}(n-\tau_{p}(omega_{0}) + \varphi))
+    A \abs{H(e^{j\omega_{0}})} \cos\qty(\omega_{0}(n-\tau_{p}(\omega_{0}) + \varphi))
     \label{eq:L17_S19_1}
 \end{equation}
 where:
+\marginpar{Phase delay}
 \begin{equation}
     \tau_{p}(\omega_{0})
     =
     - \frac{\theta(\omega_{0}))}{\omega_{0}}
     \label{eq:L17_S19_2}
 \end{equation}
-is called the phase delay. The minus sign in front indicates phase lag. Thus, the output \( y[n] \) is a time-delayed version of the input \( x[n] \). In general, \( y[n] \) will not be a delayed replica of \( x[n] \) unless the phase delay \( \tau_{p}(\omega_{0}) \) is an integer.
+is called the \textbf{phase delay}. The minus sign in front indicates a phase lag. Thus, the output \( y[n] \) is a \textbf{time-delayed version} of the input \( x[n] \). In general, \( y[n] \) will not be a delayed replica of \( x[n] \) unless the phase delay \( \tau_{p}(\omega_{0}) \) is an integer.
 
 
 
 \subsection{Group delay}
-When the input is composed of many sinusoidal components with different frequencies that are not harmonically related, each component will go through different phase delays. In this case, the signal delay is determined using the group delay defined by:
+When the input is composed of many sinusoidal components with different frequencies that are not harmonically related, each component will go through different phase delays. In this case, the signal delay is determined using the \textbf{group delay}, defined by:
+\marginpar{Group delay}
 \begin{equation}
     \tau_{g}(\omega)
     =
@@ -188,27 +203,25 @@ In defining the group delay, it is assumed that the phase function is unwrapped 
 
 
 
-
-
-\section{Type of transfer functions}
+\subsection{Types of transfer function}
 The time-domain classification of an LTI digital transfer function sequence is based on the length of its impulse response. We can have:
+\marginpar{Classification on the length of the impulse response}
 \begin{itemize}
-    \item Finite Impulse Response (FIR) transfer function;
-    \item Infinite Impulse Response (IIR) transfer function.
+    \item \textbf{Finite Impulse Response (FIR)} transfer functions;
+    \item \textbf{Infinite Impulse Response (IIR)} transfer functions.
 \end{itemize}
-In the case of digital transfer functions with frequency-selective frequency responses, there are two types of classifications:
+In the case of digital transfer functions with frequency-selective frequency responses, there are two other types of classifications:
+\marginpar{Other classifications}
 \begin{itemize}
-    \item a classification based on the shape of the magnitude function \( \abs{H(e^{j\omega})} \);
-    \item a classification based on the form of the phase function \( \theta(\omega) \).
+    \item a classification based on the \textbf{shape of the magnitude function} \( \abs{H(e^{j\omega})} \);
+    \item a classification based on the \textbf{form of the phase function} \( \theta(\omega) \).
 \end{itemize}
 One common classification is based on an ideal magnitude response. A digital filter designed to pass signal components of certain frequencies without distortion should have a frequency response equal to one at these frequencies, and should have a frequency response equal to zero at all other frequencies.
 
 
-
-\subsection{Ideal filters}
-The range of frequencies where the frequency response takes the value of one is called the passband. The range of frequencies where the frequency response takes the value of zero is called the stopband.
-
-Frequency responses of the four popular types of ideal digital filters with real impulse response coefficients are showed in Figure \ref{fig:L17_S27_1}.
+\medskip
+We focus now to the case of ideal filters. In general, the range of frequencies where the frequency response takes the value of one is called the \textbf{passband}.
+\marginpar{Passband and stopband}The range of frequencies where the frequency response takes the value of zero is called the \textbf{stopband}. In this context, the frequency responses of the four popular types of ideal digital filters with real impulse response coefficients are showed in Figure \ref{fig:L17_S27_1}.
 
 \begin{figure}[!h]
     \centering
@@ -216,7 +229,8 @@ Frequency responses of the four popular types of ideal digital filters with real
     \caption{\label{fig:L17_S27_1} Frequency responses of the four popular types of ideal digital filters with real impulse response coefficients.}
 \end{figure}
 
-In particular, the passband and stopband of those filters are listed in Table \ref{tab:L17_S28_1}. The frequencies \( \omega_{c} \), \( \omega_{c_{1}} \) and \( \omega_{c_{2}} \) are called the cutoff frequencies. An ideal filter has a magnitude response equal to one in the passband and zero in the stopband, and has a zero phase everywhere.
+In particular, the passband and stopband of those filters are listed in Table \ref{tab:L17_S28_1}. The frequencies \( \omega_{c} \), \( \omega_{c_{1}} \) and \( \omega_{c_{2}} \) are called the \textbf{cutoff frequencies}.
+\marginpar{Cutoff frequency}An ideal filter has a magnitude response equal to one in the passband and zero in the stopband, and has a zero phase everywhere.
 
 \begin{table}[!h]
     \centering
@@ -230,11 +244,11 @@ In particular, the passband and stopband of those filters are listed in Table \r
         Stopband &   \( 0 \le \omega \le \omega_{c_{1}} \) and \( \omega_{c_{2}} \le \omega \le \pi \)  &   \( \omega_{c_{1}} < \omega < \omega_{c_{2}} \)  \\
         \bottomrule
     \end{tabular}
-    \caption{Passband and stopband of the four popular types of ideal digital filters}
+    \caption{Passband and stopband of the four popular types of ideal digital filters.}
     \label{tab:L17_S28_1}
 \end{table}
 
-Earlier in the course we derived the inverse DTFT of the frequency response \( H_{LP}(e^{j\omega}) \) of the ideal lowpass filter:
+Let us pickle an example. Earlier in the course we derived the inverse DTFT of the frequency response \( H_{LP}(e^{j\omega}) \) of the ideal lowpass filter:
 \begin{equation}
     h_{LP}[n]
     =
@@ -243,9 +257,9 @@ Earlier in the course we derived the inverse DTFT of the frequency response \( H
     -\infty < n < \infty
     \label{eq:L17_S30_1}
 \end{equation}
-We have also shown that the above impulse response is not absolutely summable, and hence, the corresponding transfer function is not BIBO stable. Also, \( h_{LP}[n] \) is not causal and is of doubly infinite length. The remaining three ideal filters are also characterized by doubly infinite, noncausal impulse responses and are not absolutely summable. Thus, the ideal filters with the ideal ``brick wall'' frequency responses cannot be realized with finite dimensional LTI filter.
+We have also showed that the impulse response in Eq. \ref{eq:L17_S30_1} is not absolutely summable, and hence, the corresponding transfer function is not BIBO stable. Also, \( h_{LP}[n] \) is not causal and is of doubly infinite length. The remaining three ideal filters are also characterized by doubly infinite, non-causal impulse responses and are not absolutely summable. Thus, the ideal filters with the ideal ``brick wall'' frequency responses cannot be realized with finite dimensional LTI filter.
 
-To develop stable and realizable transfer functions, the ideal frequency response specifications are relaxed by including a transition band between the passband and the stopband. This permits the magnitude response to decay slowly from its maximum value in the passband to the zero value in the stopband. Moreover, the magnitude response is allowed to vary by a small amount both in the passband and the stopband. Typical magnitude response specifications of a lowpass filter are showed in Figure \ref{fig:L17_S33_1}.
+To develop stable and realizable transfer functions, the ideal frequency response specifications are relaxed by including a \textbf{transition band}\marginpar{Transition band between passband and stopband} between the passband and the stopband. This permits the magnitude response to decay slowly from its maximum value in the passband to the zero value in the stopband. Moreover, the magnitude response is allowed to vary by a small amount both in the passband and the stopband. Typical magnitude response specifications of a lowpass filter are showed in Figure \ref{fig:L17_S33_1}.
 
 \begin{figure}[!h]
     \centering
@@ -255,8 +269,9 @@ To develop stable and realizable transfer functions, the ideal frequency respons
 
 
 
-\subsection{Bounded Real transfer functions}
-A causal stable real-coefficient transfer function \( H(z) \) is defined as a bounded real (BR) transfer function if:
+\subsection{Bounded real transfer function}
+A causal stable real-coefficient transfer function \( H(z) \) is defined as a \textbf{bounded real (BR) transfer function} if:
+\marginpar{Bounded real transfer function}
 \begin{equation}
     \abs{H(e^{j\omega})}
     \le
@@ -265,7 +280,7 @@ A causal stable real-coefficient transfer function \( H(z) \) is defined as a bo
     \forall \omega
     \label{eq:L17_S34_1}
 \end{equation}
-Let \( x[n] \) and \( y[n] \) denote, respectively, the input and output of a digital filter characterized by a BR transfer function \( H(z) \) with \( X(e^{j\omega}) \) and \( Y(e^{j\omega}) \) denoting their DTFTs. Then, the condition in Eq. \ref{eq:L17_S34_1} implies that:
+Now, let \( x[n] \) and \( y[n] \) denote, respectively, the input and output of a digital filter characterized by a BR transfer function \( H(z) \) with \( X(e^{j\omega}) \) and \( Y(e^{j\omega}) \) denoting their DTFTs. Then, the condition in Eq. \ref{eq:L17_S34_1} implies that:
 \begin{equation}
     \abs{Y(e^{j\omega})}^2
     \le
@@ -279,11 +294,14 @@ Integrating Eq. \ref{eq:L17_S35_1} from \( - \pi \) to \( \pi \) and applying Pa
     \sum_{n=-\infty}^{\infty} x[n]^2
     \label{eq:L17_S35_2}
 \end{equation}
-Thus, for all finite-energy inputs, the output energy is less than or equal to the input energy implying that a digital filter characterized by a BR transfer function can be viewed as a passive structure. If \( \abs{H(e^{j\omega})} = 1 \), then the output energy is equal to the input energy, and such a digital filter is therefore a lossless system.
+Thus, for all finite-energy inputs, the output energy is less than or equal to the input energy implying that a digital filter characterized by a BR transfer function can be viewed as a \textbf{passive structure}.
+If \( \abs{H(e^{j\omega})} = 1 \), then the output energy is equal to the input energy, and such a digital filter is therefore a \textbf{lossless system}.
 
-A causal stable real-coefficient transfer function \( H(z) \) with \( \abs{H(e^{j\omega})} = 1 \) is thus called a lossless bounded real (LBR) transfer function. The BR and LBR transfer functions are the keys to the realization of digital filters with low coefficient sensitivity.
+\marginpar{Lossless bounded real transfer function}
+A causal stable real-coefficient transfer function \( H(z) \) with \( \abs{H(e^{j\omega})} = 1 \) is thus called a \textbf{lossless bounded real (LBR) transfer function}.
+The BR and LBR transfer functions are the keys to the realization of digital filters with low coefficient sensitivity.
 
-\begin{example}{Bounded Real transfer functions}{}
+\begin{example}{Bounded real transfer function}{}
     Consider the causal stable IIR transfer function:
     \begin{equation}
         H(z)
@@ -331,6 +349,7 @@ A causal stable real-coefficient transfer function \( H(z) \) with \( \abs{H(e^{
 
 
 \subsection{Allpass transfer function}
+\marginpar{Allpass transfer function definition}
 \begin{definition}{Allpass transfer function}{}
     An IIR transfer function \( A(z) \) with unity magnitude response for all frequencies, i.e.:
     \begin{equation}
@@ -341,7 +360,7 @@ A causal stable real-coefficient transfer function \( H(z) \) with \( \abs{H(e^{
         \forall \omega
         \label{eq:L17_S44_1}
     \end{equation}
-    is called an allpass transfer function.
+    is called an \textbf{allpass transfer function}.
 \end{definition}
 
 An \( M^{\text{th}} \) order causal real-coefficient allpass transfer function is of the form:
@@ -367,14 +386,15 @@ then it follows that \( A_{M}(z) \) can be written as:
 \end{equation}
 Note that if \( z = re^{j\omega} \) is a pole of a real coefficient allpass transfer function, then it has a zero at \( z = \frac{1}{r} e^{-j \varphi} \).
 
-The numerator of a real-coefficient allpass transfer function is said to be the mirror-image polynomial of the denominator, and vice versa. We shall use the notation \( \widetilde{D}_{M}(z) \) to denote the mirror-image polynomial of a degree-\( M \) polynomial \( D_{M}(z) \), i.e.:
+The numerator of a real-coefficient allpass transfer function is said to be the \textbf{mirror-image polynomial} of the denominator, and vice versa.
+\marginpar{Mirror-image polynomial and symmetry}We shall use the notation \( \widetilde{D}_{M}(z) \) to denote the mirror-image polynomial of a degree-\( M \) polynomial \( D_{M}(z) \), i.e.:
 \begin{equation}
     \widetilde{D}_{M}(z)
     =
     z^{-M} D_{M}(z^{-1})
     \label{eq:L17_S46_1}
 \end{equation}
-The expression in Eq. \ref{eq:L17_S45_2} implies that the poles and zeros of a real-coefficient allpass function exhibit mirror-image symmetry in the z-plane.
+The expression in Eq. \ref{eq:L17_S45_2} implies that the poles and zeros of a real-coefficient allpass function exhibit \textbf{mirror-image symmetry} in the \( z \)-plane.
 
 \begin{example}{Allpass transfer function}{}
     \begin{equation}
@@ -411,7 +431,7 @@ Hence:
     1
     \label{eq:L17_S48_3}
 \end{equation}
-Now, the poles of a causal stable transfer function must lie inside the unit circle in the z-plane. Hence, all zeros of a causal stable allpass transfer function must lie outside the unit circle in a mirror-image symmetry with its poles situated inside the unit circle.
+Now, the poles of a causal stable transfer function must lie inside the unit circle in the \( z \)-plane. Hence, all the zeros of a causal stable allpass transfer function must lie outside the unit circle in a mirror-image symmetry with its poles situated inside the unit circle.
 
 \begin{example}{Allpass transfer function}{}
     Consider the \( 3^{\text{rd}} \) order allpass function:
@@ -435,11 +455,15 @@ Now, the poles of a causal stable transfer function must lie inside the unit cir
     \end{center}
 \end{example}
 
+
+\medskip
+\marginpar{Properties of allpass transfer function}
 We list now the properties of allpass transfer function:
 \begin{itemize}
     \item a causal stable real-coefficient allpass transfer function is a lossless bounded real (LBR) function or, equivalently, a causal stable allpass filter is a lossless structure;
 
     \item the magnitude function of a stable allpass function \( A(z) \) satisfies:
+    \marginpar{Magnitude function}
     \begin{equation}
         \abs{A(z)}
         \begin{cases}
@@ -451,6 +475,7 @@ We list now the properties of allpass transfer function:
     \end{equation}
 
     \item let \( \tau(\omega) \) denote the group delay function of an allpass filter \( A(z) \):
+    \marginpar{Group delay}
     \begin{equation}
         \tau(\omega)
         =
@@ -467,7 +492,9 @@ The unwrapped phase function \( \theta_{c}(\omega) \) of a stable allpass functi
     \label{eq:L17_S53_1}
 \end{equation}
 
-A simple but often used application of an allpass filter is as a delay equalizer. Let \( G(z) \) be the transfer function of a digital filter designed to meet a prescribed magnitude response. The non-linear phase response of \( G(z) \) can be corrected by cascading it with an allpass filter \( A(z) \) so that the overall cascade has a constant group delay in the band of interest.
+\marginpar{Delay equalizer application}
+A simple but often used application of an allpass filter is as a \textbf{delay equalizer}.
+Let \( G(z) \) be the transfer function of a digital filter designed to meet a prescribed magnitude response. The non-linear phase response of \( G(z) \) can be corrected by cascading it with an allpass filter \( A(z) \) so that the overall cascade has a constant group delay in the band of interest.
 Since \( \abs{A_{M}(e^{j\omega})} = 1 \), we have:
 \begin{equation}
     \abs{G(e^{j\omega}) A(e^{j\omega})}
@@ -480,10 +507,11 @@ The overall group delay is given by the sum of the group delays of \( G(z) \) an
 
 
 \subsection{Phase characteristics}
-A second classification of a transfer function is with respect to its phase characteristics. In many applications, it is necessary that the digital filter designed does not distort the phase of the input signal components for frequencies in the passband.
-One way to avoid any phase distortion is to make the frequency response of the filter real and nonnegative, i.e., to design the filter with a zero-phase characteristic. However, it is not possible to design a causal digital filter with a zero phase.
+\marginpar{Classification on phase characteristics}
+A second classification of a transfer function is with respect to its \textbf{phase characteristics}. In many applications, it is necessary that the digital filter designed does not distort the phase of the input signal components for frequencies in the passband.
+One way to avoid any phase distortion is to make the frequency response of the filter real and non-negative, i.e., to design the filter with a \textbf{zero-phase characteristic}. However, it is not possible to design a causal digital filter with a zero phase.
 
-For non-real-time processing of real-valued input signals of finite length, zero-phase filtering can be very simply implemented by relaxing the causality requirement. One zero-phase filtering scheme is sketched in Figure \ref{fig:L17_S58_1}. It is easy to verify the ladder in the frequency domain.
+For non-real-time processing of real-valued input signals of finite length, \marginpar{Zero-phase filtering}\textbf{zero-phase filtering} can be very simply implemented by relaxing the causality requirement. One zero-phase filtering scheme is sketched in Figure \ref{fig:L17_S58_1}. It is easy to verify the ladder in the frequency domain.
 
 \begin{figure}[!h]
     \centering
@@ -592,6 +620,7 @@ If it is desired to pass input signal components in a certain frequency range un
     \end{center}
 
     Because of the symmetry of the impulse response coefficients as indicated in the two plots, the frequency response of the truncated approximation can be expressed as:
+    \marginnote{\flushleft\textsl{\small Zero-phase response or amplitude response}}
     \begin{equation}
         \hat{H}_{LP}(e^{j\omega})
         =
@@ -600,7 +629,7 @@ If it is desired to pass input signal components in a certain frequency range un
         e^{-j\omega \frac{N}{2}} \widetilde{H}_{LP}(\omega)
         \label{eq:L17_S71_1}
     \end{equation}
-    where \( \widetilde{H}_{LP}(\omega) \), called the zero-phase response or amplitude response, is a real function of \( \omega \).
+    where \( \widetilde{H}_{LP}(\omega) \), called the \textbf{zero-phase response} or \textbf{amplitude response}, is a real function of \( \omega \).
 \end{example}
 
 \end{document}
