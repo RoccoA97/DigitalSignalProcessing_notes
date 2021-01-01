@@ -6,23 +6,24 @@
 
 \begin{document}
 
-\chapter{The Z transform}
+\chapter{\boldmath The \( z \)-transform}
 
 \newdate{date}{12}{11}{2020}
-\marginpar{ \textbf{Lecture 14.} \\  \displaydate{date}.}
+\marginpar{\textbf{Lecture 14.} \\  \displaydate{date}.}
 
-We have seen that the DTFT provides a frequency-domain representation of discrete-time signals and LTI discrete-time systems. However, because of the convergence condition, in many cases, the DTFT of a sequence may not exist. As a result, it is not possible to make use of such frequency-domain characterization in these cases.
+We have seen that the DTFT provides a frequency-domain representation of discrete-time signals and LTI discrete-time systems. However, because of the convergence condition in many cases, the DTFT of a sequence may not exist. As a result, it is not possible to make use of such frequency-domain characterization in these cases.\marginpar{Problems of DTFT and \( z \)-transform as alternative}
 
-A possible solution and alternative is a generalization of the DTFT, which leads to the z-transform. The ladder may exist for many sequences for which the DTFT does not exist. Moreover, use of z-transform techniques permits simple but powerful algebraic manipulations. Consequently, z-transform has become an important tool in the analysis and design of digital filters
-
-
+A possible solution and alternative is a generalization of the DTFT, which leads to the \( z \)-transform. The ladder may exist for many sequences for which the DTFT does not exist. Moreover, the use of \( z \)-transform techniques permits simple but powerful algebraic manipulations. Consequently, the \( z \)-transform has become an important tool in the analysis and design of digital filters
 
 
 
-\section{The definition}
 
-\begin{definition}{Z-transform}{}
-    For a given sequence \( g[n] \), its z-transform \( G(z) \) is defined as:
+
+\section{\boldmath Definition of \( z \)-transform}
+\marginpar{Definition of the \( z \)-transform}
+Let us begin the discussion on this topic with the definition of the main tool.
+\begin{definition}{\boldmath \( z \)-transform}{}
+    For a given sequence \( g[n] \), its \textbf{\boldmath\( z \)-transform} \( G(z) \) is defined as:
     \begin{equation}
         G(z)
         =
@@ -32,21 +33,21 @@ A possible solution and alternative is a generalization of the DTFT, which leads
     where \( z = \operatorname{Re}[z] + j\operatorname{Im}[z] \) is a complex variable.
 \end{definition}
 
-If we let \( z = re^{j\omega} \), then the z-transform reduces to:
+If we let \( z = re^{j\omega} \), then the \( z \)-transform reduces to:
 \begin{equation}
     G(re^{j\omega})
     =
     \sum_{n=-\infty}^{\infty} g[n] r^{-n} e^{-j\omega n}
     \label{eq:L14_S06_1}
 \end{equation}
-The above can be interpreted as the DTFT of the modified sequence \( \qty{g[n]r^{-n}} \). For \( r = 1 \) (i.e., \( \abs{z} = 1 \)), the z-transform reduces to its DTFT, provided the ladder exists.
+\marginpar{Connections to the DTFT}Eq. \ref{eq:L14_S06_1} can be interpreted as the DTFT of the modified sequence \( \qty{g[n]r^{-n}} \). For \( r = 1 \) (i.e., \( \abs{z} = 1 \)), the \( z \)-transform reduces to its DTFT, provided the ladder exists.
 
 Like the DTFT, there are conditions on the convergence of the infinite series like:
 \begin{equation}
     \sum_{n=-\infty}^{\infty} g[n] z^{-n}
     \label{eq:L14_S07_1}
 \end{equation}
-For a given sequence, the set \( R \) of values of \( z \) for which its z-transform converges is called the region of convergence (ROC).
+\marginpar{Region of convergence (ROC) of the \( z \)-transform}For a given sequence, the set \( R \) of values of \( z \) for which its \( z \)-transform converges is called the \textbf{region of convergence (ROC)}.
 
 From our earlier discussion on the uniform convergence of the DTFT, it follows that the series:
 \begin{equation}
@@ -62,20 +63,22 @@ converges if \( \qty{g[n]r^{-n}} \) is absolutely summable, i.e. if:
     \infty
     \label{eq:L14_S08_2}
 \end{equation}
-In general, the ROC \( R \) of a z-transform of a sequence \( g[n] \) is an annular region of the \( z \)-plane, namely:
+In general, the ROC \( R \) of a \( z \)-transform of a sequence \( g[n] \) is an annular region of the \( z \)-plane, namely:
 \begin{equation}
     R_{g^{-}}
     <
     \abs{z}
-    z
+    <
     R_{g^{+}}
     \label{eq:L14_S09_1}
 \end{equation}
 where \( 0 \le R_{g^{-}} < R_{g^{+}} < \infty \).
 
 
-\begin{example}{Z-transform calculation}{}
-    We determine the z-transform \( X(z) \) of the causal sequence \( x[n] = \alpha^{n} \mu[n] \) and its ROC. Now:
+\medskip
+After having introduced the argument, we study some examples of \( z \)-transform calculation in order to understand how it works in practice.\marginpar{Examples of \( z \)-transform calculation}
+\begin{example}{\boldmath\( z \)-transform calculation}{}
+    We determine the \( z \)-transform \( X(z) \) of the causal sequence \( x[n] = \alpha^{n} \mu[n] \) and its ROC. Now:
     \begin{equation}
         X(z)
         =
@@ -93,11 +96,11 @@ where \( 0 \le R_{g^{-}} < R_{g^{+}} < \infty \).
         \abs{\alpha z^{-1}} < 1
         \label{eq:L14_S10_2}
     \end{equation}
-    ROC is the annular region \( \abs{z} > \abs{\alpha} \).
+    Therefore, the ROC is the annular region \( \abs{z} > \abs{\alpha} \).
 \end{example}
 
-\begin{example}{Z-transform calculation}{}
-    The z-transform \( \mu(z) \) of the unit step sequence \( \mu[n] \) can be obtained from:
+\begin{example}{\boldmath\( z \)-transform calculation}{}
+    The \( z \)-transform \( \mu(z) \) of the unit step sequence \( \mu[n] \) can be obtained from:
     \begin{equation}
         X(z)
         =
@@ -115,10 +118,10 @@ where \( 0 \le R_{g^{-}} < R_{g^{+}} < \infty \).
         \abs{z^{-1}} < 1
         \label{eq:L14_S11_2}
     \end{equation}
-    ROC is the annular region \( 1 < \abs{z} < \infty \). Note that the unit step sequence \( \mu[n] \) is not obsolutely summable, and hence its DTFT does not converge uniformly.
+    Therefore, the ROC is the annular region \( 1 < \abs{z} < \infty \). Note that the unit step sequence \( \mu[n] \) is not obsolutely summable, and hence its DTFT does not converge uniformly.
 \end{example}
 
-\begin{example}{Z-transform calculation}{}
+\begin{example}{\boldmath\( z \)-transform calculation}{}
     Consider the anti-causal sequence:
     \begin{equation}
         y[n]
@@ -126,7 +129,7 @@ where \( 0 \le R_{g^{-}} < R_{g^{+}} < \infty \).
         - \alpha^{n} \mu[-n-1]
         \label{eq:L14_S12_1}
     \end{equation}
-    Its z-transform is given by:
+    Its \( z \)-transform is given by:
     \begin{align}
         Y(z)
         &=
@@ -140,15 +143,16 @@ where \( 0 \le R_{g^{-}} < R_{g^{+}} < \infty \).
         &=
             \frac{1}{1 - \alpha z^{-1}}
     \end{align}
-    for \( \abs{\alpha^{-1}z} < 1 \). ROC is the annular region \( \abs{z} < \abs{\alpha} \).
+    for \( \abs{\alpha^{-1}z} < 1 \). Therefore, the ROC is the annular region \( \abs{z} < \abs{\alpha} \).
 \end{example}
 
-Note that the z-transforms of the two sequences \( \alpha^{n} \mu[n] \) and \( - \alpha^{n} \mu[-n-1] \) are identical even though the two parent sequences are different. The only way a unique sequence can be associated with a z-transform is by specifying its ROC.
+Note that the \( z \)-transforms of the two sequences \( \alpha^{n} \mu[n] \) and \( - \alpha^{n} \mu[-n-1] \) are identical even though the two parent sequences are different. The only way a unique sequence can be associated with a \( z \)-transform is by specifying its ROC.
 
-Another important point is that the DTFT \( G(e^{j\omega}) \) of a sequence \( g[n] \) converges uniformly if and only if the ROC of the z-transform \( G(z) \) of \( g[n] \) includes the unit circle. However, the existence of the DTFT does not always imply the existence of the z-transform.
+\marginpar{Connection between uniform convergence of the DTFT and the ROC}
+Another important point is that the DTFT \( G(e^{j\omega}) \) of a sequence \( g[n] \) converges uniformly if and only if the ROC of the \( z \)-transform \( G(z) \) of \( g[n] \) includes the unit circle. However, the existence of the DTFT does not always imply the existence of the \( z \)-transform.
 
-\begin{example}{Z-transform}{}
-    Th finite energy sequence:
+\begin{example}{\boldmath\( z \)-transform calculation}{}
+    The finite energy sequence:
     \begin{equation}
         h_{LP}[n]
         =
@@ -167,23 +171,26 @@ Another important point is that the DTFT \( G(e^{j\omega}) \) of a sequence \( g
         \end{cases}
         \label{eq:L14_S15_2}
     \end{equation}
-    which converges in the mean-square sense. However, \( h_{LP}[n] \) does not have a z-transform as it is not absolutely summable for any value of \( r \).
+    which converges in the mean-square sense. However, \( h_{LP}[n] \) does not have a \( z \)-transform as it is not absolutely summable for any value of \( r \).
 \end{example}
 
-Some commonly used z-transform pairs are listed in Figure \ref{fig:L14_S16_1}.
+
+\medskip
+Some commonly used \( z \)-transform pairs are listed in Figure \ref{fig:L14_S16_1}.\marginpar{Commonly used \( z \)-transform pairs}
 
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.75\textwidth]{\figpath{14}/14_images/S16_1.pdf}
-    \caption{\label{fig:L14_S16_1} Common z-transform pairs.}
+    \caption{\label{fig:L14_S16_1} Common \( z \)-transform pairs.}
 \end{figure}
 
 
 
 
 
-\section{Rational z-transforms}
-In the case of LTI discrete-time systems we are concerned with in this course, all pertinent z-transforms are rational functions of \( z^{-1} \), that is, they are rations of two polinomials in \( z^{-1} \):
+\section{Rational \( z \)-transforms}
+\marginpar{Rational \( z \)-transforms}
+In the case of the LTI discrete-time systems we are concerned with in this course, all the pertinent \( z \)-transforms are \textbf{rational functions} of \( z^{-1} \), that is, they are fractions of two polinomials in \( z^{-1} \):
 \begin{equation}
     G(z)
     =
@@ -192,14 +199,14 @@ In the case of LTI discrete-time systems we are concerned with in this course, a
     \frac{p_{0} + p_{1}z^{-1} + \dots + p_{M-1}z^{-(M-1)} + p_{M}z^{-M}}{d_{0} + d_{1}z^{-1} + \dots + d_{N-1}z^{-(N-1)} + d_{N}z^{-N}}
     \label{eq:L14_S17_1}
 \end{equation}
-The degree of the numerator polynomial \( P(z) \) is \( M \) and the degree of the denominator polynomial \( D(z) \) is \( N \). An alternate representation of a rational z-transform is as a ratio of two polynomials in \( z \):
+The degree of the numerator polynomial \( P(z) \) is \( M \) and the degree of the denominator polynomial \( D(z) \) is \( N \). An alternate representation of a rational \( z \)-transform is as a ratio of two polynomials in \( z \):
 \begin{equation}
     G(z)
     =
     z^{(N-M)} \frac{p_{0}z^{M} + \dots + p_{M-1}z + p_{M}}{d_{0}z^{N} + \dots + d_{N-1}z + d_{N}}
     \label{eq:L14_S18_1}
 \end{equation}
-Again, a rational z-transform can be alternately written in factored form as:
+Again, a rational \( z \)-transform can be alternately written in \textbf{factored form} as:\marginpar{Rational \( z \)-transform in factored form}
 \begin{equation}
     G(z)
     =
@@ -208,27 +215,15 @@ Again, a rational z-transform can be alternately written in factored form as:
     z^{(N-M)} \frac{\displaystyle p_{0} \prod_{\ell=1}^{M} (z - \xi_{\ell})}{\displaystyle d_{0} \prod_{\ell=1}^{N} (z - \lambda_{\ell})}
     \label{eq:L14_S19_1}
 \end{equation}
-We have as roots:
+In particular, we have the following quatities of interest:
+\marginpar{Zeros and poles of rational \( z \)-transform}
 \begin{itemize}
-    \item \( z = \xi_{\ell} \), roots of the numerator polynomial. These values of \( z \) are known as the zeros of \( G(z) \);
-    \item \( z = \lambda_{\ell} \), roots of the denominator polynomial. These values of \( z \) are known as the poles of \( G(z) \).
+    \item \( z = \xi_{\ell} \), roots of the numerator polynomial. These values of \( z \) are known as the \textbf{zeros} of \( G(z) \);
+    \item \( z = \lambda_{\ell} \), {roots} of the denominator polynomial. These values of \( z \) are known as the \textbf{poles} of \( G(z) \).
 \end{itemize}
 
-\begin{example}{Zeros and poles}{}
-    The z-transform:
-    \begin{equation}
-        \mu(z)
-        =
-        \frac{1}{1 - z^{-1}}
-        \qquad
-        \abs{z} > 1
-        \label{eq:L14_S22_1}
-    \end{equation}
-    has a zero at \( z = 0 \) and a pole at \( z = 1 \).
-\end{example}
-
-\begin{example}{ROC of a rational z-transform}{}
-    The z-transform \( H(z) \) of the sequence \( h[n] = \qty(-0.6)^{n} \mu[n] \) is given by:
+\begin{example}{\boldmath ROC of a rational \( z \)-transform}{}
+    The \( z \)-transform \( H(z) \) of the sequence \( h[n] = \qty(-0.6)^{n} \mu[n] \) is given by:
     \begin{equation}
         H(z)
         =
@@ -240,14 +235,28 @@ We have as roots:
     Here the ROC is just outside the circle going through the point \( z = - 0.6 \).
 \end{example}
 
-A physical interpretation of the concepts of poles and zeros can be given by plotting the log-magnitude \( 20\log_{10}\abs{G(z)} \) as showed in Figure \ref{fig:L14_S25_1} for:
+\begin{example}{Zeros and poles}{}
+    The \( z \)-transform:
+    \begin{equation}
+        \mu(z)
+        =
+        \frac{1}{1 - z^{-1}}
+        \qquad
+        \abs{z} > 1
+        \label{eq:L14_S22_1}
+    \end{equation}
+    has a zero at \( z = 0 \) and a pole at \( z = 1 \).
+\end{example}
+
+A physical interpretation of the concepts of poles and zeros can be given by plotting the \textbf{log-magnitude} \( 20\log_{10}\abs{G(z)} \) as showed in Figure \ref{fig:L14_S25_1} for:
+\marginpar{Log-magnitude plot of \( z \)-transform for physical interpretation}
 \begin{equation}
     G(z)
     =
     \frac{1 - 2.4z^{-1} + 2.88z^{-2}}{1 - 0.8z^{-1} + 0.64z^{-2}}
     \label{eq:L14_S24_1}
 \end{equation}
-Observe that the magnitude plot exhibits very large peaks around the points \( z = 0.4 \pm j0.6928 \), which are the poles of \( G(z) \). It also exhibits very narrow and deep wells around the location of the zeros at \( z = 1.2 \pm j1.2 \).
+Observe that the \textbf{magnitude plot} exhibits very large peaks around the points \( z = 0.4 \pm j0.6928 \), which are the poles of \( G(z) \). It also exhibits very narrow and deep wells around the location of the zeros at \( z = 1.2 \pm j1.2 \).
 
 \begin{figure}[!h]
     \centering
@@ -255,84 +264,108 @@ Observe that the magnitude plot exhibits very large peaks around the points \( z
     \caption{\label{fig:L14_S25_1} Log-magnitude plot for \( G(z) \) in Eq. \ref{eq:L14_S24_1}.}
 \end{figure}
 
-ROC of a z-transform is an important concept. Without its knowledge, there is no unique relationship between a sequence and its z-transform. Hence, the z-transform must always be specified with its ROC. Moreover, there is a relationship between the ROC of the z-transform of the impulse response of a causal LTI discrete-time system and its BIBO stability.
 
-Another important distiction is that a sequence can be one of the following types: finite-length, right-sided, left-sided and two-sided. In general, the ROC depends on the type of the sequence of interest.
+\medskip
+Now, we remark that the ROC of a \( z \)-transform is an important concept.
+\marginpar{Importance of the ROC of \( z \)-transform}
+Without its knowledge, there is no unique relationship between a sequence and its \( z \)-transform. Hence, \textbf{\boldmath the \( z \)-transform must always be specified with its ROC}. Moreover, there is a relationship between the ROC of the \( z \)-transform of the impulse response of a causal LTI discrete-time system and its BIBO stability.
 
-\begin{example}{Finite-length sequence z-transform}{}
-    Consider a finite-length sequence \( g[n] \) defined for \( -M \le n \le N \), where \( M \) and \( N \) are non-negative integers and \( \abs{g[n]} < \infty \). Its z-transform is given by:
-    \begin{equation}
-        G(z)
-        =
-        \sum_{n=-M}^{N} g[n] z^{-n}
-        =
-        \frac{\displaystyle \sum_{n=0}^{N+M} g[n-M]z^{N+M-n}}{z^{N}}
-        \label{eq:L14_S31_1}
-    \end{equation}
-    Note that \( G(z) \) has \( M \) zeros and \( N \) poles. As can be seen from the expression for \( G(z) \), the z-transform of a finite-length bounded sequence converges everywhere in the z-plane except possibly at \( z = 0 \) and/or at \( z = \infty \).
-\end{example}
+Another important distiction is that a sequence can be one of the following types:
+\marginpar{ROC dependency on the type of sequence}
+\begin{itemize}
+    \item \textbf{finite-length};
+    \item \textbf{right-sided};
+    \item \textbf{left-sided};
+    \item \textbf{two-sided}.
+\end{itemize}
+In general, the ROC depends on the type of the sequence of interest and we show it in the following Subsections.
 
-\begin{example}{Right-sided sequence z-transform}{}
-    A right-sided sequence with nonzero sample values for \( n \ge 0 \) is sometimes called a causal sequence. So, consider a causal sequence \( u_{1}[n] \). Its z-transform is given by:
-    \begin{equation}
-        U_{1}(z)
-        =
-        \sum_{n=0}^{\infty} u_{1}[n] z^{-n}
-        \label{eq:L14_S32_1}
-    \end{equation}
-    It can be showed that \( U_{1}(z) \) converges exterior to a circle with \( \abs{z} = R_{1} \), including the point \( z = \infty \).
 
-    On the other hand, a right-sided sequence \( u_{2}[n] \) with nonzero sample values only for \( n \ge -M \) with \( M \) non-negative has a z-transform \( U_{2}(z) \) with \( M \) poles at \( z = \infty \).
-    The ROC of \( U_{2}(z) \) is exterior to a circle \( \abs{z} = R_{2} \), exluding the point \( z = \infty \).
-\end{example}
 
-\begin{example}{Left-sided sequence z-transform}{}
-    A left-sided sequence with nonzero sample values for \( n \le 0 \) is sometimes called anticausal sequence. So, consider an anticausal sequence \( v_{1}[n] \). Its z-transform is given by:
-    \begin{equation}
-        V_{1}(z)
-        =
-        \sum_{n=-\infty}^{0} v_{1}[n]z^{-n}
-        \label{eq:L14_S34_1}
-    \end{equation}
-    It can be showed that \( V_{1}(z) \) converges interior to a circle \( \abs{z} = R_{3} \), including the point \( z = 0 \).
+\subsection{\boldmath Finite-length sequence \( z \)-transform}
+\marginpar{\( z \)-transform of finite-length sequence}
+We consider a \textbf{finite-length sequence} \( g[n] \) defined for \( -M \le n \le N \), where \( M \) and \( N \) are non-negative integers and \( \abs{g[n]} < \infty \).
+Its \( z \)-transform is given by:
+\begin{equation}
+    G(z)
+    =
+    \sum_{n=-M}^{N} g[n] z^{-n}
+    =
+    \frac{\displaystyle \sum_{n=0}^{N+M} g[n-M]z^{N+M-n}}{z^{N}}
+    \label{eq:L14_S31_1}
+\end{equation}
+Note that \( G(z) \) has \( M \) zeros and \( N \) poles. As can be seen from the expression for \( G(z) \), the \( z \)-transform of a finite-length bounded sequence converges everywhere in the z-plane except possibly at \( z = 0 \) and/or at \( z = \infty \).
 
-    On the other hand, a left-sided sequence with nonzero sample values only for \( n \le N \) with \( N \) non-negative has a z-transform \( V_{2}(z) \) with \( N \) poles at \( z = 0 \).
-    The ROC of \( V_{2}(z) \) is interior to a circle \( \abs{z} = R_{4} \), excluding the point \( z = 0 \).
-\end{example}
 
-\begin{example}{Two-sided sequence z-transform}{}
-    The z-transform of a two-sided sequence \( w[n] \) can be expressed as:
-    \begin{equation}
-        W(z)
-        =
-        \sum_{n=-\infty}^{\infty} w[n]z^{-n}
-        =
-        \sum_{n=0}^{\infty} w[n]z^{-n} + \sum_{n=-\infty}^{-1} w[n]z^{-n}
-        \label{eq:L14_S36_1}
-    \end{equation}
-    The first term on the RHS can be interpreted as the z-transform of a right-sided sequence and it thus converges exterior to the circle \( \abs{z} = R_{5} \). The second term of the RHS can be interpreted as the z-transform of a left-sided sequence and it thus converges interior to the circle \( \abs{z} = R_{6} \).
-    If \( R_{5} < R_{6} \), there is an overlapping ROC given  by \( R_{5} < \abs{z} < R_{6} \). If \( R_{5} > R_{6} \), there is no overlap and the z-transform does not exist.
 
-    In particular, let us consider as example the two-sided sequence:
-    \begin{equation}
-        u[n]
-        =
-        \alpha^{n}
-        \label{eq:L14_S38_1}
-    \end{equation}
-    where \( \alpha \) can be either real or complex. Its z-transform is given by:
-    \begin{equation}
-        U(z)
-        =
-        \sum_{n=-\infty}^{\infty} \alpha^{n}z^{-n}
-        =
-        \sum_{n=0}^{\infty} \alpha^{n}z^{-n} + \sum_{n=-\infty}^{-1} \alpha^{n}z^{-n}
-        \label{eq:L14_S38_2}
-    \end{equation}
-    The first term on the RHS converges for \( \abs{z} > \abs{\alpha} \), whereas the second term converges for \( \abs{z} < \abs{\alpha} \). There is no overlap between these two regions, hence the z-transform of \( u[n] = \alpha^{n} \) does not exist.
-\end{example}
+\subsection{\boldmath Right-sided sequence \( z \)-transform}
+\marginpar{\( z \)-transform of right-sided sequence}
+A \textbf{right-sided sequence} with nonzero sample values for \( n \ge 0 \) is sometimes called a \textbf{causal sequence}. So, we consider a causal sequence \( u_{1}[n] \). Its \( z \)-transform is given by:
+\begin{equation}
+    U_{1}(z)
+    =
+    \sum_{n=0}^{\infty} u_{1}[n] z^{-n}
+    \label{eq:L14_S32_1}
+\end{equation}
+It can be showed that \( U_{1}(z) \) converges exterior to a circle with \( \abs{z} = R_{1} \), including the point \( z = \infty \).
 
-The ROC of a rational z-transform cannot contain any pole (since it is infinite at a pole) and is bounded by the poles. To show that the z-transform is bounded by the poles, assume that the z-transform \( X(z) \) has simple poles at \( z = \alpha \) and \( z = \beta \). Assume that the corresponding sequence \( x[n] \) is a right-sided sequence.
+On the other hand, a right-sided sequence \( u_{2}[n] \) with nonzero sample values only for \( n \ge -M \) with \( M \) non-negative has a \( z \)-transform \( U_{2}(z) \) with \( M \) poles at \( z = \infty \).
+The ROC of \( U_{2}(z) \) is exterior to a circle \( \abs{z} = R_{2} \), exluding the point \( z = \infty \).
+
+
+
+\subsection{\boldmath Left-sided sequence \( z \)-transform}
+\marginpar{\( z \)-transform of left-sided sequence}
+A \textbf{left-sided sequence} with nonzero sample values for \( n \le 0 \) is sometimes called \textbf{anticausal sequence}. So, we consider an anticausal sequence \( v_{1}[n] \). Its \( z \)-transform is given by:
+\begin{equation}
+    V_{1}(z)
+    =
+    \sum_{n=-\infty}^{0} v_{1}[n]z^{-n}
+    \label{eq:L14_S34_1}
+\end{equation}
+It can be showed that \( V_{1}(z) \) converges interior to a circle \( \abs{z} = R_{3} \), including the point \( z = 0 \).
+
+On the other hand, a left-sided sequence with nonzero sample values only for \( n \le N \) with \( N \) non-negative has a \( z \)-transform \( V_{2}(z) \) with \( N \) poles at \( z = 0 \).
+The ROC of \( V_{2}(z) \) is interior to a circle \( \abs{z} = R_{4} \), excluding the point \( z = 0 \).
+
+
+
+\subsection{\boldmath Two-sided sequence \( z \)-transform}
+\marginpar{\( z \)-transform of two-sided sequence}
+The \( z \)-transform of a \textbf{two-sided sequence} \( w[n] \) can be expressed as:
+\begin{equation}
+    W(z)
+    =
+    \sum_{n=-\infty}^{\infty} w[n]z^{-n}
+    =
+    \sum_{n=0}^{\infty} w[n]z^{-n} + \sum_{n=-\infty}^{-1} w[n]z^{-n}
+    \label{eq:L14_S36_1}
+\end{equation}
+The first term on the RHS can be interpreted as the \( z \)-transform of a right-sided sequence and it thus converges exterior to the circle \( \abs{z} = R_{5} \). The second term of the RHS can be interpreted as the \( z \)-transform of a left-sided sequence and it thus converges interior to the circle \( \abs{z} = R_{6} \).
+If \( R_{5} < R_{6} \), there is an overlapping ROC given  by \( R_{5} < \abs{z} < R_{6} \). If \( R_{5} > R_{6} \), there is no overlap and the \( z \)-transform does not exist.
+
+In particular, let us consider as example the two-sided sequence:
+\begin{equation}
+    u[n]
+    =
+    \alpha^{n}
+    \label{eq:L14_S38_1}
+\end{equation}
+where \( \alpha \) can be either real or complex. Its \( z \)-transform is given by:
+\begin{equation}
+    U(z)
+    =
+    \sum_{n=-\infty}^{\infty} \alpha^{n}z^{-n}
+    =
+    \sum_{n=0}^{\infty} \alpha^{n}z^{-n} + \sum_{n=-\infty}^{-1} \alpha^{n}z^{-n}
+    \label{eq:L14_S38_2}
+\end{equation}
+The first term on the RHS converges for \( \abs{z} > \abs{\alpha} \), whereas the second term converges for \( \abs{z} < \abs{\alpha} \). There is no overlap between these two regions, hence the \( z \)-transform of \( u[n] = \alpha^{n} \) does not exist.
+
+
+\medskip
+The ROC of a rational \( z \)-transform cannot contain any pole (since it is infinite at a pole) and is bounded by the poles.
+To show the latter statement, we assume that the \( z \)-transform \( X(z) \) has simple poles at \( z = \alpha \) and \( z = \beta \). We also assume that the corresponding sequence \( x[n] \) is a right-sided sequence.
 Then, \( x[n] \) has the form:
 \begin{equation}
     x[n]
@@ -342,16 +375,16 @@ Then, \( x[n] \) has the form:
     \abs{\alpha} < \abs{\beta}
     \label{eq:L14_S41_1}
 \end{equation}
-where \( N_{0} \) is a positive or negative integer. Now, the z-transform of the right.sided sequence \( \gamma^{n} \mu[n-N_{0}] \) exists if:
+where \( N_{0} \) is a positive or negative integer. Now, the \( z \)-transform of the right-sided sequence \( \gamma^{n} \mu[n-N_{0}] \) exists if:
 \begin{equation}
     \sum_{n=N_{0}}^{\infty} \abs{\gamma^{n}z^{-n}}
     <
     \infty
     \label{eq:L14_S41_2}
 \end{equation}
-for some \( z \). The condition in Eq. \ref{eq:L14_S41_2} holds for \( \abs{z} > \abs{\gamma} \), but not for \( \abs{z} \le \abs{\gamma} \). Therefore, the z-transform of Eq. \ref{eq:L14_S41_1} has a ROC defined by \( \abs{\beta} < \abs{z} \le \infty \).
+for some \( z \). The condition in Eq. \ref{eq:L14_S41_2} holds for \( \abs{z} > \abs{\gamma} \), but not for \( \abs{z} \le \abs{\gamma} \). Therefore, the \( z \)-transform of Eq. \ref{eq:L14_S41_1} has a ROC defined by \( \abs{\beta} < \abs{z} \le \infty \).
 
-Likewise, the z-transform of a left-sided sequence:
+Likewise, the \( z \)-transform of a left-sided sequence:
 \begin{equation}
     x[n]
     =
@@ -360,14 +393,15 @@ Likewise, the z-transform of a left-sided sequence:
     \abs{\alpha} < \abs{\beta}
     \label{eq:L14_S43_1}
 \end{equation}
-has a ROC define by \( 0 \le \abs{z} < \abs{\alpha} \).
+has a ROC defined by \( 0 \le \abs{z} < \abs{\alpha} \).
 
 
 
 
 
-\section{Inverse z-transform}
-Firstly, we recall that, for \( z = re^{j\omega} \), the z-transform \( G(z) \) given by:
+\section{\boldmath Inverse \( z \)-transform}
+\marginpar{Inverse \( z \)-transform using DTFT analogy}
+Firstly, we recall that, for \( z = re^{j\omega} \), the \( z \)-transform \( G(z) \) given by:
 \begin{equation}
     G(z)
     =
@@ -383,7 +417,7 @@ is the DTFT of the modified sequence \( g[n]r^{-n} \). Accordingly, the inverse 
     \frac{1}{2\pi} \int_{-\pi}^{\pi} G(re^{j\omega})e^{j\omega n} \d{\omega}
     \label{eq:L14_S47_2}
 \end{equation}
-By making a change of variable \( z = re^{j\omega} \), the previous equation can be converted into a contour integral given by:
+\marginpar{Inverse \( z \)-transform through contour integral}By making a change of variable \( z = re^{j\omega} \), the previous equation can be converted into a \textbf{contour integral} given by:
 \begin{equation}
     g[n]
     =
@@ -391,16 +425,20 @@ By making a change of variable \( z = re^{j\omega} \), the previous equation can
     \label{eq:L14_S48_1}
 \end{equation}
 where \( C' \) is a counterclockwise contour of integration defined by \( \abs{z} = r \).
-But the integral remains unchanged when is replaced with any contour \( C \) encircling the point \( z = 0 \) in the ROC of \( G(z) \). The contour integral can be evaluated using the Cauchy's residue theorem resulting in:
+But the integral remains unchanged when it is replaced with any contour \( C \) encircling the point \( z = 0 \) in the ROC of \( G(z) \). The contour integral can be evaluated using the \textbf{Cauchy's residue theorem} resulting in:\marginpar{Cauchy's residue theorem}
 \begin{equation}
     g[n]
     =
-    \sum \operatorname{Res}_{C}\qty[G(z)z^{n-1}]
+    \sum \underset{C}{\operatorname{Res}}\qty[G(z)z^{n-1}]
     \label{eq:L14_S49_1}
 \end{equation}
-Eq. \ref{eq:L14_S49_1} needs to be evaluated at all values of \( n \) and is not pursued here.
+Eq. \ref{eq:L14_S49_1} needs to be evaluated at all the values of \( n \), but this is not pursued here.
 
-A rational z-transform \( G(z) \) with a causal inverse transform \( g[n] \) has an ROC that is exterior to a circle. Here, it is more convenient to express \( G(z) \) in a partial-fraction expansion form and then determine \( g[n] \) by summing the inverse transform of the individual simpler terms in the expansion. A rational \( G(z) \) can be expressed as:
+
+\medskip
+Now, a rational \( z \)-transform \( G(z) \) with a causal inverse transform \( g[n] \) has an ROC that is exterior to a circle.
+\marginpar{\( z \)-transform in partial fraction expansion form}
+Here, it is more convenient to express \( G(z) \) in a \textbf{partial-fraction expansion form} and then determine \( g[n] \) by summing the inverse transforms of the individual simpler terms in the expansion. Therefore, a rational \( G(z) \) can be expressed as:
 \begin{equation}
     G(z)
     =
@@ -416,7 +454,9 @@ If \( M \ge N \), then \( G(z) \) can be re-expressed as:
     \sum_{\ell=0}^{M-N} \eta_{\ell}z^{-\ell} + \frac{P_{1}(z)}{D(z)}
     \label{eq:L14_S51_2}
 \end{equation}
-where the degree of \( P_{1}(z) \) is less than \( N \). The rational function \( \frac{P_{1}(z)}{D(z)} \) is called a proper fraction. To develop the proper fraction part \( \frac{P_{1}(z)}{D(z)} \) from \( G(z) \), a long division of \( P(z) \) by \( D(z) \) should be carried out in a reverse order until the remainder polynomial \( P_{1}(z) \) is of lower degree that that of the denominator \( D(z) \).
+where the degree of \( P_{1}(z) \) is less than \( N \). The rational function \( \frac{P_{1}(z)}{D(z)} \) is called a \textbf{proper fraction}.
+\marginpar{Proper fractions and long division technique}
+To develop the proper fraction part \( \frac{P_{1}(z)}{D(z)} \) from \( G(z) \), a \textbf{long division} of \( P(z) \) by \( D(z) \) should be carried out in a reverse order until the remainder polynomial \( P_{1}(z) \) is of lower degree that that of the denominator \( D(z) \).
 
 \begin{example}{Inverse transform by partial-fraction expansion}{}
     Consider:
@@ -435,14 +475,15 @@ where the degree of \( P_{1}(z) \) is less than \( N \). The rational function \
     \end{equation}
 \end{example}
 
-In most practical cases, the rational z-transform of interest \( G(z) \) is a proper fraction with simple poles. Let the poles of \( G(z) \) be at \( z = \lambda_{k} \), with \( 1 \le k \le N \). A partial-fraction expansion of \( G(z) \) is then of the form:
+In most practical cases, the rational \( z \)-transform of interest \( G(z) \) is a proper fraction with simple poles. Let the poles of \( G(z) \) be at \( z = \lambda_{k} \), with \( 1 \le k \le N \). A partial-fraction expansion of \( G(z) \) is then of the form:
 \begin{equation}
     G(z)
     =
     \sum_{\ell=1}^{N} \qty(\frac{\rho_{\ell}}{1 - \lambda_{\ell}z^{-1}})
     \label{eq:L14_S54_1}
 \end{equation}
-The constants \( \rho_{\ell} \) in the partial-fraction expansion are called the residues and are given by:
+The constants \( \rho_{\ell} \) in the partial-fraction expansion are called the \textbf{residues} and are given by:
+\marginpar{Residues in partial-fraction expansion}
 \begin{equation}
     \rho_{\ell}
     =
@@ -457,10 +498,10 @@ Therefore, the inverse transform \( g[n] \) of \( G(z) \) is given by:
     \sum_{\ell=1}^{N} \rho_{\ell} (\lambda_{\ell})^{n} \mu[n]
     \label{eq:L14_S56_1}
 \end{equation}
-Note that the approach in Eq. \ref{eq:L14_S56_1} with a slight modification can also be used to determine the inverse of a rational z-transform of a noncausal sequence.
+Note that the approach in Eq. \ref{eq:L14_S56_1} with a slight modification can also be used to determine the inverse of a rational \( z \)-transform of a non-causal sequence.
 
 \begin{example}{Inverse transfrom of a causal sequence}{}
-    Let the z-transform \( H(z) \) of a causal sequence \( h[n] \) be given by:
+    Let the \( z \)-transform \( H(z) \) of a causal sequence \( h[n] \) be given by:
     \begin{equation}
         H(z)
         =
@@ -488,7 +529,7 @@ Note that the approach in Eq. \ref{eq:L14_S56_1} with a slight modification can 
         \frac{2.75}{1 - 0.2z^{-1}} - \frac{1.75}{1 + 0.6z^{-1}}
         \label{eq:L14_S59_1}
     \end{equation}
-    The inverse transform of the above is therefore given by:
+    The inverse transform of Eq. \ref{eq:L14_S59_1} is therefore given by:
     \begin{equation}
         h[n]
         =
@@ -497,7 +538,8 @@ Note that the approach in Eq. \ref{eq:L14_S56_1} with a slight modification can 
     \end{equation}
 \end{example}
 
-In case \( G(z) \) has multiple poles, the partial-fraction expansion is of slightly different form. Let the pole at \( z = v \) be of multiplicity \( L \) and the remaining \( N - L \) poles be simple and at \( z = \lambda_{\ell} \), for \( 1 \le \ell \le N-L \).
+In case \( G(z) \) has multiple poles, \marginpar{Partial-fraction expansion with poles of higher multiplicity}the partial-fraction expansion is of slightly different form.
+Let the pole at \( z = v \) be of multiplicity \( L \) and the remaining \( N - L \) poles be simple and at \( z = \lambda_{\ell} \), for \( 1 \le \ell \le N-L \).
 Then, the partial-fraction expansion of \( G(z) \) is of the form:
 \begin{equation}
     G(z)
@@ -520,16 +562,20 @@ The residues \( \rho_{\ell} \) are calculated as before.
 
 
 
-\section{Z-transform properties}
-A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
+\section{\boldmath\( z \)-transform properties}
+A list of properties of the \( z \)-transform is showed in Figure \ref{fig:L14_S64_1}.
 
+\marginpar{Properties of \( z \)-transform}
 \begin{figure}[!h]
     \centering
     \includegraphics[width=1\textwidth]{\figpath{14}/14_images/S64_1.pdf}
-    \caption{\label{fig:L14_S64_1} Properties of the z-transform.}
+    \caption{\label{fig:L14_S64_1} Properties of \( z \)-transform.}
 \end{figure}
 
-\begin{example}{Z-transform properties}{}
+\marginpar{Examples for \( z \)-transform properties}
+Now, we present some examples with cases where the properties can be usefully applied.
+
+\begin{example}{\boldmath\( z \)-transform properties}{}
     Consider the two-sided sequence:
     \begin{equation}
         v[n]
@@ -537,7 +583,7 @@ A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
         \alpha^{n} \mu[n] - \beta^{n} \mu[-n-1]
         \label{eq:L14_S65_1}
     \end{equation}
-    Let \( x[n] = \alpha^{n} \mu[n] \) and \( y = - \beta^{n} \mu[-n-1] \) with \( X(z) \) and \( Y(z) \) denoting, respectively, their z-transforms. Now:
+    Let \( x[n] = \alpha^{n} \mu[n] \) and \( y = - \beta^{n} \mu[-n-1] \) with \( X(z) \) and \( Y(z) \) denoting, respectively, their \( z \)-transforms. Now:
     \begin{align}
         X(z) &= \frac{1}{1 - \alpha z^{-1}}   &   \abs{z} > \abs{\alpha}  \\
         Y(z) &= \frac{1}{1 - \beta z^{-1}}  &   \abs{z} < \abs{\beta}
@@ -558,8 +604,8 @@ A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
     \end{itemize}
 \end{example}
 
-\begin{example}{Z-transform properties}{}
-    We determine the z-transform and its ROC of the causal sequence:
+\begin{example}{\boldmath\( z \)-transform properties}{}
+    We determine the \( z \)-transform and its ROC of the causal sequence:
     \begin{equation}
         x[n]
         =
@@ -573,7 +619,7 @@ A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
         \frac{1}{2} r^{n} e^{j\omega_{0}n} \mu[n] = \frac{1}{2} \alpha^{n} \mu[n]
         \label{eq:L14_S67_2}
     \end{equation}
-    The z-transform of \( v[n] \) is given by:
+    The \( z \)-transform of \( v[n] \) is given by:
     \begin{equation}
         V(z)
         =
@@ -584,7 +630,7 @@ A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
         \abs{z} > \abs{\alpha} = r
         \label{eq:L14_S67_3}
     \end{equation}
-    Using the conjugation property, we obtain the z-transform of \( v^{*}[n] \) as:
+    Using the conjugation property, we obtain the \( z \)-transform of \( v^{*}[n] \) as:
     \begin{equation}
         V^{*}(z^{*})
         =
@@ -615,8 +661,8 @@ A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
     \end{equation}
 \end{example}
 
-\begin{example}{Z-transform properties}{}
-    We determine the z-transform \( Y(z) \) and the ROC of the sequence:
+\begin{example}{\( z \)-transform properties}{}
+    We determine the \( z \)-transform \( Y(z) \) and the ROC of the sequence:
     \begin{equation}
         y[n]
         =
@@ -630,7 +676,7 @@ A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
         \alpha^{n} \mu[n]
         \label{eq:L14_S69_2}
     \end{equation}
-    Now, the z-transform \( X(z) \) of \( x[n] = \alpha^{n} \mu[n] \) is given by:
+    Now, the \( z \)-transform \( X(z) \) of \( x[n] = \alpha^{n} \mu[n] \) is given by:
     \begin{equation}
         X(z)
         =
@@ -639,7 +685,7 @@ A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
         \abs{z} > \abs{\alpha}
         \label{eq:L14_S70_1}
     \end{equation}
-    Using the differentiation property, we arrive at the z-transform of \( nx[n] \) as:
+    Using the differentiation property, we arrive at the \( z \)-transform of \( nx[n] \) as:
     \begin{equation}
         -z \dv{X(z)}{z}
         =
@@ -660,6 +706,5 @@ A list of properties of the z-transform is showed in Figure \ref{fig:L14_S64_1}.
         \label{eq:L14_S71_1}
     \end{equation}
 \end{example}
-
 
 \end{document}
