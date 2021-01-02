@@ -10,7 +10,8 @@
 \marginpar{ \textbf{Lecture 19.} \\  \displaydate{date}.}
 
 \subsection{Frequency response from transfer function}
-If the ROC of the transfer function \( H(z) \) includes the unit circle, then the frequency response \( H(e^{j\omega}) \) of the LTI digital filter can be obtained simply as follows:
+If the ROC of the transfer function \( H(z) \) includes the unit circle, then the \textbf{frequency response} \( H(e^{j\omega}) \) of the LTI digital filter can be obtained simply as follows:
+\marginpar{Frequency response from transfer function}
 \begin{equation}
     H(e^{j\omega})
     =
@@ -35,14 +36,15 @@ For a stable rational transfer function in the form:
     \frac{p_{0}}{d_{0}} z^{(N-M)} \frac{\displaystyle \prod_{k=1}^{M} (z-\xi_{k})}{\displaystyle \prod_{k=1}^{N} (z-\lambda_{k})}
     \label{eq:L19_S04_1}
 \end{equation}
-the factored form of the frequency response is given by:
+the \textbf{factored form of the frequency response} is given by:\marginpar{Factored form of frequency response}
 \begin{equation}
     H(e^{j\omega})
     =
     \frac{p_{0}}{d_{0}} e^{j\omega (N-M)} \frac{\displaystyle \prod_{k=1}^{M} (e^{j\omega}-\xi_{k})}{\displaystyle \prod_{k=1}^{N} (e^{j\omega}-\lambda_{k})}
     \label{eq:L19_S04_2}
 \end{equation}
-It is convenient to visualize the contributions of the zero \( (z-\xi_{k}) \) and the pole factor \( (z-\lambda_{k}) \) from the factored form of the frequency response. The magnitude function is given by:
+It is convenient to visualize the contributions of the zero \( (z-\xi_{k}) \) and the pole factor \( (z-\lambda_{k}) \) from the factored form of the frequency response. The \textbf{magnitude function} is given by:
+\marginpar{Magnitude function}
 \begin{equation}
     \abs{H(e^{j\omega})}
     =
@@ -50,14 +52,16 @@ It is convenient to visualize the contributions of the zero \( (z-\xi_{k}) \) an
     \frac{\displaystyle \prod_{k=1}^{M} \abs{e^{j\omega}-\xi_{k}}}{\displaystyle \prod_{k=1}^{N} \abs{e^{j\omega}-\lambda_{k}}}
     \label{eq:L19_S05_1}
 \end{equation}
-The phase response for a rational transfer function is of the form:
+The \textbf{phase response for a rational transfer function} is of the form:
+\marginpar{Phase response for a rational transfer function}
 \begin{equation}
-    \arg{H(e^{j\omega})}
+    \arg\qty{H(e^{j\omega})}
     =
     \arg{\qty(\frac{p_{0}}{d_{0}})} + \omega (N-M) + \sum_{k=1}^{M} \arg{(e^{j\omega} - \xi_{k})} - \sum_{k=1}^{N} \arg{(e^{j\omega} - \lambda_{k})}
     \label{eq:L19_S06_1}
 \end{equation}
-The magnitude-squared function of a real-coefficient transfer function can be computed using:
+The \textbf{magnitude-squared function of a real-coefficient transfer function} can be computed using:
+\marginpar{Magnitude-squared function of a real-coefficient transfer function}
 \begin{equation}
     \abs{H(e^{j\omega})}^{2}
     =
@@ -67,11 +71,11 @@ The magnitude-squared function of a real-coefficient transfer function can be co
 \end{equation}
 
 
-
-\subsection{Geometric interpretation of frequency response}
-The factored form of the frequency response in Eq. \ref{eq:L19_S04_2} is convenient to develop a geometric interpretation of the frequency response computation from the pole-zero plot as \( \omega \) varies from \( 0 \) to \( 2\pi \) on the unit circle.
-The geometric interpretation can be used to obtain a sketch of the response as a function of the frequency. A typical factor in the factored form of the frequency response is given by \( (e^{j\omega} - \rho e^{j \varphi}) \), where \( \rho e^{j\varphi} \) is a zero if it is zero factor or is a pole if it is a pole factor.
-As showed in Figure \ref{fig:L19_S10_1}, in the z-plane the factor \( (e^{j\omega} - \rho e^{j \varphi}) \) represents a vector starting at the point \( z = \rho e^{j\varphi} \) and ending on the unit circle at \( z = e^{j\omega} \).
+\medskip
+\marginpar{Geometric interpretation of frequency response}
+From the factored form of the frequency response in Eq. \ref{eq:L19_S04_2} it is convenient to develop a geometric interpretation of the frequency response computation from the pole-zero plot as \( \omega \) varies from \( 0 \) to \( 2\pi \) on the unit circle.
+The geometric interpretation can be used to obtain a sketch of the response as a function of the frequency. A typical factor in the factored form of the frequency response is given by \( (e^{j\omega} - \rho e^{j \varphi}) \), where \( \rho e^{j\varphi} \) is a zero, if it is zero factor, or it is a pole, if it is a pole factor.
+As showed in Figure \ref{fig:L19_S10_1}, in the \( z \)-plane the factor \( (e^{j\omega} - \rho e^{j \varphi}) \) represents a vector starting at the point \( z = \rho e^{j\varphi} \) and ending on the unit circle at \( z = e^{j\omega} \).
 
 \begin{figure}[!h]
     \centering
@@ -91,14 +95,17 @@ Likewise, to highly emphasize signal components in a specified frequency range, 
 
 
 
+
 \section{Simple digital filters}
+\marginpar{Simple digital filters}
 Later in the course we shall review various methods of designing frequency-selective filters satisfying prescribed specifications. We now describe several low-order FIR and IIR digital filters with reasonable selective frequency responses that often are satisfactory in a number of applications.
 FIR digital filters considered here have integer-valued impulse response coefficients. These filters are employed in a number of practical applications, primarily because of their simplicity, which makes them amenable to inexpensive hardware implementations.
 
 
 
 \subsection{Lowpass FIR digital filters}
-The simplest lowpass FIR digital filter is the 2-point moving-average filter given by:
+\marginpar{Example of lowpass FIR digital filter}
+The simplest lowpass FIR digital filter is the \textbf{2-point moving-average filter} given by:
 \begin{equation}
     H_{0}(z)
     =
@@ -107,8 +114,8 @@ The simplest lowpass FIR digital filter is the 2-point moving-average filter giv
     \frac{z+1}{2z}
     \label{eq:L19_S17_1}
 \end{equation}
-The above transfer function has a zero at \( z = -1 \) and a pole at \( z = 0 \). Note that here the pole vector has a unity magnitude for all values of \( \omega \).
-On the other hand, as \( \omega \) increases from \( 0 \) to \( \pi \), the magnitude of the zero vector decreases from a value of \( 2 \), the diameter of the unit circle, to \( 0 \). Hence, the magnitude response \( \abs{H_{0}(e^{j\omega})} \) is a monotonically decreasing function of \( \omega \) from \( \omega = 0 \) to \( \omega = \pi \).
+The transfer function in Eq. \ref{eq:L19_S17_1} has a zero at \( z = -1 \) and a pole at \( z = 0 \). Note that here the pole vector has a unity magnitude for all values of \( \omega \).
+On the other hand, as \( \omega \) increases from \( 0 \) to \( \pi \), the magnitude of the zero vector decreases from a value of \( 2 \), namely the diameter of the unit circle, to \( 0 \). Hence, the magnitude response \( \abs{H_{0}(e^{j\omega})} \) is a monotonically decreasing function of \( \omega \) from \( \omega = 0 \) to \( \omega = \pi \).
 The maximum value of the magnitude function is \( 1 \) at \( \omega = 0 \), and the minimum value is \( 0 \) at \( \omega = \pi \), i.e.:
 \begin{align}
     \abs{H_{0}(e^{j0})} &= 1    \\
@@ -149,7 +156,7 @@ is of practical interest since here the gain \( G(\omega_{c}) \) in dB is given 
 \end{equation}
 since the dc gain \( G(0) = 20\log_{10}\abs{H(e^{j0})} = 0 \).
 
-Thus, the gain \( G(\omega) \) at \( \omega = \omega_{c} \) is approximately \( 3 \ \si{dB} \) less than the gain at \( \omega = 0 \). As a result, \( \omega_{c} \) is called the 3-dB cutoff frequency. To determine the value of \( \omega_{c} \), we set:
+Thus, the gain \( G(\omega) \) at \( \omega = \omega_{c} \) is approximately \( 3 \ \si{dB} \) less than the gain at \( \omega = 0 \). As a result, \( \omega_{c} \) is called the \textbf{3-dB cutoff frequency}. \marginpar{3-dB cutoff frequency}To determine the value of \( \omega_{c} \), we set:
 \begin{equation}
     \abs{H_{0}(e^{j\omega_{c}})}^2
     =
@@ -162,7 +169,9 @@ which yields \( \omega_{c} = \frac{\pi}{2} \).
 
 The 3-dB cutoff frequency \( \omega_{c} \) can be considered as the passband edge frequency. As a result, for the filter \( H_{0}(z) \) the passband width is approximately \( \frac{\pi}{2} \). The stopband is from \( \frac{\pi}{2} \) to \( \pi \). Note that \( H_{0}(z) \) has a zero at \( z = -1 \) or \( \omega = \pi \), which is in the stopband of the filter.
 
-A cascade of the simple FIR filter:
+\medskip
+A \textbf{cascade} of the simple FIR filter:
+\marginpar{Lowpass FIR filter cascade}
 \begin{equation}
     H_{0}(z)
     =
@@ -186,11 +195,12 @@ The 3-dB cutoff frequency of a cascade of \( M \) sections is given by:
 \end{equation}
 For \( M = 3 \), the above yields \( \omega_{c} = 0.302\pi \). Thus, the cascade of first-order sections yields a sharper magnitude response but at the expense of a decrease in the width of the passband.
 
-A better approximation to the ideal lowpass filter is given by a higher-order moving-average filter. Signals with rapid fluctuations in sample values are generally associated with high-frequency components. These high-frequency components are essentially removed by a moving-average filter resulting in a smoother output waveform.
+A better approximation to the ideal lowpass filter is given by a higher-order moving-average filter. Signals with rapid fluctuations in sample values are generally associated with high-frequency components. These are essentially removed by a moving-average filter resulting in a smoother output waveform.
 
 
 
 \subsection{Highpass FIR digital filters}
+\marginpar{Example of highpass FIR digital filter}
 The simplest highpass FIR filter is obtained from the simplest lowpass FIR filter by replacing \( z \) with \( -z \). This results in:
 \begin{equation}
     H_{1}(z)
@@ -213,9 +223,11 @@ whose magnitude response is showed in Figure \ref{fig:L19_S28_1}.
     \caption{\label{fig:L19_S28_1} Magnitude response of the FIR highpass filter.}
 \end{figure}
 
-The monotonically increasing behavior of the magnitude function can again be demonstrated by examining the pole-zero pattern of the transfer function \( H_{1}(z) \). The highpass transfer function \( H_{1}(z) \) has a zero at \( z = 1 \) or \( \omega = 0 \), which is in the stopband of the filter.
+The monotonically increasing behavior of the magnitude function can again be demonstrated by examining the pole-zero pattern of the transfer function \( H_{1}(z) \).
+The highpass transfer function \( H_{1}(z) \) has a zero at \( z = 1 \) or \( \omega = 0 \), which is in the stopband of the filter.
 
-Improved highpass magnitude response can be obtained by cascading several sections of the first-order highpass filter. Alternately, a higher-order highpass filter of the form:
+Improved highpass magnitude response can be obtained by cascading several sections of the first-order highpass filter. Alternately, a \textbf{higher-order highpass filter} of the form:
+\marginpar{Higher-order highpass filter}
 \begin{equation}
     H_{1}(z)
     =
@@ -224,8 +236,9 @@ Improved highpass magnitude response can be obtained by cascading several sectio
 \end{equation}
 is obtained by replacing \( z \) with \( -z \) in the transfer function of a moving average filter.
 
-An application of the FIR highpass filters is in moving-target-indicator (MTI) radars. In these radars, interfering signals, called clutters, are generated from fixed objects in the path of the radar beam. The clutter, generated mainly from ground echoes and weather returns, has frequency components near zero frequency (dc).
-The clutter can be removed by filtering the radar return signal through a two-pulse canceler, which is the first-order FIR highpass filter. For a more effective removal it may be necessary to use a three-pulse canceler obtained by cascading two two-pulse cancelers:
+\marginpar{Application in MTI radars}
+An application of the FIR highpass filters is in \textbf{moving-target-indicator (MTI) radars}. In these radars, interfering signals, called \textbf{clutters}, are generated from fixed objects in the path of the radar beam. The clutter, generated mainly from ground echoes and weather returns, has frequency components near zero frequency (dc).
+The clutter can be removed by filtering the radar return signal through a two-pulse canceler, which is the first-order FIR highpass filter. For a more effective removal it may be necessary to use a \textbf{three-pulse canceler} obtained by cascading two two-pulse cancelers:
 \begin{equation}
     H_{1}(z)
     =
@@ -236,7 +249,8 @@ The clutter can be removed by filtering the radar return signal through a two-pu
 
 
 \subsection{Lowpass IIR digital filters}
-We have already shown that the first-order causal IIR transfer function:
+\marginpar{Example of lowpass IIR digital filter}
+We have already showed that the first-order causal IIR transfer function:
 \begin{equation}
     H(z)
     =
@@ -273,7 +287,8 @@ has a highpass magnitude response for \( \alpha < 0 \). However, the modified tr
     -1 < \alpha < 0
     \label{eq:L19_S36_1}
 \end{equation}
-exhibits a lowpass magnitude response. The modified first-order lowpass transfer function for both positive and negative values of \( \alpha \) is then given by:
+exhibits a lowpass magnitude response.
+\marginpar{Modified first-order lowpass transfer function}The \textbf{modified first-order lowpass transfer function} for both positive and negative values of \( \alpha \) is then given by:
 \begin{equation}
     H_{LP}(z)
     =
@@ -290,7 +305,9 @@ The maximum values of the magnitude function is \( \frac{2k}{(1-\alpha)} \) at \
 \end{align}
 Therefore, \( \abs{H_{LP}(e^{j\omega})} \) is a monotonically decreasing function of \( \omega \) from \( \omega = 0 \) to \( \omega = \pi \).
 
-For most applications, it is usual to have a dc gain of 0 dB, that is to have the maximum magnitude \( \abs{H(e^{j0})} = 1 \). To this end, we choose \( k = \frac{1-\alpha}{2} \), resulting in the first-order IIR lowpass transfer function:
+\medskip
+For most applications, it is usual to have a dc gain of 0 dB, that is to have the maximum magnitude \( \abs{H(e^{j0})} = 1 \). To this end, we choose \( k = \frac{1-\alpha}{2} \), resulting in the \textbf{first-order IIR lowpass transfer function}:
+\marginpar{First-order IIR lowpass transfer function}
 \begin{equation}
     H_{LP}(z)
     =
@@ -299,7 +316,7 @@ For most applications, it is usual to have a dc gain of 0 dB, that is to have th
     0 < \abs{\alpha} < 1
     \label{eq:L19_S39_1}
 \end{equation}
-The above transfer function has a zero at i.e., at \( \omega = \pi \), which is in the stopband. It has also a real pole at \( z = \alpha \).
+The transfer function in Eq. \ref{eq:L19_S39_1} has a zero at i.e., at \( \omega = \pi \), which is in the stopband. It has also a real pole at \( z = \alpha \).
 
 As \( \omega \) increases from \( 0 \) to \( \pi \), the magnitude of the zero vector decreases from a value of \( 2 \) to \( 0 \), whereas, for a positive value of \( \alpha \), the magnitude of the pole vector increases from a value of \( 1 - \alpha \) to \( 1 + \alpha \).
 The maximum value of the magnitude function is \( 1 \) at \( \omega = 0 \), and the minimum value is \( 0 \) at \( \omega = \pi \), i.e. \( \abs{H_{LP}(e^{j0})} = 1 \), \( \abs{H_{LP}(e^{j\pi})} = 0 \).
@@ -307,7 +324,7 @@ Therefore, \( H_{LP}(e^{j\omega}) \) is a monotonically decreasing function of \
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.75\textwidth]{\figpath{19}/19_images/S42_1.pdf}
+    \includegraphics[width=0.9\textwidth]{\figpath{19}/19_images/S42_1.pdf}
     \caption{\label{fig:L19_S42_1} Magnitude (left) and gain (right) responses of the IIR lowpass filter.}
 \end{figure}
 
@@ -325,7 +342,8 @@ The derivative of \( \abs{H_{LP}(e^{j\omega})}^{2} \) with respect to \( \omega 
     \frac{-(1-\alpha)^{2} (1 + \alpha^{2} + 2\alpha) \sin\omega}{2(1 + \alpha^{2} - 2\alpha\cos\omega)^{2}}
     \label{eq:L19_S43_2}
 \end{equation}
-The derivative in Eq. \ref{eq:L19_S43_2} is less or equal than zero in the range \( 0 \le \omega \le \pi \), verifying again the monotonically decreasing behaviour of the magnitude function. To determine the 3-dB cutoff frequency we set:
+The derivative in Eq. \ref{eq:L19_S43_2} is less or equal than zero in the range \( 0 \le \omega \le \pi \), verifying again the monotonically decreasing behaviour of the magnitude function. To determine the \textbf{3-dB cutoff frequency} we set:
+\marginpar{3-dB cutoff frequency}
 \begin{equation}
     \abs{H_{LP}(e^{j\omega})}^{2}
     =
@@ -346,7 +364,7 @@ which, when solved, yields:
     \frac{2\alpha}{1 + \alpha^{2}}
     \label{eq:L19_S45_1}
 \end{equation}
-The above quadratic equation can be solved for a yielding two solutions. The solution resulting in a stable transfer function \( H_{LP}(z) \) is given by:
+The above quadratic equation can be solved for \( \alpha \) yielding two solutions. The one resulting in a stable transfer function \( H_{LP}(z) \) is given by:
 \begin{equation}
     \alpha
     =
@@ -365,7 +383,8 @@ that \( H_{LP}(z) \) is a BR function for \( \abs{\alpha} < 1 \).
 
 
 \subsection{Highpass IIR digital filters}
-A first-order causal highpass IIR digital filter has a transfer function given by:
+\marginpar{Example of highpass IIR digital filter}
+A \textbf{first-order causal highpass IIR digital filter} has a transfer function given by:
 \begin{equation}
     H_{HP}(z)
     =
@@ -374,7 +393,8 @@ A first-order causal highpass IIR digital filter has a transfer function given b
 \end{equation}
 where \( \abs{\alpha} < 1 \) in order to have stability. The transfer function in Eq. \ref{eq:L19_S47_1} has a zero at \( z = 1 \), i.e. at \( \omega = 0 \), which is in the stopband.
 
-Its 3-dB cutoff frequency \( \omega_{c} \) is given by:
+Its \textbf{3-dB cutoff frequency} \( \omega_{c} \) is given by:
+\marginpar{3-dB cutoff frequency}
 \begin{equation}
     \alpha
     =
@@ -385,13 +405,13 @@ which is the same as that of \( H_{LP}(z) \). Magnitude and gain responses of \(
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.75\textwidth]{\figpath{19}/19_images/S48_1.pdf}
+    \includegraphics[width=0.9\textwidth]{\figpath{19}/19_images/S48_1.pdf}
     \caption{\label{fig:L19_S48_1} Magnitude (left) and gain (right) responses of the IIR highpass filter.}
 \end{figure}
 
 \begin{example}{Design of a filter}{}
+    \marginnote{\flushleft\textsl{\small Example of filter design}}
     We design a first-order highpass digital filter with a 3-dB cutoff frequency of \( 0.8\pi \).
-
     Now, we consider that:
     \begin{align*}
         \sin(\omega_{c}) &= \sin(0.8\pi) =  0.587785 \\
@@ -420,7 +440,8 @@ which is the same as that of \( H_{LP}(z) \). Magnitude and gain responses of \(
 
 
 \subsection{Bandpass IIR digital filters}
-A \( 2^{\text{nd}} \)-order bandpass digital transfer function is given by:
+\marginpar{Example of bandpass IIR digital filter}
+A \textbf{second-order bandpass digital transfer function} is given by:
 \begin{equation}
     H_{HP}(z)
     =
@@ -434,15 +455,15 @@ Its squared magnitude function is:
     \frac{(1 - \alpha)^{2} (1 - \cos(2\omega))}{2\qty[1 + \beta^{2}(1 + \alpha)^{2} + \alpha^{2} - 2\beta (1 + \alpha)^{2} \cos\omega + 2\alpha\cos(2\alpha)]}
     \label{eq:L19_S50_2}
 \end{equation}
-\( \abs{H_{BP}(e^{j\omega})}^{2} \) goes to zero at \( \omega = 0 \) and \( \omega = \pi \). It assumes a maximum value of \( 1 \) at \( \omega = \omega_{0} \), called the center frequency of the bandpass filter, where:
+\( \abs{H_{BP}(e^{j\omega})}^{2} \) goes to zero at \( \omega = 0 \) and \( \omega = \pi \). It assumes a maximum value of \( 1 \) at \( \omega = \omega_{0} \), called the \textbf{center frequency of the bandpass filter}, \marginpar{Center frequency of the bandpass filter}where:
 \begin{equation}
     \omega_{0}
     =
     \cos^{-1}(\beta)
     \label{eq:L19_S51_1}
 \end{equation}
-The frequencies \( \omega_{c_{1}} \) and \( \omega_{c_{2}} \) where \( \abs{H_{BP}(e^{j\omega})}^{2} \) becomes \( \frac{1}{2} \) are called the 3-dB cutoff frequencies.
-The difference between the two cutoff frequencies, assuming \( \omega_{c_{2}} > \omega_{c_{1}} \) iis called the 3-dB bandwidth and is given by:
+The frequencies \( \omega_{c_{1}} \) and \( \omega_{c_{2}} \) where \( \abs{H_{BP}(e^{j\omega})}^{2} \) becomes \( \frac{1}{2} \) are called the \textbf{3-dB cutoff frequencies}.\marginpar{3-dB cutoff frequencies and 3-dB bandwidth}
+The difference between the two cutoff frequencies, assuming \( \omega_{c_{2}} > \omega_{c_{1}} \) is called the \textbf{3-dB bandwidth} and is given by:
 \begin{equation}
     B_{w}
     =
@@ -455,12 +476,13 @@ The transfer function \( H_{BP}(e^{j\omega}) \) is a BR function if \( \abs{\alp
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.75\textwidth]{\figpath{19}/19_images/S53_1.pdf}
+    \includegraphics[width=0.9\textwidth]{\figpath{19}/19_images/S53_1.pdf}
     \caption{\label{fig:L19_S53_1} Magnitude responses of the IIR bandpass filter.}
 \end{figure}
 
 \begin{example}{Design of a filter}{}
-    We design a \( 2^{\text{nd}} \)-order bandpass digital filter with center frequency at \( 0.4\pi \) and a 3-dB bandwidth of \( 0.1\pi \). We have:
+    \marginnote{\flushleft\textsl{\small Example of filter design}}
+    We design a second-order bandpass digital filter with center frequency at \( 0.4\pi \) and a 3-dB bandwidth of \( 0.1\pi \). We have:
     \begin{equation}
         \beta
         =
@@ -496,7 +518,7 @@ The transfer function \( H_{BP}(e^{j\omega}) \) is a BR function if \( \abs{\alp
     On the other hand, the poles of \( H_{BP}''(z) \) are at \( z = 0.2667655 \pm j0.8095546 \) and they have a magnitude of \( 0.8523746 \).
     Hence, \( H_{BP}''(z) \) is BIBO stable.
 
-    In the plot below, the plots of the magnitude function and the group delay of \( H_{BP}''(z) \) are showed.
+    Below, the plots of the magnitude function and the group delay of \( H_{BP}''(z) \) are showed.
 
     \begin{center}
         \includegraphics[width=0.75\textwidth]{\figpath{19}/19_images/S57_1.pdf}
@@ -506,7 +528,8 @@ The transfer function \( H_{BP}(e^{j\omega}) \) is a BR function if \( \abs{\alp
 
 
 \subsection{Bandstop IIR digital filters}
-A \( 2^{\text{nd}} \)-order bandstop digital fiter has a transfer function given by:
+\marginpar{Example of bandstop IIR digital filter}
+A \textbf{second-order bandstop digital fiter} has a transfer function given by:
 \begin{equation}
     H_{BS}(z)
     =
@@ -517,21 +540,21 @@ The transfer function \( H_{BS}(z) \) is a BR function if \( \abs{\alpha} < 1 \)
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.75\textwidth]{\figpath{19}/19_images/S59_1.pdf}
+    \includegraphics[width=0.9\textwidth]{\figpath{19}/19_images/S59_1.pdf}
     \caption{\label{fig:L19_S59_1} Magnitude responses of the IIR bandstop filter.}
 \end{figure}
 
-Here, the amgnitude function takes the maximum value of \( 1 \) at \( \omega = 0 \) and \( \omega = \pi \). It goes to \( 0 \) at \( \omega = \omega_{0} \), where \( \omega_{0} \), called the notch frequency, is given by:
+Here, the magnitude function takes the maximum value of \( 1 \) at \( \omega = 0 \) and \( \omega = \pi \). It goes to \( 0 \) at \( \omega = \omega_{0} \), where \( \omega_{0} \), called the \textbf{notch frequency}, is given by:\marginpar{Notch frequency and notch filters}
 \begin{equation}
     \omega_{0}
     =
     \cos^{-1}(\beta)
     \label{eq:L19_S60_1}
 \end{equation}
-The digital transfer function \( H_{BS}(z) \) is more commonly called a notch filter.
+The digital transfer function \( H_{BS}(z) \) is more commonly called a \textbf{notch filter}.
 
-The frequencies \( \omega_{c_{1}} \) and \( \omega_{c_{2}} \) where \( \abs{H_{BP}(e^{j\omega})}^{2} \) becomes \( \frac{1}{2} \) are called the 3-dB cutoff frequencies.
-The difference between them, assuming \( \omega_{c_{2}} > \omega_{c_{1}} \), is called the 3-dB notch bandwidth and it is given by:
+The frequencies \( \omega_{c_{1}} \) and \( \omega_{c_{2}} \) where \( \abs{H_{BP}(e^{j\omega})}^{2} \) becomes \( \frac{1}{2} \) are called the \textbf{3-dB cutoff frequencies}.\marginpar{3-dB cutoff frequencies and 3-dB notch bandwidth}
+The difference between them, assuming \( \omega_{c_{2}} > \omega_{c_{1}} \), is called the \textbf{3-dB notch bandwidth} and it is given by:
 \begin{equation}
     B_{w}
     =
@@ -544,6 +567,7 @@ The difference between them, assuming \( \omega_{c_{2}} > \omega_{c_{1}} \), is 
 
 
 \subsection{Higher-Order IIR digital filters}
+\marginpar{Example of higher-order IIR digital filter}
 By cascading the simple digital filters discussed so far, we can implement digital filters with sharper magnitude responses. For example, let us consider a cascade of \( k \) first-order lowpass sections characterized by the transfer function:
 \begin{equation}
     H_{LP}(z)
@@ -595,6 +619,7 @@ It should be noted that, for \( k = 1 \), the expression given in Eq. \ref{eq:L1
 \end{equation}
 
 \begin{example}{Design of a filter}{}
+    \marginnote{\flushleft\textsl{\small Example of filter design}}
     We design a lowpass filter with a 3-dB cutoff frequency at \( \omega_{c} = 0.4\pi \) using a single first-order section and a cascade of 4 first-order sections, and we compare their gain responses.
 
     For the single first-order lowpass filter we have:
@@ -630,7 +655,7 @@ It should be noted that, for \( k = 1 \), the expression given in Eq. \ref{eq:L1
     The gain responses of the two filters are showed in the plots below. A can be seen, cascading has resulted in a sharper roll-off in the gain response
 
     \begin{center}
-        \includegraphics[width=0.75\textwidth]{\figpath{19}/19_images/S68_1.pdf}
+        \includegraphics[width=0.9\textwidth]{\figpath{19}/19_images/S68_1.pdf}
     \end{center}
 \end{example}
 
