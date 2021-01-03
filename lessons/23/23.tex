@@ -7,10 +7,277 @@
 \begin{document}
 
 \newdate{date}{22}{12}{2020}
-\marginpar{\textbf{Lecture 22.} \\ \displaydate{date}.}
+\marginpar{\textbf{Lecture 23.} \\ \displaydate{date}.}
 
 \section{Basic IIR digital filter structures}
+\marginpar{Basic IIR digital filter structures}
+IIR filters allow both zeros and poles, while FIR allow zeros only. Therefore, IIR filters can be more \textbf{selective} for a given filter order.
+IIR are also called \textbf{recursive filters}, since theit output depends on past inputs and past output samples. From this point we can understand that their design is not guaranteed to be stable and, in addition, they can be particularly sensitive to coefficient quantization.
+
+The finite precision of the coefficients can lead to several issues:\marginpar{Issues of finite precision of coefficients}
+\begin{itemize}
+    \item in order to be unconditionally stable and causal, all the system poles must be inside the unit circle (\( \abs{z} < 1 \)). The coefficient roundoff may inedvertently move a pole outside the unit circle;
+    \item finite coefficient precision ``quantizes'' the pole locations. This may change the frequency response from the ideal case even if still stable.
+\end{itemize}
+These are not the only issues to care about. In fact, we can also have \textbf{overflow} issues:\marginpar{Issues of overflow}
+\begin{itemize}
+    \item the gain from input to storage nodes in the filter may exceed unity. This can cause filter state to be saturated (clipped), resulting in distortion;
+    \item tipically, we must scale down, namely attenuate, the input signal, then scale up, namely amplify, by an equal amount on the output.
+\end{itemize}
 
 
+\medskip
+Now, the causal IIR digital filters we are concerned with in this course are characterized by a real rational transfer function of \( z^{-1} \) or, equivalently, by a constant coefficient difference equation.
+From the ladder representation, it can be seen that the realization of the causal IIR digital filters requires some form of \textbf{feedback}.
+
+Another concept to keep in mind is that an \( N^{\text{th}} \) order IIR digital transfer function is characterized by \( 2N + 1 \) unique coefficients, and in general, it requires \( 2N + 1 \) multipliers and \( 2N \) two-input adders for the implementation.
+
+
+
+\subsection{Direct form IIR filter structures}
+\marginpar{Direct form IIR filter structure}
+The \textbf{direct form IIR filter structures} are such that the multiplier coefficients are precisely the coefficients of the transfer function.
+For example, let us consider for simplicity a \( 3^{\text{rd}} \)-order IIR filter with a transfer function:
+\begin{equation}
+    H(z)
+    =
+    \frac{P(z)}{D(z)}
+    =
+    \frac{p_{0} + p_{1}z^{-1} + p_{2}z^{-2} + p_{3}z^{-3}}{1 + d_{1}z^{-1} + d_{2}z^{-2} + d_{3}z^{-3}}
+    \label{eq:L23_S07_1}
+\end{equation}
+We can implement \( H(z) \) as a cascade of two filter sections, as showed in Figure \ref{fig:L23_S08_1}, where:
+\begin{align}
+    H_{1}(z)
+    &=
+        \frac{W(z)}{X(z)}
+        =
+        P(z)
+        =
+        p_{0} + p_{1}z^{-1} + p_{2}z^{-2} + p_{3}z^{-3} \\
+    H_{2}(z)
+    &=
+        \frac{Y(z)}{W(z)}
+        =
+        \frac{1}{D(z)}
+        =
+        \frac{1}{1 + d_{1}z^{-1} + d_{2}z^{-2} + d_{3}z^{-3}}
+\end{align}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{23}/23_images/S08_1.pdf}
+    \caption{\label{fig:L23_S08_1} IIR filter implementation as a cascade of two filter sections.}
+\end{figure}
+
+The filter section \( H_{1}(z) \) can be seen to be an FIR filter and it can be realized as showed in Figure \ref{fig:L23_S09_1} and characterized by:
+\begin{equation}
+    w[n]
+    =
+    p_{0}x[n] + p_{1}x[n-1] + p_{2}x[n-2] + p_{3}x[n-3]
+    \label{eq:L23_S09_1}
+\end{equation}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{\figpath{23}/23_images/S09_1.pdf}
+    \caption{\label{fig:L23_S09_1} Filter section \( H_{1}(z) \) of Figure \ref{fig:L23_S08_1}.}
+\end{figure}
+
+On the other hand, the time domain representation of \( H_{2}(z) \) is given by:
+\begin{equation}
+    y[n]
+    =
+    w[n] - d_{1}y[n-1] - d_{2}y[n-2] - d_{3}y[n-3]
+    \label{eq:L23_S10_1}
+\end{equation}
+The realization of \( H_{2}(z) \) follows from Eq. \ref{eq:L23_S10_1} and it is showed in Figure \ref{fig:L23_S10_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{\figpath{23}/23_images/S10_1.pdf}
+    \caption{\label{fig:L23_S10_1} Filter section \( H_{2}(z) \) of Figure \ref{fig:L23_S08_1}.}
+\end{figure}
+
+A cascade\marginpar{Direct form I structure} of the two structures realizing \( H_{1}(z) \) and \( H_{2}(z) \) leads to the realization of \( H(z) \), showed in Figure \ref{fig:L23_S11_1} and known as the \textbf{direct form I structure}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{\figpath{23}/23_images/S11_1.pdf}
+    \caption{\label{fig:L23_S11_1} Cascade of the two structures realizing \( H_{1}(z) \) and \( H_{2}(z) \).}
+\end{figure}
+
+Note that the direct form I structure is non-canonic as it employs \( 6 \) delays to realize a \( 3^{\text{rd}} \)-order transfer function.
+A transpose\marginpar{Direct form \( \text{I}_{\dag} \) structure} of this type of form structure is showed in Figure \ref{fig:L23_S11_1} and it is called \textbf{direct form \( \text{I}_{\dag} \) structure}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{\figpath{23}/23_images/S12_1.pdf}
+    \caption{\label{fig:L23_S12_1} Transpose of the direct form I structure in Figure \ref{fig:L23_S11_1}.}
+\end{figure}
+
+Various other non-canonic direct form structures can be derived by simple block diagram manipulations, as showed in Figure \ref{fig:L23_S13_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{23}/23_images/S13_1.pdf}
+    \caption{\label{fig:L23_S13_1} Other non-canonic direct form structures.}
+\end{figure}
+
+\marginpar{Direct form II and \( \text{II}_{\dag} \) structures}
+Now, we consider the direct form structure in Figure \ref{fig:L23_S14_1}. The signal variables at the nodes \circled{1} and \circled{1'} are the same, and hence the two twop delays can be shared.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{23}/23_images/S14_1.pdf}
+    \caption{\label{fig:L23_S14_1} Example of direct form structure.}
+\end{figure}
+
+Likewise, the signal variables at the nodes \circled{2} and \circled{2'} are the same, permitting the sharing of the middle two delays. Following the same argument, the bottom two delays can be shared.
+The sharing of all the delays reduces the total number of delays to \( 3 \), resulting in a canonic realization, showed in Figure \ref{fig:L23_S16_1} along with its transpose structure. The direct form realizations of an \( N^{\text{th}} \)-order IIR transfer function should now be evident.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{\figpath{23}/23_images/S16_1.pdf}
+    \caption{\label{fig:L23_S16_1} Example of direct form II and \( \text{II}_{\dag} \) structures.}
+\end{figure}
+
+
+
+\subsection{Cascade form IIR filter structures}
+\marginpar{Cascade form IIR filter structures}
+By expressing the numerator and the denominator polynomials of the transfer function as a product of polynomials of lower degree, a digital filter can be realized as a \textbf{cascade of low-order filter sections}.
+
+We consider for example:
+\begin{equation}
+    H(z)
+    =
+    \frac{P(z)}{D(z)}
+    =
+    \frac{P_{1}(z) P_{2}(z) P_{3}(z)}{D_{1}(z) D_{2}(z) D_{3}(z)}
+    \label{eq:L23_S17_1}
+\end{equation}
+Examples of cascade realizations of this filter, obtained by different pole-zero pairings and by different ordering of sections, are showed respectively in Figures \ref{fig:L23_S18_1} and \ref{fig:L23_S19_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{23}/23_images/S18_1.pdf}
+    \caption{\label{fig:L23_S18_1} Cascade realizations of \( H(z) \) obtained by different pole-zero pairings.}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{23}/23_images/S19_1.pdf}
+    \caption{\label{fig:L23_S19_1} Cascade realizations of \( H(z) \) obtained by different ordering of sections.}
+\end{figure}
+
+There are altogether a total of \( 36 \) different cascade realizations of Eq. \ref{eq:L23_S17_1}, based on pole-zero pairings and ordering. Due to the finite wordlength effects, each of them behaves differently from the others.
+
+Usually, the polynomials are factored into a product of \( 1^{\text{st}} \)-order and \( 2^{\text{nd}} \)-order polynomials. In this case, \( H(z) \) is expressed as:
+\begin{equation}
+    H(z)
+    =
+    p_{0} \prod_{k} \qty(\frac{1 + \beta_{1,k}z^{-1} + \beta_{2,k}z^{-2}}{1 + \alpha_{1,k}z^{-1} + \alpha_{2,k}z^{-2}})
+    \label{eq:L23_S21_1}
+\end{equation}
+In Eq. \ref{eq:L23_S21_1}, for a first-order factor, we have \( \alpha_{2,k} = \beta_{2,k} = 0 \).
+
+If we take as example the \( 3^{\text{rd}} \)-order transfer function:
+\begin{equation}
+    H(z)
+    =
+    p_{0}
+    \qty(\frac{1 + \beta_{1,1}z^{-1}}{1 + \alpha_{1,1}z^{-1}})
+    \cdot
+    \qty(\frac{1 + \beta_{1,2}z^{-1} + \beta_{2,2}z^{-2}}{1 + \alpha_{1,2}z^{-1} + \alpha_{2,2}z^{-2}})
+    \label{eq:L23_S22_1}
+\end{equation}
+One possible realization is showed in Figure \ref{fig:L23_S22_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{\figpath{23}/23_images/S22_1.pdf}
+    \caption{\label{fig:L23_S22_1} Possible realization of Eq. \ref{eq:L23_S22_1}.}
+\end{figure}
+
+\marginpar{Comparison between direct form II and cascade form realizations}
+Let us consider another example. We compare the direct form II and the cascade form realizations of:
+\begin{equation}
+    H(z)
+    =
+    \frac{0.44z^{-1} + 0.362z^{-2} + 0.02z^{-3}}{1 + 0.4z^{-1} + 0-18z^{-2} - 0.2z^{-3}}
+    \label{eq:L23_S23_1}
+\end{equation}
+By factorizing the numerator and the denominator, we obtain:
+\begin{equation}
+    H(z)
+    =
+    \qty(\frac{0.44 + 0.362z^{-1} + 0.02z^{-2}}{1 + 0.8z^{-1} + 0.5z^{-2}})
+    \cdot
+    \qty(\frac{z^{-1}}{1 - 0.4z^{-1}})
+    \label{eq:L23_S23_2}
+\end{equation}
+The diagrams of both realizations are showed in Figure \ref{fig:L23_S24_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{23}/23_images/S24_1.pdf}
+    \caption{\label{fig:L23_S24_1} Diagrams of direct form II (left) and cascade form (right) realizations of Eq. \ref{eq:L23_S23_1}.}
+\end{figure}
+
+
+
+\subsection{Parallel form IIR filter structures}
+A partial-fraction expansion of the transfer function in \( z^{-1} \)\marginpar{Parallel form I structure} leads to the \textbf{parallel form I structure}.
+Assuming simple poles, the transfer function \( H(z) \) can be expressed as:
+\begin{equation}
+    H(z)
+    =
+    \gamma_{0} + \sum_{k} \qty(\frac{\gamma_{0,k} + \gamma_{1,k}z^{-1}}{1 + \alpha_{1,k}z^{-1} + \alpha_{2,k}z^{-2}})
+    \label{eq:L23_S25_1}
+\end{equation}
+In Eq. \ref{eq:L23_S25_1}, for a real pole we have \( \alpha_{2,k} = \gamma_{1,k} = 0 \).
+
+A direct partial-fraction expansion of the transfer function \( z \)\marginpar{Parallel form II structure} leads to the \textbf{parallel form II structure}.
+Assuming simple poles, the transfer function \( H(z) \) can be expressed as:
+\begin{equation}
+    H(z)
+    =
+    \delta_{0} + \sum_{k} \qty(\frac{\delta_{1,k}z^{-1} + \delta_{2,k}z^{-2}}{1 + \alpha_{1,k}z^{-1} + \alpha_{2,k}z^{-2}})
+    \label{eq:L23_S26_1}
+\end{equation}
+In Eq. \ref{eq:L23_S26_1}, for a real pole we have \( \alpha_{2,k} = \delta_{2,k} = 0 \).
+
+The two basic parallel realizations of a \( 3^{\text{rd}} \)-order IIR transfer function are showed in Figure \ref{fig:L23_S27_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{23}/23_images/S27_1.pdf}
+    \caption{\label{fig:L23_S27_1} Diagrams of parallel form I (left) and form II (right) realizations of a \( 3^{\text{rd}} \)-order IIR transfer function.}
+\end{figure}
+
+Now, let us consider the following example. A partial-fraction expansion in \( z^{-1} \) of Eq. \ref{eq:L23_S23_1} yields:
+\begin{equation}
+    H(z)
+    =
+    -0.1 + \frac{0.6}{1 - 0.4z^{-1}} + \frac{-0.5 -0.2z^{-1}}{1 + 0.8z^{-1} + 0.5z^{-2}}
+    \label{eq:L23_S28_1}
+\end{equation}
+The corresponding parallel form I realization is showed in Figure \ref{fig:L23_S29_1}. Likewise, a partial fraction expansion of \( H(z) \) in \( z \) yields:
+\begin{equation}
+    H(z)
+    =
+    \frac{0.24z^{-1}}{1 - 0.4z^{-1}} + \frac{0.2z^{-1} + 0.25z^{-2}}{1 + 0.8z^{-1} + 0.5z^{-2}}
+    \label{eq:L23_S30_1}
+\end{equation}
+and the corresponding parallel form II realization is showed in Figure \ref{fig:L23_S29_1} as well.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[height=5cm]{\figpath{23}/23_images/S29_1.pdf}
+    \hspace{0.5cm}
+    \includegraphics[height=5cm]{\figpath{23}/23_images/S30_1.pdf}
+    \caption{\label{fig:L23_S29_1} Parallel form I (left) and form II (right) realizations of Eq. \ref{eq:L23_S23_1}.}
+\end{figure}
 
 \end{document}

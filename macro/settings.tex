@@ -27,13 +27,44 @@
 \fancyhead[RO]{\small\textbf{\thepage}}
 
 %link ipertestuale per indice
+% \hypersetup{
+% 	colorlinks=false,
+% 	linkcolor=black,
+% 	filecolor=blue,
+% 	citecolor=blue,
+% 	urlcolor=blue,
+% }
 \hypersetup{
-	colorlinks=false,
-	linkcolor=black,
-	filecolor=blue,
-	citecolor = blue,
-	urlcolor=blue,
-	}
+    colorlinks,
+    linkcolor={red!70!black},
+    citecolor={green!80!black},
+    urlcolor={blue!80!black}
+}
+
+
+\newcommand{\myref}[1]{\textbf{\ref{#1}}}
+
+% \makeatletter
+% \AtBeginDocument{%
+%     \newcommand*{\original@ref}{}%
+%     \let\original@ref\ref
+%     \@ifpackageloaded{hyperref}{%
+%         \renewcommand*{\ref}{%
+%             \@ifstar\newrefstar\newref
+%         }%
+%         \newcommand*{\newrefstar}[1]{%
+%             \original@ref*{#1}%
+%         }%
+%         \newcommand*{\newref}[1]{%
+%             \hyperref[#1]{\newrefstar{#1}}%
+%         }%
+%     }{%
+%         \renewcommand*{\ref}[1]{%
+%             \textbf{\original@ref{#1}}%
+%         }%
+%     }%
+% }
+% \makeatother
 
 %%%%%indent%%%
 \setlength{\parindent}{0pt}

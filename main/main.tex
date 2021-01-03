@@ -13,14 +13,16 @@
 
     \frontmatter
     \newgeometry{inner=20mm, outer=20mm, top=20mm, bottom=20mm, marginparsep=6mm, marginparwidth=30mm}
-    \pagecolor{blue!10}
+    \pagecolor{green!10}
     \input{../frontespizio/frontespizio.tex}
     \pagecolor{white}
     \input{../frontespizio/abstract.tex}
     \newgeometry{inner=20mm, outer=49mm, top=20mm, bottom=25mm, marginparsep=6mm, marginparwidth=30mm}
 
-
-    \tableofcontents
+    {
+        \hypersetup{linkcolor=cobalt}
+        \tableofcontents
+    }
 
 
     \mainmatter
@@ -43,7 +45,7 @@
     \subfile{../lessons/20/20.tex}
     \subfile{../lessons/21/21.tex}
     \subfile{../lessons/22/22.tex}
-    % \subfile{../lessons/23/23.tex} % TODO
+    \subfile{../lessons/23/23.tex}
 
 
     % EXERCISES
