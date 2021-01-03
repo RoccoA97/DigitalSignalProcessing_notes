@@ -1,0 +1,85 @@
+\providecommand{\main}{../../main}
+\providecommand{\figpath}[1]{\main/../lessons/#1}
+\documentclass[../../main/main.tex]{subfiles}
+
+
+
+\begin{document}
+
+\newdate{date}{17}{12}{2020}
+\marginpar{\textbf{Lecture 22.} \\ \displaydate{date}.}
+
+\subsection{Equivalent structures}
+Another important topic in digital filter design\marginpar{Equivalent structures} is the equivalence. Two digital filter structures are defined to be \textbf{equivalent} if they have the same transfer function.
+
+In the following discussion we describe several methods for the generation of equivalent structures. However, we state now that a fairly simple way to do it from a given realization is via the \textbf{transpose operation}, which consists in:
+\marginpar{Transpose operation}
+\begin{itemize}
+    \item reversing all the paths;
+    \item replacing pick-off nodes by adders, and viceversa;
+    \item interchanging the input and output nodes.
+\end{itemize}
+Let us consider an example of this technique. This is showed in Figure \ref{fig:L22_S05_1} along with the redrawn transposed structure.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[height=2.3cm]{\figpath{22}/22_images/S05_1.pdf}
+    \hspace{0.5cm}
+    \includegraphics[height=2.3cm]{\figpath{22}/22_images/S06_1.pdf}
+    \caption{\label{fig:L22_S05_1} Example of the application of the transpose operation (left) and redrawn transposed structure (right).}
+\end{figure}
+
+We have to remark that all the other methods for developing equivalent structures are based on a specific algorithm for each structure. Moreover, there are literally an infinite number of equivalent structures realizing the same transfer function.
+Thus, it is impossible to develop all the equivalent realizations and in this course we will restrict our attention to a discussion of some commonly used structures.
+
+Under infinite precision arithmetic, \marginpar{Equivalent structures and finite precision arithmetics}any given realization of a digital filter behaves identically to any other equivalent structure. However, in practice, due to the finite wordlength limitations, a specific realization behaves totally differently from its other equivalent realizations.
+Hence, it is important to choose a structure that has the least quantization effects when implemented.
+One way to arrive at such a structure is to determine a large number of equivalent structures, analyze the finite wordlength effects in each case, and select the one showing the least effects.
+In ceratin cases, it is possible to edvelop a structure that by construction has the least quantization effects. Here, we review some simple realizations that in many applications are quite adequate.
+
+
+
+\subsection{Basic FIR digital filter structures}
+\marginpar{Basic FIR digital filter structures}
+A \textbf{causal FIR filter of order \( N \)} is characterized by a transfer function \( H(z) \) given by:
+\begin{equation}
+    H(z)
+    =
+    \sum_{n=0}^{N} h[n]z^{-n}
+    \label{eq:L22_S11_1}
+\end{equation}
+which is a polynomial in \( z^{-1} \). In the time-domain the input-output relation of the FIR filter in Eq. \ref{eq:L22_S11_1} is given by:
+\begin{equation}
+    y[n]
+    =
+    \sum_{n=0}^{N} h[k]x[n-k]
+    \label{eq:L22_S11_2}
+\end{equation}
+
+\medskip
+It is important to remark\marginpar{Direct form FIR filter structures} that an FIR filter of order \( N \) is characterized by \( N+1 \) coefficients and, in general, requires \( N+1 \) multipliers and \( N \) two-input adders. Structures in which the multiplier coefficients are precisely the coefficients of the transfer function are called \textbf{direct form structures}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{22}/22_images/S14_1.pdf}
+    \caption{\label{fig:L22_S14_1} Example of FIR filter structure.}
+\end{figure}
+
+In particular, an analysis of the structure with \( N=4 \), as showed in Figure \ref{fig:L22_S14_1}, yields:
+\begin{equation}
+    y[n]
+    =
+    h[0]x[n] + h[1]x[n-1] + h[2]x[n-2] + h[3]x[n-3] + h[4]x[n-4]
+    \label{eq:L22_S13_1}
+\end{equation}
+which is precisely of the form of the convolution sum description.
+The direct form structure in Figure \ref{fig:L22_S14_1}\marginpar{Transversal filter} is also known as a \textbf{transversal filter}.
+The transpose of this direct form structure is showed in Figure \ref{fig:L22_S15_1}. Both direct form structures are canonic with respect to the delays.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{22}/22_images/S15_1.pdf}
+    \caption{\label{fig:L22_S15_1} Transpose of the direct form structure in Figure \ref{fig:L22_S14_1}.}
+\end{figure}
+
+\end{document}
