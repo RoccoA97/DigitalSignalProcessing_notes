@@ -39,7 +39,9 @@ In ceratin cases, it is possible to edvelop a structure that by construction has
 
 
 
-\subsection{Basic FIR digital filter structures}
+
+
+\section{Basic FIR digital filter structures}
 \marginpar{Basic FIR digital filter structures}
 A \textbf{causal FIR filter of order \( N \)} is characterized by a transfer function \( H(z) \) given by:
 \begin{equation}
@@ -56,7 +58,9 @@ which is a polynomial in \( z^{-1} \). In the time-domain the input-output relat
     \label{eq:L22_S11_2}
 \end{equation}
 
-\medskip
+
+
+\subsection{Direct form FIR filter structures}
 It is important to remark\marginpar{Direct form FIR filter structures} that an FIR filter of order \( N \) is characterized by \( N+1 \) coefficients and, in general, requires \( N+1 \) multipliers and \( N \) two-input adders. Structures in which the multiplier coefficients are precisely the coefficients of the transfer function are called \textbf{direct form structures}.
 
 \begin{figure}[!h]
@@ -80,6 +84,188 @@ The transpose of this direct form structure is showed in Figure \ref{fig:L22_S15
     \centering
     \includegraphics[width=0.75\textwidth]{\figpath{22}/22_images/S15_1.pdf}
     \caption{\label{fig:L22_S15_1} Transpose of the direct form structure in Figure \ref{fig:L22_S14_1}.}
+\end{figure}
+
+
+
+\subsection{Cascade form FIR filter structures}
+\marginpar{Cascade form FIR filter structures}
+A higher-order FIR transfer function can also be realized as a \textbf{cascade} of second-order FIR sections and possibly a first-order section.
+To this end, we express \( H(z) \) as:
+\begin{equation}
+    H(z)
+    =
+    h[0] \prod_{i=1}^{k} \qty(1 + \beta_{1,k}z^{-1} + \beta_{2,k}z^{-2})
+    \label{eq:L22_S16_1}
+\end{equation}
+where \( k = \frac{N}{2} \), if \( N \) is even, or \( k = \frac{N+1}{2} \), if \( N \) is odd, with \( \beta_{2k} = 0 \).
+A cascade realization for \( N = 6 \) is showed in Figure \ref{fig:L22_S17_1}. Each second-order section in the structure can also be realized in the transposed direct form.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{22}/22_images/S17_1.pdf}
+    \caption{\label{fig:L22_S17_1} Example of cascade realization for \( N = 6 \) of an FIR filter.}
+\end{figure}
+
+
+
+\subsection{Polyphase FIR structures}
+\marginpar{Polyphase decomposition and FIR structures}
+The \textbf{polyphase decomposition} of \( H(z) \) leads to a parallel form structure. To illustrate this approach, let us consider a causal FIR transfer function \( H(z) \) with \( N = 8 \):
+\begin{equation}
+    H(z)
+    =
+    \sum_{\ell=0}^{8} h[\ell]z^{-\ell}
+    \label{eq:L22_S18_1}
+\end{equation}
+\( H(z) \) can be expressed as a sum of two terms, with one term containing the even-indexed coefficients and the other containing the odd-indexed ones:
+\begin{align}
+    H(z)
+    &=
+        \sum_{\ell=0}^{4} h[2\ell]z^{-2\ell} + \sum_{\ell=1}^{4} h[2\ell-1]z^{-(2\ell-1)}   \nonumber   \\
+    &=
+        \sum_{\ell=0}^{4} h[2\ell]z^{-2\ell} + z^{-1}\sum_{\ell=0}^{3} h[2\ell+1]z^{-2\ell}
+\end{align}
+By using the notation:
+\begin{align}
+    E_{0}(z) &= h[0] + h[2]z^{-1} + h[4]z^{-2} + h[6]z^{-3} + h[8]z^{-4}    \\
+    E_{1}(z) &= h[1] + h[3]z^{-1} + h[5]z^{-2} + h[7]z^{-3}
+\end{align}
+we can express \( H(z) \) as:
+\begin{equation}
+    H(z)
+    =
+    E_{0}(z^{2}) + z^{-1}E_{1}(z^{2})
+    \label{eq:L22_S20_3}
+\end{equation}
+The decomposition in Eq. \ref{eq:L22_S20_3}\marginpar{2-branch polyphase decomposition} is more commonly known as the \textbf{2-branch polyphase decomposition}. A realization of \( H(z) \) based on the latter is thus showed in Figure \ref{fig:L22_S21_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{\figpath{22}/22_images/S21_1.pdf}
+    \caption{\label{fig:L22_S21_1} Example of structure of 2-branch polyphase decomposition.}
+\end{figure}
+
+In a similar manner, by grouping the terms in the original expression for \( H(z) \), we can re-express it in the form:
+\begin{equation}
+    H(z)
+    =
+    E_{0}(z^{3}) + z^{-1}E_{1}(z^{3}) + z^{-2}E_{2}(z^{3})
+    \label{eq:L22_S22_1}
+\end{equation}
+where now:
+\begin{align}
+    E_{0}(z) &= h[0] + h[3]z^{-1} + h[6]z^{-2}  \\
+    E_{1}(z) &= h[1] + h[4]z^{-1} + h[7]z^{-2}  \\
+    E_{2}(z) &= h[2] + h[5]z^{-1} + h[8]z^{-2}
+\end{align}
+The decomposition of \( H(z) \) in Eq. \ref{eq:L22_S22_1}\marginpar{3-branch polyphase decomposition} is more commonly known as the \textbf{3-branch polyphase decomposition}, and a realization of \( H(z) \) based on the latter is thus showed in Figure \ref{fig:L22_S24_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{\figpath{22}/22_images/S24_1.pdf}
+    \caption{\label{fig:L22_S24_1} Example of structure of 3-branch polyphase decomposition.}
+\end{figure}
+
+In the general case\marginpar{General case of polyphase decomposition}, an \textbf{\( L \)-branch polyphase decomposition} of an FIR transfer function of order \( N \) is of the form:
+\begin{equation}
+    H(z)
+    =
+    \sum_{m=0}^{L-1} z^{-m}E_{m}(z^{L})
+    \label{eq:L22_S25_1}
+\end{equation}
+where:
+\begin{equation}
+    E_{m}(z)
+    =
+    \sum_{n=0}^{\floor{\frac{N+1}{L}}} h[Ln+m]z^{-m}
+    \label{eq:L22_S25_2}
+\end{equation}
+with \( h[n] = 0 \) for \( n > N \).
+
+We have to remark that the subfilters \( E_{m}(z^{L}) \) in the polyphase realization of an FIR transfer function are also FIR filters and they can be realized using any methods described so far.
+However, to obtain a canonic realization of the overall structure, the delays in all the subfilters must be shared.
+For example, a canonic realization of a length-\( 9 \) FIR transfer function is obtained using \textbf{delay sharing} is showed in Figure \ref{fig:L22_S27_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{22}/22_images/S27_1.pdf}
+    \caption{\label{fig:L22_S27_1} Example of the structure of a length-\( 9 \) FIR transfer function with delay sharing.}
+\end{figure}
+
+
+
+\subsection{Linear-phase FIR structures}
+\marginpar{Symmetry properties for structure simplification}
+The symmetry (or antisymmetry) property of a linear-phase FIR filter can be exploited to reduce the number of multipliers into almost half of that in the direct form implementations.
+For example, we consider a length-\( 7 \) Type 1 FIR transfer function with a symmetric impulse response:
+\begin{equation}
+    H(z)
+    =
+    h[0] + h[1]z^{-1} + h[2]z^{-2} + h[3]z^{-3} + h[2]z^{-4} + h[1]z^{-5} + h[0]z^{-6}
+    \label{eq:L22_S28_1}
+\end{equation}
+If we rewrite \( H(z) \) in the form:
+\begin{equation}
+    H(z)
+    =
+    h[0]\qty(1 + z^{-6}) + h[1]\qty(z^{-1} + z^{-5}) + h[2]\qty(z^{-2} + z^{-4}) + h[3]z^{-3}
+    \label{eq:L22_S29_1}
+\end{equation}
+we obtain the realization showed in Figure \ref{fig:L22_S29_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{22}/22_images/S29_1.pdf}
+    \caption{\label{fig:L22_S29_1} Example of the structure of a length-\( 7 \) Type 1 FIR transfer function with a symmetric impulse response.}
+\end{figure}
+
+A similar decomposition can be applied to a Type 2 FIR transfer function.
+For example, let us consider a length-\( 8 \) Type 2 FIR transfer function expressed as:
+\begin{equation}
+    H(z)
+    =
+    h[0]\qty(1 + z^{-7}) + h[1]\qty(z^{-1} + z^{-6}) + h[2]\qty(z^{-2} + z^{-5}) + h[3]\qty(z^{-3} + z^{-4})
+    \label{eq:L22_S30_1}
+\end{equation}
+The corresponding realization is showed in Figure \ref{fig:L22_S31_1}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{\figpath{22}/22_images/S31_1.pdf}
+    \caption{\label{fig:L22_S31_1} Example of the structure of a length-\( 8 \) Type 2 FIR transfer function with a symmetric impulse response.}
+\end{figure}
+
+From the previous structures, we observe that:
+\begin{itemize}
+    \item the Type 1 linear-phase structure for a length-\( 7 \) FIR filter requires 4 multipliers, whereas a direct form realization requires 7 of them;
+    \item the Type 2 linear-phase structure for a length-\( 8 \) FIR filter requires 4 multipliers, whereas a direct form realization requires 8 of them.
+\end{itemize}
+Similar savings occur in the realization of Type 3 and 4 linear-phase FIR filters, with antisymmetric impulse responses.
+
+
+
+\subsection{Tapped delay line}
+\marginpar{Tapped delay line}
+A \textbf{tapped delay line (TDL)} is a delay line with at least one \textbf{``tap''}. The ladder extracts a signal ouput from somewhere withing the delay line, optionally scales it, and usually sums with other taps to form an output signal.
+A tap may be \textbf{interpolating} or \textbf{non-interpolating}. The ladder extracts the signal at some fixed integer delay relative to the input.
+
+In this context, in some applications such as musical and sound processing, FIR filter structures of the form in Figure \ref{fig:L22_S34_1} are employed.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{22}/22_images/S34_1.pdf}
+    \caption{\label{fig:L22_S34_1} Example of structure of a tapped delay line.}
+\end{figure}
+
+the structure consists of a chain of \( M_{1} + M_{2} + M_{3} \) unit delays with taps at the input, at the end of the first \( M_{1} \) delays, at the end of the next \( M_{2} \) delays, and at the output.
+Signals at these taps are then multiplied by constants \( \alpha_{0} \), \( \alpha_{1} \), \( \alpha_{2} \) and \( \alpha_{3} \), then they are added to form the output.
+The direct form FIR structure in Figure \ref{fig:L22_S36_1} is seen to be a special case of the tapped delay line, where there is a tap after each unit delay.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{\figpath{22}/22_images/S36_1.pdf}
+    \caption{\label{fig:L22_S36_1} Special case of the tapped delay line in Figure \ref{fig:L22_S34_1}, with a tap after each unit delay.}
 \end{figure}
 
 \end{document}
