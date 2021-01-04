@@ -1,9 +1,9 @@
+# Lecture Notes of Digital Signal Processing
+Lectures notes of the Master degree course "Digital Signal Processing", held by professor Federica Battisti at the University of Padua (Academic Year 2020/2021).
+
 <center>
     <img src="./fft.png" alt="Drawing" style="width: 500px"/>
 </center>
-
-# Lecture Notes of Digital Signal Processing
-Lectures notes of the Master degree course "Digital Signal Processing", held by professor Federica Battisti at the University of Padua (Academic Year 2020/2021).
 
 
 
